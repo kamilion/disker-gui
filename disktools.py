@@ -50,7 +50,7 @@ def read_values(device):
     print('Reading S.M.A.R.T values for '+device)
     smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
     read_values = 0
-    model_list = []  # Empty list
+    model_list = ""  # Empty String
     print(smart_output)
     for l in smart_output:
         print('parsing: '+l)
