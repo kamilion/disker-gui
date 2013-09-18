@@ -5,8 +5,9 @@ import os
 from time import sleep, time
 # GTK imports
 from gi.repository import Gtk, Gdk
+
 # Redis-Queue imports
-from redis import Redis
+import redis
 from rq import Queue, Worker, job
 # Local imports
 from disktools import get_disk_info, get_disk_throughput, read_values, broken_mirror
@@ -15,7 +16,7 @@ import rethinkdb as r
 conn = r.connect(db='wanwipe')
 
 # Redis queue connection setup so we can pass authentication
-q = Queue(connection=Redis(host='localhost', port=6379, db=0, password=None))
+q = Queue(connection=redis.StrictRedis(host='localhost', port=6379, db=0, password=None))
 
 UI_INFO = """
 <ui>
