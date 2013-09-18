@@ -48,15 +48,16 @@ def read_values(device):
     num_exit_status=0
     #try:
     print('Reading S.M.A.R.T values for '+device)
-    smart_output=sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
-    read_values=0
+    smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
+    read_values = 0
+    model_list = []  # Empty list
     print(smart_output)
     for l in smart_output:
         print('parsing: '+l)
         if l[:-1] == '':
             read_values = 0
-        elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:8]=='Product:':
-            model_list = string.split(string.split(l,':')[1])
+        elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:7]=='Vendor:' or l[:8]=='Product:':
+            model_list.append(string.split(string.split(l,':')[1]))
             try: model_list.remove('Version')
             except: None
             model = string.join(model_list)
