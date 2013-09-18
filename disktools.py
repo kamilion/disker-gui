@@ -101,6 +101,11 @@ def read_values(device):
     except:
         smart_values["model"] = "unknown"
 
+    # For some reason we may have no value for "serial"
+    try:
+        smart_values["serial_no"] = serial_no
+    except:
+        smart_values["serial_no"] = "unknown"
 
     print(smart_values)
 
