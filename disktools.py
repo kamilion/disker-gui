@@ -75,7 +75,7 @@ def read_values(device):
             print('captured a capacity: {}'.format(capacity))
         if read_values == 1:
             smart_attribute=string.split(l)
-            smart_values[string.replace(smart_attribute[1],'-','_')] = {"value":smart_attribute[3],"threshold":smart_attribute[5]}
+            smart_values[string.replace(smart_attribute[1],'-','_')] = {"smart_id":smart_attribute[0], "flag":smart_attribute[2], "value":smart_attribute[3], "worst":smart_attribute[4], "threshold":smart_attribute[5], "raw_value":smart_attribute[9]}
             print('captured a smart attribute: {}',format(smart_attribute))
         elif l[:18] == "ID# ATTRIBUTE_NAME":
             # Start reading the Attributes block
