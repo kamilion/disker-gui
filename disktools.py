@@ -56,18 +56,23 @@ def read_values(device):
         print('parsing: '+l)
         if l[:-1] == '':
             read_values = 0
-            print('empty line')
+            print('found empty line')
         elif l[:13]=='Device Model:' or l[:7]=='Device:':
-            print('found something')
+            print('found a model description')
             model_list = string.split(string.split(l,':')[1])
             try: model_list.remove('Version')
             except: None
             model = string.join(model_list)
-            print('did something')
+            print('captured a model description: {}'.format(model))
+        elif l[:14]=='Serial Number:' or l[:6]=='Serial':
+            print('found a serial number')
+            serial_list = string.split(string.split(l,':')[1])
+            serial_no = string.join(serial_list)
+            print('captured a serial number: {}'.format(serial_no))
         if read_values == 1:
             smart_attribute=string.split(l)
             smart_values[string.replace(smart_attribute[1],'-','_')] = {"value":smart_attribute[3],"threshold":smart_attribute[5]}
-            print('found something else')
+            print('found a smart attribute')
         elif l[:18] == "ID# ATTRIBUTE_NAME":
             # Start reading the Attributes block
             read_values = 1
@@ -90,8 +95,13 @@ def read_values(device):
 
     smart_values["smartctl_exit_status"] = { "value":str(num_exit_status), "threshold":"1" }
 
-    try: smart_values["model"] = model
     # For some reason we may have no value for "model"
-    except: smart_values["model"] = "unknown"
+    try:
+        smart_values["model"] = model
+    except:
+        smart_values["model"] = "unknown"
+
+
+    print(smart_values)
 
     return "Done"

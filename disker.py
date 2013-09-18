@@ -163,7 +163,7 @@ class M3Window(Gtk.Window):
         return uimanager
 
     def on_menu_make_it_go(self, widget):
-        job = q.enqueue(get_disk_info, "/dev/sdc")
+        job = q.enqueue(get_disk_info, "/dev/sda")
         print job
         while job.result == None:
             sleep(0.1)
