@@ -72,7 +72,7 @@ def read_values(device):
         if read_values == 1:
             smart_attribute=string.split(l)
             smart_values[string.replace(smart_attribute[1],'-','_')] = {"value":smart_attribute[3],"threshold":smart_attribute[5]}
-            print('found a smart attribute')
+            print('found a smart attribute: {}',format(smart_attribute))
         elif l[:18] == "ID# ATTRIBUTE_NAME":
             # Start reading the Attributes block
             read_values = 1
