@@ -1,6 +1,6 @@
 
 # System imports
-import os, string, sh, re
+import os, string, sh, re, json
 
 # RethinkDB imports
 import rethinkdb as r
@@ -48,7 +48,6 @@ def read_values(device):
     num_exit_status=0
     #try:
     print('Reading S.M.A.R.T values for '+device)
-    #os.putenv('LC_ALL','C')
     smart_output=sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
     read_values=0
     print(smart_output)
@@ -56,29 +55,30 @@ def read_values(device):
         print('parsing: '+l)
         if l[:-1] == '':
             read_values = 0
-            print('found empty line')
         elif l[:13]=='Device Model:' or l[:7]=='Device:':
-            print('found a model description')
             model_list = string.split(string.split(l,':')[1])
             try: model_list.remove('Version')
             except: None
             model = string.join(model_list)
             print('captured a model description: {}'.format(model))
         elif l[:14]=='Serial Number:' or l[:6]=='Serial':
-            print('found a serial number')
             serial_list = string.split(string.split(l,':')[1])
             serial_no = string.join(serial_list)
             print('captured a serial number: {}'.format(serial_no))
+        elif l[:14]=='User Capacity:':
+            capacity_list = string.split(string.split(l,':')[1])
+            capacity = string.join(capacity_list)
+            print('captured a capacity: {}'.format(capacity))
         if read_values == 1:
             smart_attribute=string.split(l)
             smart_values[string.replace(smart_attribute[1],'-','_')] = {"value":smart_attribute[3],"threshold":smart_attribute[5]}
-            print('found a smart attribute: {}',format(smart_attribute))
+            print('captured a smart attribute: {}',format(smart_attribute))
         elif l[:18] == "ID# ATTRIBUTE_NAME":
             # Start reading the Attributes block
             read_values = 1
-            print('# Start reading the Attributes block')
+            print('found the Attributes block')
     exit_status = smart_output.exit_code
-    if exit_status != None:
+    if exit_status is not None:
         # smartctl exit code is a bitmask, check man page.
         print(exit_status)
         num_exit_status = int(exit_status/256)
@@ -87,11 +87,9 @@ def read_values(device):
             print('smartctl cannot access S.M.A.R.T values on drive '+device+'. Command exited with code '+str(num_exit_status)+' ('+str(exit_status/256)+')')
         else:
             print('smartctl exited with code '+str(num_exit_status)+'. '+device+' may be FAILING RIGHT NOW !')
-    #except:
-    #    print('Cannot access S.M.A.R.T values ! Check user rights or proper smartmontools installation. Quitting...')
 
     if smart_values == {}:
-        print('Can\'t find any S.M.A.R.T value to plot ! Quitting...')
+        print("Can't find any S.M.A.R.T value to capture!")
 
     smart_values["smartctl_exit_status"] = { "value":str(num_exit_status), "threshold":"1" }
 
@@ -107,6 +105,23 @@ def read_values(device):
     except:
         smart_values["serial_no"] = "unknown"
 
+    # For some reason we may have no value for "capacity"
+    try:
+        smart_values["capacity"] = capacity
+    except:
+        smart_values["capacity"] = "unknown"
+
+    # For some reason we may have no value for "throughput"
+    try:
+        smart_values["throughput"] = get_disk_throughput(device)
+    except:
+        smart_values["throughput"] = "unknown"
+
+
+
     print(smart_values)
 
-    return "Done"
+    inserted = r.table('disk_results').insert(smart_values).run(conn)
+    return inserted['generated_keys'][0]
+
+    #return "Done"  # for debugging
