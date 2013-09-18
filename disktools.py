@@ -55,7 +55,7 @@ def read_values(device):
         print('parsing: '+l)
         if l[:-1] == '':
             read_values = 0
-        elif l[:13]=='Device Model:' or l[:7]=='Device:':
+        elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:8]=='Product:':
             model_list = string.split(string.split(l,':')[1])
             try: model_list.remove('Version')
             except: None
@@ -111,6 +111,14 @@ def read_values(device):
     except:
         smart_values["capacity"] = "unknown"
 
+    print("Running sdparm query...")
+    # For some reason we may have no value for "identifier"
+    try:
+        sdinfo = get_disk_sdinfo(device)
+        print("sdparm result: {}".format(sdinfo))
+        smart_values["identifier"] = sdinfo
+    except:
+        smart_values["identifier"] = "unknown"
 
     print("Running throughput test...")
     # For some reason we may have no value for "throughput"
@@ -120,7 +128,6 @@ def read_values(device):
         smart_values["throughput"] = disk_throughput
     except:
         smart_values["throughput"] = "unknown"
-
 
     print(smart_values)
 
