@@ -50,14 +50,13 @@ def read_values(device):
     print('Reading S.M.A.R.T values for '+device)
     smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
     read_values = 0
-    model_list = ""  # Empty String
     print(smart_output)
     for l in smart_output:
         print('parsing: '+l)
         if l[:-1] == '':
             read_values = 0
-        elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:7]=='Vendor:' or l[:8]=='Product:':
-            model_list.join(string.split(string.split(l,':')[1]))
+        elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:8]=='Product:':
+            model_list = string.split(string.split(l,':')[1])
             try: model_list.remove('Version')
             except: None
             model = string.join(model_list)
@@ -66,6 +65,10 @@ def read_values(device):
             serial_list = string.split(string.split(l,':')[1])
             serial_no = string.join(serial_list)
             print('captured a serial number: {}'.format(serial_no))
+        elif l[:7]=='Vendor:':
+            vendor_list = string.split(string.split(l,':')[1])
+            vendor = string.join(vendor_list)
+            print('captured a vendor name: {}'.format(vendor))
         elif l[:14]=='User Capacity:':
             capacity_list = string.split(string.split(l,':')[1])
             capacity = string.join(capacity_list)
@@ -98,19 +101,25 @@ def read_values(device):
     try:
         smart_values["model"] = model
     except:
-        smart_values["model"] = "unknown"
+        smart_values["model"] = "Unknown Model"
 
     # For some reason we may have no value for "serial"
     try:
         smart_values["serial_no"] = serial_no
     except:
-        smart_values["serial_no"] = "unknown"
+        smart_values["serial_no"] = "Unknown Serial Number"
+
+    # For some reason we may have no value for "vendor"
+    try:
+        smart_values["vendor"] = vendor
+    except:
+        smart_values["vendor"] = "Unknown Vendor"
 
     # For some reason we may have no value for "capacity"
     try:
         smart_values["capacity"] = capacity
     except:
-        smart_values["capacity"] = "unknown"
+        smart_values["capacity"] = "Unknown Capacity"
 
     print("Running sdparm query...")
     # For some reason we may have no value for "identifier"
@@ -119,7 +128,7 @@ def read_values(device):
         print("sdparm result: {}".format(sdinfo))
         smart_values["identifier"] = sdinfo
     except:
-        smart_values["identifier"] = "unknown"
+        smart_values["identifier"] = "Generic"
 
     print("Running throughput test...")
     # For some reason we may have no value for "throughput"
@@ -128,7 +137,7 @@ def read_values(device):
         print("throughput result: {}".format(disk_throughput))
         smart_values["throughput"] = disk_throughput
     except:
-        smart_values["throughput"] = "unknown"
+        smart_values["throughput"] = "Failed"
 
     print(smart_values)
 
