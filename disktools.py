@@ -111,12 +111,15 @@ def read_values(device):
     except:
         smart_values["capacity"] = "unknown"
 
+
+    print("Running throughput test...")
     # For some reason we may have no value for "throughput"
     try:
-        smart_values["throughput"] = get_disk_throughput(device)
+        disk_throughput = get_disk_throughput(device)
+        print("throughput result: {}".format(disk_throughput))
+        smart_values["throughput"] = disk_throughput
     except:
         smart_values["throughput"] = "unknown"
-
 
 
     print(smart_values)
