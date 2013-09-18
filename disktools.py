@@ -57,7 +57,7 @@ def read_values(device):
         if l[:-1] == '':
             read_values = 0
         elif l[:13]=='Device Model:' or l[:7]=='Device:' or l[:7]=='Vendor:' or l[:8]=='Product:':
-            model_list.append(string.split(string.split(l,':')[1]))
+            model_list.join(string.split(string.split(l,':')[1]))
             try: model_list.remove('Version')
             except: None
             model = string.join(model_list)
