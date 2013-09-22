@@ -15,26 +15,17 @@ except RqlDriverError:
 def verify_db_tables():
     try:
         result = r.db_create('wanwipe').run(conn)
-        if result is {created: 1}:
-            print("DB: wanwipe database created.")
-        else:
-            print("DB: wanwipe database not created: 1")
+        print("DB: wanwipe database created: {}".format(result))
     except RqlRuntimeError:
         print("DB: wanwipe database found.")
     try:
         result = r.db('wanwipe').table_create('disk_results').run(conn)
-        if result is {created: 1}:
-            print("DB: disk_results table created.")
-        else:
-            print("DB: disk_results table not created: 1")
+        print("DB: disk_results table created: {}".format(result))
     except RqlRuntimeError:
         print("DB: disk_results table found.")
     try:
         result = r.db('wanwipe').table_create('job_results').run(conn)
-        if result is {created: 1}:
-            print("DB: job_results table created.")
-        else:
-            print("DB: job_results table not created: 1")
+        print("DB: job_results table created: {}".format(result))
     except RqlRuntimeError:
         print("DB: job_results table found.")
 
