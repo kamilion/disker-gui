@@ -4,7 +4,39 @@ import os, string, sh, re, json
 
 # RethinkDB imports
 import rethinkdb as r
-conn = r.connect(db='wanwipe')
+from rethinkdb.errors import RqlRuntimeError, RqlDriverError
+try:
+    #conn = r.connect(db='wanwipe')
+    conn = r.connect()
+except RqlDriverError:
+    print("Failed to connect to rethinkdb. Check the daemon status and try again.")
+
+### Local functions
+def verify_db_tables():
+    try:
+        result = r.db_create('wanwipe').run(conn)
+        if result is {created: 1}:
+            print("DB: wanwipe database created.")
+        else:
+            print("DB: wanwipe database not created: 1")
+    except RqlRuntimeError:
+        print("DB: wanwipe database found.")
+    try:
+        result = r.db('wanwipe').table_create('disk_results').run(conn)
+        if result is {created: 1}:
+            print("DB: disk_results table created.")
+        else:
+            print("DB: disk_results table not created: 1")
+    except RqlRuntimeError:
+        print("DB: disk_results table found.")
+    try:
+        result = r.db('wanwipe').table_create('job_results').run(conn)
+        if result is {created: 1}:
+            print("DB: job_results table created.")
+        else:
+            print("DB: job_results table not created: 1")
+    except RqlRuntimeError:
+        print("DB: job_results table found.")
 
 ### Remote commands
 
@@ -14,8 +46,9 @@ def broken_mirror(device):
 
 
 def get_disk_info(device):
+    verify_db_tables()  # Verify DB and tables exist
     # Insert Data
-    inserted = r.table('disk_results').insert({'serial': get_disk_sdinfo(device), 'throughput': get_disk_throughput(device)}).run(conn)
+    inserted = r.db('wanwipe').table('disk_results').insert({'serial': get_disk_sdinfo(device), 'throughput': get_disk_throughput(device)}).run(conn)
     return inserted['generated_keys'][0]
 
 def get_disk_sdinfo(device):
@@ -141,7 +174,8 @@ def read_values(device):
 
     print(smart_values)
 
-    inserted = r.table('disk_results').insert(smart_values).run(conn)
+    verify_db_tables()  # Verify DB and Tables exist
+    inserted = r.db('wanwipe').table('disk_results').insert(smart_values).run(conn)
     return inserted['generated_keys'][0]
 
     #return "Done"  # for debugging
