@@ -1,3 +1,7 @@
+# RQ Worker functions
+# These are called by rqworker, and so there is no held state.
+# Beware; new workhorses are immediately forked and never reused!
+
 
 # System imports
 import os, string, sh, re, json
@@ -31,6 +35,7 @@ def verify_db_tables():
 
 ### Remote commands
 
+#  This will end up in the failed queue
 def broken_mirror(device):
     raise Filesystem.GenericError("A Million Shades of Light")
     return None
@@ -163,10 +168,14 @@ def read_values(device):
     except:
         smart_values["throughput"] = "Failed"
 
+    smart_values["last_known_as"] = device
+
     print(smart_values)
 
     verify_db_tables()  # Verify DB and Tables exist
-    inserted = r.db('wanwipe').table('disk_results').insert(smart_values).run(conn)
-    return inserted['generated_keys'][0]
+    disk_inserted = r.db('wanwipe').table('disk_results').insert(smart_values).run(conn)
+    record_id = disk_inserted['generated_keys'][0]
+    print("Inserted disk information as record UUID: {}".format(record_id))
+    return record_id
 
     #return "Done"  # for debugging
