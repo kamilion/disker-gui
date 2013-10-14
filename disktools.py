@@ -78,7 +78,9 @@ def read_values(device):
     smart_values = {}
     #try:
     print('Reading S.M.A.R.T values for '+device)
-    smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
+    # Just accept any return code as a success from smartctl.
+    ok_codes = range(255)  #  [0,1,2,3,4,5,6,7,8,9,10,11,12,64,192]
+    smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=ok_codes)
     read_values = 0
     print(smart_output)
     for l in smart_output:
