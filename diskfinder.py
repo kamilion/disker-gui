@@ -247,28 +247,37 @@ def wipe(out_path, progress_cb=None):
     last_raise_time = 0
     start_time = time()
 
-    with open('/dev/zero', 'rb') as in_fp:
-        with open(out_path, 'wb') as out_fp:
-            buf = bytearray(buf_size)
-            r = in_fp.readinto(buf)
-            while True:
-                if r < buf_size:
-                    buf = buf[:r]
-                out_fp.write(buf)
+    try:
+        with open('/dev/zero', 'rb') as in_fp:
+            with open(out_path, 'wb') as out_fp:
+                buf = bytearray(buf_size)
+                r = in_fp.readinto(buf)
+                while True:
+                    if r < buf_size:
+                        buf = buf[:r]
+                    out_fp.write(buf)
 
-                bytes_read += r
-                progress = int((bytes_read / float(target_device.size)) * 100)
+                    bytes_read += r
+                    progress = int((bytes_read / float(target_device.size)) * 100)
 
-                current_time = time()
-                if progress_cb and (r < buf_size or \
-                                            last_raise_time == 0 or current_time - last_raise_time > 1):
-                    last_raise_time = current_time
-                    progress_cb(progress, start_time, bytes_read, target_device.size)
+                    current_time = time()
+                    if progress_cb and (r < buf_size or \
+                                                last_raise_time == 0 or current_time - last_raise_time > 1):
+                        last_raise_time = current_time
+                        progress_cb(progress, start_time, bytes_read, target_device.size)
 
-                if r < buf_size:
-                    break
+                    if r < buf_size:
+                        break
 
-            out_fp.flush()
+                out_fp.flush()
+    except IOError as e:
+        if e.errno == 28:
+            print("\nReached end of device.")
+        else:
+            print("\nI/O error({0}): {1}".format(e.errno, e.strerror))
+    except KeyboardInterrupt:
+        abort()
+
 
 
 def image(in_path, out_path, progress_cb=None):
@@ -284,29 +293,36 @@ def image(in_path, out_path, progress_cb=None):
     last_raise_time = 0
     start_time = time()
 
-    with open(in_path, 'rb') as in_fp:
-        with open(out_path, 'wb') as out_fp:
-            while True:
-                buf = bytearray(buf_size)
-                r = in_fp.readinto(buf)
-                if r < buf_size:
-                    buf = buf[:r]
-                out_fp.write(buf)
+    try:
+        with open(in_path, 'rb') as in_fp:
+            with open(out_path, 'wb') as out_fp:
+                while True:
+                    buf = bytearray(buf_size)
+                    r = in_fp.readinto(buf)
+                    if r < buf_size:
+                        buf = buf[:r]
+                    out_fp.write(buf)
 
-                bytes_read += r
-                progress = int((bytes_read / float(file_size)) * 100)
+                    bytes_read += r
+                    progress = int((bytes_read / float(file_size)) * 100)
 
-                current_time = time()
-                if progress_cb and (r < buf_size or \
-                                            last_raise_time == 0 or current_time - last_raise_time > 1):
-                    last_raise_time = current_time
-                    progress_cb(progress, start_time, bytes_read, file_size)
+                    current_time = time()
+                    if progress_cb and (r < buf_size or \
+                                                last_raise_time == 0 or current_time - last_raise_time > 1):
+                        last_raise_time = current_time
+                        progress_cb(progress, start_time, bytes_read, file_size)
 
-                if r < buf_size:
-                    break
+                    if r < buf_size:
+                        break
 
-            out_fp.flush()
-
+                out_fp.flush()
+    except IOError as e:
+        if e.errno == 28:
+            print("\nReached end of device.")
+        else:
+            print("\nI/O error({0}): {1}".format(e.errno, e.strerror))
+    except KeyboardInterrupt:
+        abort()
 
 def calc_eta(bytes_read, bytes_total, elapsed):
     if bytes_read < 1:
