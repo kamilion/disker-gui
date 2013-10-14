@@ -24,6 +24,7 @@ class Disk:
         self.mount_point = None
         self.is_mounted = False
         self.name = 'Unknown'
+        self.bus_type = 'Unknown'
         self.size = 0
         self.children = []
 
@@ -45,7 +46,7 @@ class Disk:
 
     def __str__(self):
         """Defines how a disk is represented in a string"""
-        return '%s (%s) - %0.03f GB' % (self.name, self.device_node, self.size / 1000000000.0)
+        return '%s: %s (%s) - %0.03f GB' % (self.bus_type, self.name, self.device_node, self.size / 1000000000.0)
 
 
 class DiskManager:
@@ -133,6 +134,7 @@ class UdevDisk(Disk):
             self.device_node = '/dev/%s' % self.device_node
 
         self.name = udev_device.properties['ID_MODEL']
+        self.bus_type = udev_device.properties['ID_BUS']
 
         try:
             with open('/sys/class/block/%s/size' % os.path.basename(self.device_node), 'r') as fp:
@@ -143,7 +145,7 @@ class UdevDisk(Disk):
         try:
             self.mount_point = udev_manager.mounts[self.device_node]
             self.is_mounted = not self.mount_point == None
-            print self.mount_point
+            print("Found that {} (type: {}) was mounted at: {}".format(self.device_node, self.bus_type, self.mount_point))
         except:
             pass
 
@@ -204,6 +206,17 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
             except:
                 pass
 
+    def get_ata_devices(self):
+        for dev in self.query_by_properties(
+                ['ID_BUS', 'ata'],
+                ['ID_TYPE', 'disk'],
+                ['DEVTYPE', 'disk']):
+            try:
+                disk = UdevDisk(dev, self)
+                if disk.is_valid():
+                    yield disk
+            except:
+                pass
 
 
 # ------------------------------------------------------------------------
@@ -354,11 +367,7 @@ if __name__ == '__main__':
 
     options, args = parser.parse_args()
 
- #   if len(args) <= 0:
- #       parser.print_help()
- #       sys.exit(1)
-
-    print 'Loading disks...'
+    print('Parsing device information...')
 
     manager = DiskManager.get_manager()
     devices = [d for d in manager.get_devices()]
@@ -367,7 +376,7 @@ if __name__ == '__main__':
     if len(devices) == 0:
         sys.exit('No devices found.')
 
-    print
+    print('')
 
     if options.device:
         for device in devices:
@@ -378,12 +387,12 @@ if __name__ == '__main__':
         if not target_device:
             sys.exit('Invalid device node: %s' % options.device)
     else:
-        print 'Select a device node:\n'
+        print('Select a device node:\n')
         for i in range(0, len(devices)):
-            print '  %d) %s' % (i + 1, devices[i])
+            print('  %d) %s' % (i + 1, devices[i]))
             for child in devices[i].children:
-                print '     - %s' % child
-            print
+                print('     - %s' % child)
+            print('')
 
         def select(i):
             if i >= 1 and i <= len(devices):
@@ -391,7 +400,7 @@ if __name__ == '__main__':
 
         target_device = prompt('Choice: ', lambda i: select(int(i)))
 
-    print '\nSelected: %s\n' % target_device
+    print('\nSelected: %s\n' % target_device)
 
     def select_yes_no(i):
         i = i.lower()
@@ -402,10 +411,10 @@ if __name__ == '__main__':
 
     mounts = [m for m in target_device.get_mounted_devices()]
     if len(mounts) > 0:
-        print 'Device has one or more mounted partitions:\n'
+        print('Device has one or more mounted partitions:\n')
         for m in mounts:
-            print '  %s @ %s' % (m.device_node, m.mount_point)
-        print
+            print('  %s @ %s' % (m.device_node, m.mount_point))
+        print('')
         if options.unmount or options.force or \
                         prompt('Unmount all partitions? [Y/N]: ', select_yes_no) == 'y':
             for m in mounts:
@@ -422,7 +431,7 @@ if __name__ == '__main__':
                 image(options.image_file, target_device.device_node, progress)
         else:
             wipe(target_device.device_node, progress)
-        print
-        print 'Done.'
+        print('')
+        print('Done.')
     else:
         abort()
