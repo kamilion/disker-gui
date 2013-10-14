@@ -11,18 +11,8 @@ from optparse import OptionParser
 # Utilities for the Disk classes
 # ------------------------------------------------------------------------
 
-# def sh(cmd):
-#     for line in os.popen(cmd).readlines():
-#         yield line.rstrip('\r\n')
-
-
 def make_id(id):
-    return re.sub('[_]{2,}', '_',
-                  re.sub('^[0-9]', '_',
-                         re.sub('[^A-Za-z0-9]', '_', id))) \
-        .strip() \
-        .strip('_') \
-        .lower()
+    return re.sub('[_]{2,}', '_', re.sub('^[0-9]', '_', re.sub('[^A-Za-z0-9]', '_', id))).strip().strip('_').lower()
 
 # ------------------------------------------------------------------------
 # Base Disk classes
@@ -55,7 +45,7 @@ class Disk:
 
     def __str__(self):
         """Defines how a disk is represented in a string"""
-        return '%s (%s) - %0.02g GB' % (self.name, self.device_node, round(self.size / 1000000000.0, 2))
+        return '%s (%s) - %0.03f GB' % (self.name, self.device_node, self.size / 1000000000.0)
 
 
 class DiskManager:
