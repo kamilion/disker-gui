@@ -71,6 +71,7 @@ def get_disk_throughput(device):
             break
     return "{} {}".format(throughput, unit)
 
+disk_record = {}
 smart_values = {}
 
 def read_values(device):
@@ -126,54 +127,62 @@ def read_values(device):
 
     smart_values["smartctl_exit_status"] = { "value":str(num_exit_status), "threshold":"1" }
 
+    # Begin packing up the disk_record
+
+    # For some reason we may have no value for "smart_values"
+    try:
+        disk_record["smart_values"] = smart_values
+    except:
+        disk_record["smart_values"] = "Unable to query SMART"
+
+    print(smart_values)
+
     # For some reason we may have no value for "model"
     try:
-        smart_values["model"] = model
+        disk_record["model"] = model
     except:
-        smart_values["model"] = "Unknown Model"
+        disk_record["model"] = "Unknown Model"
 
     # For some reason we may have no value for "serial"
     try:
-        smart_values["serial_no"] = serial_no
+        disk_record["serial_no"] = serial_no
     except:
-        smart_values["serial_no"] = "Unknown Serial Number"
+        disk_record["serial_no"] = "Unknown Serial Number"
 
     # For some reason we may have no value for "vendor"
     try:
-        smart_values["vendor"] = vendor
+        disk_record["vendor"] = vendor
     except:
-        smart_values["vendor"] = "Unknown Vendor"
+        disk_record["vendor"] = "Unknown Vendor"
 
     # For some reason we may have no value for "capacity"
     try:
-        smart_values["capacity"] = capacity
+        disk_record["capacity"] = capacity
     except:
-        smart_values["capacity"] = "Unknown Capacity"
+        disk_record["capacity"] = "Unknown Capacity"
 
     print("Running sdparm query...")
     # For some reason we may have no value for "identifier"
     try:
         sdinfo = get_disk_sdinfo(device)
         print("sdparm result: {}".format(sdinfo))
-        smart_values["identifier"] = sdinfo
+        disk_record["identifier"] = sdinfo
     except:
-        smart_values["identifier"] = "Generic"
+        disk_record["identifier"] = "Generic"
 
     print("Running throughput test...")
     # For some reason we may have no value for "throughput"
     try:
         disk_throughput = get_disk_throughput(device)
         print("throughput result: {}".format(disk_throughput))
-        smart_values["throughput"] = disk_throughput
+        disk_record["throughput"] = disk_throughput
     except:
-        smart_values["throughput"] = "Failed"
+        disk_record["throughput"] = "Failed"
 
-    smart_values["last_known_as"] = device
-
-    print(smart_values)
+    disk_record["last_known_as"] = device
 
     verify_db_tables()  # Verify DB and Tables exist
-    disk_inserted = r.db('wanwipe').table('disk_results').insert(smart_values).run(conn)
+    disk_inserted = r.db('wanwipe').table('disk_results').insert(disk_record).run(conn)
     record_id = disk_inserted['generated_keys'][0]
     print("Inserted disk information as record UUID: {}".format(record_id))
     return record_id
