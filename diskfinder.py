@@ -161,7 +161,6 @@ class UdevDisk(Disk):
             return
 
         for child in udev_manager.query_by_properties(
-                ['ID_BUS', 'usb'],
                 ['ID_TYPE', 'disk'],
                 ['DEVTYPE', 'partition'],
                 ['ID_SERIAL', udev_device.properties['ID_SERIAL']]):
