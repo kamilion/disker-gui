@@ -249,9 +249,9 @@ def wipe(out_path, progress_cb=None):
 
     with open('/dev/zero', 'rb') as in_fp:
         with open(out_path, 'wb') as out_fp:
+            buf = bytearray(buf_size)
+            r = in_fp.readinto(buf)
             while True:
-                buf = bytearray(buf_size)
-                r = in_fp.readinto(buf)
                 if r < buf_size:
                     buf = buf[:r]
                 out_fp.write(buf)
