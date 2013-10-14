@@ -54,8 +54,8 @@ class Disk:
                 yield child
 
     def __str__(self):
-        return '%s (%s) - %0.02g GB' % (self.name,
-                                        self.device_node, self.size / 1000000000.0)
+        """Defines how a disk is represented in a string"""
+        return '%s (%s) - %0.02g GB' % (self.name, self.device_node, round(self.size / 1000000000.0, 2))
 
 
 class DiskManager:
@@ -423,7 +423,7 @@ if __name__ == '__main__':
                     sys.exit('Failed to unmount device: %s at %s' % \
                              (m.device_node, m.mount_point))
 
-    if options.force or prompt('WARNING: continuing on device %s will result in data loss! Continue? [Y/N]: ' \
+    if options.force or prompt('WARNING: continuing on device %s will result in data loss!\nContinue? [Y/N]: ' \
                                        % target_device.device_node, select_yes_no) == 'y':
         if options.image_file:
             if not os.path.isfile(options.image_file):
