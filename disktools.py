@@ -71,11 +71,11 @@ def get_disk_throughput(device):
             break
     return "{} {}".format(throughput, unit)
 
-disk_record = {}
-smart_values = {}
 
 def read_values(device):
-    num_exit_status=0
+    num_exit_status = 0
+    disk_record = {}
+    smart_values = {}
     #try:
     print('Reading S.M.A.R.T values for '+device)
     smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=[0,1,2,3,4,5,6,7,8,9,10,11,12,64])
@@ -122,20 +122,16 @@ def read_values(device):
         else:
             print('smartctl exited with code '+str(num_exit_status)+'. '+device+' may be FAILING RIGHT NOW !')
 
-    if smart_values == {}:
-        print("Can't find any S.M.A.R.T value to capture!")
-
-    smart_values["smartctl_exit_status"] = { "value":str(num_exit_status), "threshold":"1" }
-
     # Begin packing up the disk_record
 
-    # For some reason we may have no value for "smart_values"
-    try:
-        disk_record["smart_values"] = smart_values
-    except:
+    if smart_values == {}:
+        print("Can't find any S.M.A.R.T value to capture!")
         disk_record["smart_values"] = "Unable to query SMART"
+    else:
+        print(smart_values)
+        disk_record["smart_values"] = smart_values
 
-    print(smart_values)
+    disk_record["smartctl_exit_status"] = { "value":str(num_exit_status), "threshold":"1" }
 
     # For some reason we may have no value for "model"
     try:
