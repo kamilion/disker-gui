@@ -286,7 +286,7 @@ class UdevDisk (Disk):
         proc = subprocess.Popen ('/bin/umount %s' % self.device_node, shell = True)
         return os.waitpid (proc.pid, 0)[1] == 0
 
-class UdevDiskMianager (DiskManager, UdevDeviceManager):
+class UdevDiskManager (DiskManager, UdevDeviceManager):
     def __init__ (self):
         UdevDeviceManager.__init__ (self)
 
