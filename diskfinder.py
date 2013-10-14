@@ -241,7 +241,7 @@ def prompt(prompt, validate):
 
 
 def wipe(out_path, progress_cb=None):
-    megs_per_block = 32
+    megs_per_block = 16
     buf_size = (1024 * 1024 * megs_per_block)
     bytes_read = 0
     last_raise_time = 0
