@@ -321,6 +321,8 @@ def image(in_path, out_path, progress_cb=None):
             print("\nReached end of device.")
         else:
             print("\nI/O error({0}): {1}".format(e.errno, e.strerror))
+    except EOFError:
+        print("Reached end of Image file.")
     except KeyboardInterrupt:
         abort()
 
