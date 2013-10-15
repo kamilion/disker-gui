@@ -117,7 +117,9 @@ class UdevDeviceManager:
             self.devices.append(device)
 
     def query_by_properties(self, *matches):
-        """Search the udev device tree for objects with matching property values"""
+        """Search the udev device tree for objects with matching property values
+        :param matches: Target udev property values to match against
+        """
         for dev in self.devices:
             match = True
             for match in matches:
@@ -137,7 +139,10 @@ class UdevDeviceManager:
 class UdevDisk(Disk):
     """A subclass of Disk, providing udev specific properties to the superclass."""
     def __init__(self, udev_device, udev_manager):
-        """Pick apart the udev-specific properties and store them as instance-variables of a disk superclass."""
+        """Pick apart the udev-specific properties and store them as instance-variables of a disk superclass.
+        :param udev_device: A Reference to the udev device object.
+        :param udev_manager: A Reference to the udev managing object.
+        """
         Disk.__init__(self)
         self.device_node = udev_device.properties['DEVNAME']
         if not self.device_node[0] == '/':
@@ -242,27 +247,27 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
 # Tool utilities
 # ------------------------------------------------------------------------
 
-def abort():
-    """Generic abort function to avoid ugly tracebacks."""
-    print >> sys.stderr, '\nAborted'
-    sys.exit(1)
-
-
 def prompt(prompt, validate):
-    """Prompt the user for the answer to a question."""
-    while True:
-        try:
+    """Prompt the user for the answer to a question.
+    :param prompt: The prompt to display.
+    :param validate: The validation lambda to run.
+    """
+    while True:  # Wait for the user to answer
+        try:  # When we get an answer, test it
             result = validate(raw_input(prompt))
-            if result:
+            if result:  # Yay, it was the answer we sought.
                 return result
         except (KeyboardInterrupt, EOFError):
-            abort()
-        except:
-            pass
+            sys.exit("\nAborted")  # This is not my cookie, sir.
+        except:  # Yes, it's too broad, but so is my van.
+            pass  # to the right.
 
 
 def wipe(out_path, progress_cb=None):
-    """Wipe a raw device node by reading from /dev/zero and writing to the raw device node."""
+    """Wipe a raw device node by reading from /dev/zero and writing to the raw device node.
+    :param out_path: Path to device node to wipe.
+    :param progress_cb: Optional progress callback.
+    """
     megs_per_block = 16
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
@@ -295,20 +300,22 @@ def wipe(out_path, progress_cb=None):
 
                 out_fp.flush()
     except IOError as e:
-        if e.errno == 28:
+        if e.errno == 28:  # This is our expected outcome and considered a success.
             print("\nReached end of device.")
-        elif e.errno == 13:
-            print("\nYou don't have permission to write to that device node.")
-            print("Try again as the superuser, perhaps?")
-        else:
-            print("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
-    except KeyboardInterrupt:
-        abort()
-
+        elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
+            sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
+        else:  # No sir, linux didn't like that.
+            sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
+    except KeyboardInterrupt:  # Something or someone injected a ^C.
+        sys.exit("\nAborted")  # Bail out without a traceback.
 
 
 def image(in_path, out_path, progress_cb=None):
-    """Image a raw device node by reading from a file and writing to the raw device node."""
+    """Image a raw device node by reading from a file and writing to the raw device node.
+    :param in_path: Path to image file to read.
+    :param out_path: Path to device node to image.
+    :param progress_cb: Optional progress callback.
+    """
     megs_per_block = 4  # Try a default buffer size of 4MB
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
@@ -342,17 +349,16 @@ def image(in_path, out_path, progress_cb=None):
 
                 out_fp.flush()
     except IOError as e:
-        if e.errno == 28:
+        if e.errno == 28:  # This is NOT our expected outcome, but still hopefully considered a success.
             print("\nReached end of device before end of image. Hope your image had some slack.")
-        elif e.errno == 13:
-            print("\nYou don't have permission to write to that device node.")
-            print("Try again as the superuser, perhaps?")
-        else:
-            print("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
-    except EOFError:
+        elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
+            sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
+        else:  # No sir, linux didn't like that.
+            sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
+    except EOFError:  # This is our expected outcome and considered a success.
         print("\nReached end of Image file.")
-    except KeyboardInterrupt:
-        abort()
+    except KeyboardInterrupt:  # Something or someone injected a ^C.
+        sys.exit("\nAborted")  # Bail out without a traceback.
 
 
 # ------------------------------------------------------------------------
@@ -361,20 +367,32 @@ def image(in_path, out_path, progress_cb=None):
 
 
 def calc_finish(bytes_read, bytes_total, elapsed):
-    """Calculate estimated time remaining until task completion"""
+    """Calculate estimated time remaining until task completion
+    :param bytes_read: Number of bytes read since the operation was begun.
+    :param bytes_total: Number of bytes total before the operation is complete.
+    :param elapsed: Number of seconds elapsed.
+    """
     if bytes_read < 1:  # We haven't done anything yet!
         return 0  # Don't return something weird like None, just plain old zero.
     return long(((bytes_total - bytes_read) * elapsed) / bytes_read)
 
 
 def calc_bar(progress, length):
-    """Calculate a progress bar of task completion"""
+    """Calculate a progress bar of task completion
+    :param progress: Percentage of progress.
+    :param length: Total length of bar.
+    """
     fill = int((progress / 100.0) * length)
     return '=' * fill + ' ' * (length - fill)
 
 
 def progress(progress, start_time, bytes_read, total_bytes):
-    """Callback to display a graphical callback bar. Optional."""
+    """Callback to display a graphical callback bar. Optional.
+    :param progress: Percentage of progress.
+    :param start_time: Time object from the operation's initiation.
+    :param bytes_read: Number of bytes read since the operation was begun.
+    :param total_bytes: Number of bytes total before the operation is complete.
+    """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(bytes_read, total_bytes, elapsed)  # Calculate time until complete
     bar = calc_bar(progress, 30)  # Calculate a progress bar
@@ -482,4 +500,4 @@ if __name__ == '__main__':
         # We've finished writing to the device.
         print('Operation complete on device %s' % target_device.device_node)
     else:
-        abort()
+        sys.exit("\nAborted")
