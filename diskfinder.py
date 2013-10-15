@@ -59,8 +59,10 @@ class DiskManager:
         """Find a compatible manager class for a platform-specific disk subsystem"""
         import types
 
+        # noinspection PyShadowingBuiltins
         for name, type in globals().iteritems():  # Is there anyone defined out there that isn't us?
             if isinstance(type, types.ClassType) and issubclass(type, DiskManager) and not type == DiskManager:
+                # noinspection PyBroadException
                 try:
                     return type()
                 except:
@@ -85,6 +87,7 @@ class UdevDevice:
         self.properties = {}
 
 
+# noinspection PyUnresolvedReferences
 class UdevDeviceManager:
     """A management class for a filtered view of the udev device tree."""
 
@@ -97,6 +100,7 @@ class UdevDeviceManager:
         self.devices = []
         device = None
         for line in sh.udevadm('info', '--root', '--export-db'):
+            # noinspection PyBroadException
             try:
                 key, value = line.split(':', 1)
             except:
@@ -142,6 +146,7 @@ class UdevDeviceManager:
 class UdevDisk(Disk):
     """A subclass of Disk, providing udev specific properties to the superclass."""
 
+    # noinspection PyBroadException
     def __init__(self, udev_device, udev_manager):
         """Pick apart the udev-specific properties and store them as instance-variables of a disk superclass.
         :param udev_device: A Reference to the udev device object.
@@ -188,14 +193,17 @@ class UdevDisk(Disk):
         """Does this device still exist?"""
         return Disk.is_valid(self) and os.path.exists(self.device_node)
 
+    # noinspection PyUnresolvedReferences
     def unmount(self):
         """Execute an unmount action against this device node. Must be running as root."""
         sh.umount(self.device_node)
 
 
+# noinspection PyBroadException
 class UdevDiskManager(DiskManager, UdevDeviceManager):
     """Searches the device tree by properties to identify disks and their child partitions"""
 
+    # noinspection PyUnresolvedReferences
     def __init__(self):
         """Parses mounts to identify child partitions"""
         UdevDeviceManager.__init__(self)
@@ -252,6 +260,7 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
 # Tool utilities
 # ------------------------------------------------------------------------
 
+# noinspection PyBroadException
 def prompt(prompt, validate):
     """Prompt the user for the answer to a question.
     :param prompt: The prompt to display.
@@ -285,6 +294,7 @@ def wipe(out_path, progress_cb=None):
         with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
             with open(out_path, 'wb') as out_fp:
                 buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
+                # noinspection PyArgumentList
                 chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                 while True:
                     if chunk < buf_size:  # If the chunk is less than the buffer size
@@ -335,10 +345,12 @@ def image(in_path, out_path, progress_cb=None):
             with open(out_path, 'wb') as out_fp:
                 while True:
                     buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
+                    # noinspection PyArgumentList
                     chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                     if chunk < buf_size:  # If the chunk is less than the buffer size
                         buf = buf[:chunk]  # Append the chunk to the buffer
 
+                    # noinspection PyTypeChecker
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
                     bytes_read += chunk  # Store the number of bytes we've gone through
@@ -458,7 +470,7 @@ if __name__ == '__main__':
             print('')
 
         def select(i):
-            if i >= 1 and i <= len(devices):
+            if 1 <= i <= len(devices):
                 return devices[i - 1]
 
         target_device = prompt('Choice: ', lambda i: select(int(i)))
