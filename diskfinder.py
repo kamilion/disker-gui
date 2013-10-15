@@ -260,6 +260,17 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
 # Tool utilities
 # ------------------------------------------------------------------------
 
+def get_size(in_path):
+    """Get the size by seeking to the end and returning the number of bytes we passed along the way.
+    Can be used against device nodes, file objects, symbolic links, and other VFS objects.
+    :param in_path: Path to the object to obtain sizing for.
+    """
+    fd = os.open(in_path, os.O_RDONLY)
+    try:
+        return os.lseek(fd, 0, os.SEEK_END)
+    finally:
+        os.close(fd)
+
 # noinspection PyBroadException
 def prompt(prompt, validate):
     """Prompt the user for the answer to a question.
@@ -278,7 +289,7 @@ def prompt(prompt, validate):
 
 
 def wipe(out_path, progress_cb=None):
-    """Wipe a raw device node by reading from /dev/zero and writing to the raw device node.
+    """Wipe a device by writing to the raw device node.
     :param out_path: Path to device node to wipe.
     :param progress_cb: Optional progress callback.
     """
@@ -288,7 +299,7 @@ def wipe(out_path, progress_cb=None):
     last_raise_time = 0
     bytes_read = 0
     # We have to figure out the total size on our own.
-    bytes_total = target_device.size  # TODO: This won't work outside of this application in program mode.
+    bytes_total = get_size(out_path)  # Get the size of the device.
 
     try:
         with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
