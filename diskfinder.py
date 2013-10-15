@@ -282,27 +282,28 @@ def wipe(out_path, progress_cb=None):
     bytes_total = target_device.size  # TODO: This won't work outside of this application in program mode.
 
     try:
-        with open('/dev/zero', 'rb') as in_fp:
+        with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
             with open(out_path, 'wb') as out_fp:
-                buf = bytearray(buf_size)
-                r = in_fp.readinto(buf)
+                buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
+                chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                 while True:
-                    if r < buf_size:
-                        buf = buf[:r]
-                    out_fp.write(buf)
+                    if chunk < buf_size:  # If the chunk is less than the buffer size
+                        buf = buf[:chunk]  # Append the chunk to the buffer
 
-                    bytes_read += r
-                    progress = int((bytes_read / float(bytes_total)) * 100)
+                    out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    current_time = time()
-                    if progress_cb and (r < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
-                        last_raise_time = current_time
-                        progress_cb(progress, start_time, bytes_read, bytes_total)
+                    bytes_read += chunk  # Store the number of bytes we've gone through
+                    progress = int((bytes_read / float(bytes_total)) * 100)  # And figure out a percentage.
 
-                    if r < buf_size:
-                        break
+                    current_time = time()  # Create a time object to give to the progress callback.
+                    if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
+                        last_raise_time = current_time  # We fired, scribble out a note.
+                        progress_cb(progress, start_time, bytes_read, bytes_total)  # Inform the callback.
 
-                out_fp.flush()
+                    if chunk < buf_size:  # Short write, but it's okay.
+                        break  # Just go to the next iteration
+
+                out_fp.flush()  # Put the seat down first.
     except IOError as e:
         if e.errno == 28:  # This is our expected outcome and considered a success.
             print("\nReached end of device.")
@@ -333,24 +334,25 @@ def image(in_path, out_path, progress_cb=None):
         with open(in_path, 'rb') as in_fp:
             with open(out_path, 'wb') as out_fp:
                 while True:
-                    buf = bytearray(buf_size)
-                    r = in_fp.readinto(buf)
-                    if r < buf_size:
-                        buf = buf[:r]
-                    out_fp.write(buf)
+                    buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
+                    chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
+                    if chunk < buf_size:  # If the chunk is less than the buffer size
+                        buf = buf[:chunk]  # Append the chunk to the buffer
 
-                    bytes_read += r
-                    progress = int((bytes_read / float(bytes_total)) * 100)
+                    out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    current_time = time()
-                    if progress_cb and (r < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
-                        last_raise_time = current_time
-                        progress_cb(progress, start_time, bytes_read, bytes_total)
+                    bytes_read += chunk  # Store the number of bytes we've gone through
+                    progress = int((bytes_read / float(bytes_total)) * 100)  # And figure out a percentage.
 
-                    if r < buf_size:
-                        break
+                    current_time = time()  # Create a time object to give to the progress callback.
+                    if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
+                        last_raise_time = current_time  # We fired, scribble out a note.
+                        progress_cb(progress, start_time, bytes_read, bytes_total)  # Inform the callback.
 
-                out_fp.flush()
+                    if chunk < buf_size:  # Short write, but it's okay.
+                        break  # Just go to the next iteration
+
+                out_fp.flush()  # Put the seat down first.
     except IOError as e:
         if e.errno == 28:  # This is NOT our expected outcome, but still hopefully considered a success.
             print("\nReached end of device before end of image. Hope your image had some slack.")
