@@ -341,7 +341,7 @@ def calc_bar(progress, length):
 def progress(progress, start_time, bytes_read, total_bytes):
     elapsed = time() - start_time
     eta = calc_eta(bytes_read, total_bytes, elapsed)
-    bar = calc_bar(progress, 36)
+    bar = calc_bar(progress, 30)
     sys.stdout.write('\r%3d%%  %ld:%02ld:%02ld  [%s]  ETA %ld:%02ld:%02ld %sM/%sM' % \
                      (progress, elapsed / 3600, (elapsed / 60) % 60, elapsed % 60,
                       bar, eta / 3600, (eta / 60) % 60, eta % 60,
