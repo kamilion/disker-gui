@@ -8,7 +8,7 @@ from time import time
 from optparse import OptionParser
 
 # ------------------------------------------------------------------------
-# Base Disk classes
+# Base Disk superclasses
 # ------------------------------------------------------------------------
 
 
@@ -243,11 +243,13 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
 # ------------------------------------------------------------------------
 
 def abort():
+    """Generic abort function to avoid ugly tracebacks."""
     print >> sys.stderr, '\nAborted'
     sys.exit(1)
 
 
 def prompt(prompt, validate):
+    """Prompt the user for the answer to a question."""
     while True:
         try:
             result = validate(raw_input(prompt))
@@ -260,11 +262,14 @@ def prompt(prompt, validate):
 
 
 def wipe(out_path, progress_cb=None):
+    """Wipe a raw device node by reading from /dev/zero and writing to the raw device node."""
     megs_per_block = 16
     buf_size = (1024 * 1024 * megs_per_block)
-    bytes_read = 0
-    last_raise_time = 0
     start_time = time()
+    last_raise_time = 0
+    bytes_read = 0
+    # We have to figure out the total size on our own.
+    bytes_total = target_device.size  # TODO: This won't work outside of this application in program mode.
 
     try:
         with open('/dev/zero', 'rb') as in_fp:
@@ -277,13 +282,13 @@ def wipe(out_path, progress_cb=None):
                     out_fp.write(buf)
 
                     bytes_read += r
-                    progress = int((bytes_read / float(target_device.size)) * 100)
+                    progress = int((bytes_read / float(bytes_total)) * 100)
 
                     current_time = time()
                     if progress_cb and (r < buf_size or \
                                         last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
-                        progress_cb(progress, start_time, bytes_read, target_device.size)
+                        progress_cb(progress, start_time, bytes_read, bytes_total)
 
                     if r < buf_size:
                         break
@@ -292,24 +297,26 @@ def wipe(out_path, progress_cb=None):
     except IOError as e:
         if e.errno == 28:
             print("\nReached end of device.")
+        elif e.errno == 13:
+            print("\nYou don't have permission to write to that device node.")
+            print("Try again as the superuser, perhaps?")
         else:
-            print("\nI/O error({0}): {1}".format(e.errno, e.strerror))
+            print("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except KeyboardInterrupt:
         abort()
 
 
 
 def image(in_path, out_path, progress_cb=None):
-    file_size = os.stat(in_path).st_size
-    buf_size = 4096
-    try:
-        buf_size = os.stat(out_path).st_blksize
-    except:
-        pass
-
-    bytes_read = 0
-    last_raise_time = 0
+    """Image a raw device node by reading from a file and writing to the raw device node."""
+    megs_per_block = 4  # Try a default buffer size of 4MB
+    buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
+    last_raise_time = 0
+    bytes_read = 0
+
+    # We have to figure out the total size on our own.
+    bytes_total = os.stat(in_path).st_size  # Figure out the size of the source.
 
     try:
         with open(in_path, 'rb') as in_fp:
@@ -322,13 +329,13 @@ def image(in_path, out_path, progress_cb=None):
                     out_fp.write(buf)
 
                     bytes_read += r
-                    progress = int((bytes_read / float(file_size)) * 100)
+                    progress = int((bytes_read / float(bytes_total)) * 100)
 
                     current_time = time()
                     if progress_cb and (r < buf_size or \
                                         last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
-                        progress_cb(progress, start_time, bytes_read, file_size)
+                        progress_cb(progress, start_time, bytes_read, bytes_total)
 
                     if r < buf_size:
                         break
@@ -336,36 +343,47 @@ def image(in_path, out_path, progress_cb=None):
                 out_fp.flush()
     except IOError as e:
         if e.errno == 28:
-            print("\nReached end of device.")
+            print("\nReached end of device before end of image. Hope your image had some slack.")
+        elif e.errno == 13:
+            print("\nYou don't have permission to write to that device node.")
+            print("Try again as the superuser, perhaps?")
         else:
-            print("\nI/O error({0}): {1}".format(e.errno, e.strerror))
+            print("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except EOFError:
-        print("Reached end of Image file.")
+        print("\nReached end of Image file.")
     except KeyboardInterrupt:
         abort()
 
 
-def calc_eta(bytes_read, bytes_total, elapsed):
-    if bytes_read < 1:
-        return 0
+# ------------------------------------------------------------------------
+# Progress bar utilities
+# ------------------------------------------------------------------------
+
+
+def calc_finish(bytes_read, bytes_total, elapsed):
+    """Calculate estimated time remaining until task completion"""
+    if bytes_read < 1:  # We haven't done anything yet!
+        return 0  # Don't return something weird like None, just plain old zero.
     return long(((bytes_total - bytes_read) * elapsed) / bytes_read)
 
 
 def calc_bar(progress, length):
+    """Calculate a progress bar of task completion"""
     fill = int((progress / 100.0) * length)
-    empty = length - fill
-    return '=' * fill + ' ' * empty
+    return '=' * fill + ' ' * (length - fill)
 
 
 def progress(progress, start_time, bytes_read, total_bytes):
-    elapsed = time() - start_time
-    eta = calc_eta(bytes_read, total_bytes, elapsed)
-    bar = calc_bar(progress, 30)
-    sys.stdout.write('\r%3d%%  %ld:%02ld:%02ld  [%s]  ETA %ld:%02ld:%02ld %sM/%sM' % \
+    """Callback to display a graphical callback bar. Optional."""
+    elapsed = time() - start_time  # How much time has elapsed since we started?
+    eta = calc_finish(bytes_read, total_bytes, elapsed)  # Calculate time until complete
+    bar = calc_bar(progress, 30)  # Calculate a progress bar
+    # Print the collected information to stdout. Should barely fit in 80-column.
+    sys.stdout.write('\r%3d%%  %ld:%02ld:%02ld  [%s]  ETA %ld:%02ld:%02ld %sM/%sM' %
                      (progress, elapsed / 3600, (elapsed / 60) % 60, elapsed % 60,
                       bar, eta / 3600, (eta / 60) % 60, eta % 60,
                       (bytes_read / (1024 * 1024)), (total_bytes / (1024 * 1024))))
-    sys.stdout.flush()
+    sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
 # ------------------------------------------------------------------------
 # Main program
@@ -373,14 +391,14 @@ def progress(progress, start_time, bytes_read, total_bytes):
 
 # If we're invoked as a program; instead of imported as a class...
 if __name__ == '__main__':
-    # Create the argparser object
+    # Create the option parser object
     parser = OptionParser(usage='Usage: %prog [options]')
 
     # Define command line options we'll respond to.
     parser.add_option('-i', '--image', action='store', dest='image_file',
-                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.')
+                      help='Manually select an image file. This image file must exist and be valid. Omitting this option will wipe a disk instead.')
     parser.add_option('-d', '--device', action='store', dest='device',
-                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.')
+                      help='Manually select a device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.')
     parser.add_option('-f', '--force', action='store_true', dest='force',
                       help='Force the writing of the image to device. This option will not prompt for confirmation before writing to the device, and implies the -u|--unmount option!')
     parser.add_option('-u', '--unmount', action='store_true', dest='unmount',
@@ -399,7 +417,7 @@ if __name__ == '__main__':
     if len(devices) == 0:
         sys.exit('No suitable devices found to operate upon.')
 
-    if options.device:  # If argparse was told about a device, we should use it.
+    if options.device:  # If option parse was told about a device, we should use it.
         for device in devices:  # Look through the udev device tree
             if device.device_node == options.device:  # if they match
                 target_device = device  # Set the target device to the correct udev profile.
@@ -425,7 +443,7 @@ if __name__ == '__main__':
     # We now have all of the device-specific information we need to operate.
     print('Selected:\n%s' % target_device)
 
-    # Define a quick routine to respond to long and short yes/no.
+    # Define a quick inline function to respond to both long and short yes/no.
     def select_yes_no(i):
         i = i.lower()
         if i in ('y', 'yes'):
