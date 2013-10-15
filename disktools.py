@@ -4,7 +4,9 @@
 
 
 # System imports
-import os, string, sh, re, json
+import string
+import sh
+import re
 
 # RethinkDB imports
 import rethinkdb as r
@@ -32,6 +34,11 @@ def verify_db_tables():
         print("DB: job_results table created: {}".format(result))
     except RqlRuntimeError:
         print("DB: job_results table found.")
+    try:
+        result = r.db('wanwipe').table_create('wipe_results').run(conn)
+        print("DB: wipe_results table created: {}".format(result))
+    except RqlRuntimeError:
+        print("DB: wipe_results table found.")
 
 ### Remote commands
 
@@ -47,6 +54,7 @@ def get_disk_info(device):
     inserted = r.db('wanwipe').table('disk_results').insert({'serial': get_disk_sdinfo(device), 'throughput': get_disk_throughput(device)}).run(conn)
     return inserted['generated_keys'][0]
 
+# noinspection PyUnresolvedReferences
 def get_disk_sdinfo(device):
     vendor = ""
     model = ""
@@ -60,6 +68,7 @@ def get_disk_sdinfo(device):
     return "{} {}".format(vendor, model)
 
 
+# noinspection PyUnresolvedReferences
 def get_disk_throughput(device):
     throughput = 0
     unit = ""
@@ -72,6 +81,7 @@ def get_disk_throughput(device):
     return "{} {}".format(throughput, unit)
 
 
+# noinspection PyUnresolvedReferences
 def read_values(device):
     num_exit_status = 0
     disk_record = {}
