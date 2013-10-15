@@ -461,6 +461,7 @@ def calc_bar(progress, length):
     return '=' * fill + ' ' * (length - fill)
 
 
+# noinspection PyUnusedLocal
 def progress(progress, start_time, bytes_read, total_bytes, rethink_uuid=None):
     """Callback to display a graphical callback bar. Optional.
     :param progress: Percentage of progress.
@@ -505,9 +506,11 @@ def finish_db(rethink_uuid, total_bytes):
     """
     read_megs = (total_bytes / (1024 * 1024))
     # Insert Data
+    # noinspection PyUnusedLocal
     inserted = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
-        {'progress': "100%", 'time_remaining': "0:00:00", 'read_megs': read_megs, 'finished': True}).run(conn)
-    return rethink_uuid
+        {'progress': "100%", 'time_remaining': "0:00:00", 'progress_bar': "==============================",
+         'read_megs': read_megs, 'finished': True}).run(conn)
+    print("DB: Finished writing to key: {}".format(rethink_uuid))
 
 
 def progress_db(progress, start_time, bytes_read, total_bytes, rethink_uuid):
@@ -529,6 +532,7 @@ def progress_db(progress, start_time, bytes_read, total_bytes, rethink_uuid):
     total_megs = (total_bytes / (1024 * 1024))
 
     # Insert Data
+    # noinspection PyUnusedLocal
     inserted = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
         {'progress': fmt_progress, 'progress_bar': bar,
          'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
