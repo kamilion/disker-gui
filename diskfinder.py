@@ -262,7 +262,7 @@ def wipe(out_path, progress_cb=None):
 
                     current_time = time()
                     if progress_cb and (r < buf_size or \
-                                                last_raise_time == 0 or current_time - last_raise_time > 1):
+                                        last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
                         progress_cb(progress, start_time, bytes_read, target_device.size)
 
@@ -308,7 +308,7 @@ def image(in_path, out_path, progress_cb=None):
 
                     current_time = time()
                     if progress_cb and (r < buf_size or \
-                                                last_raise_time == 0 or current_time - last_raise_time > 1):
+                                        last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
                         progress_cb(progress, start_time, bytes_read, file_size)
 
@@ -341,12 +341,10 @@ def calc_bar(progress, length):
 def progress(progress, start_time, bytes_read, total_bytes):
     elapsed = time() - start_time
     eta = calc_eta(bytes_read, total_bytes, elapsed)
-    bar = calc_bar(progress, 48)
-    sys.stdout.write('\r%3d%%  %ld:%02ld:%02ld  [%s]  ETA %ld:%02ld:%02ld %sMB of %sMB' % \
-                     (progress,
-                      elapsed / 3600, (elapsed / 60) % 60, elapsed % 60,
-                      bar,
-                      eta / 3600, (eta / 60) % 60, eta % 60,
+    bar = calc_bar(progress, 36)
+    sys.stdout.write('\r%3d%%  %ld:%02ld:%02ld  [%s]  ETA %ld:%02ld:%02ld %sM/%sM' % \
+                     (progress, elapsed / 3600, (elapsed / 60) % 60, elapsed % 60,
+                      bar, eta / 3600, (eta / 60) % 60, eta % 60,
                       (bytes_read / (1024 * 1024)), (total_bytes / (1024 * 1024))))
     sys.stdout.flush()
 
