@@ -8,36 +8,38 @@ from time import time
 from optparse import OptionParser
 
 # ------------------------------------------------------------------------
-# Utilities for the Disk classes
-# ------------------------------------------------------------------------
-
-def make_id(id):
-    return re.sub('[_]{2,}', '_', re.sub('^[0-9]', '_', re.sub('[^A-Za-z0-9]', '_', id))).strip().strip('_').lower()
-
-# ------------------------------------------------------------------------
 # Base Disk classes
 # ------------------------------------------------------------------------
 
+
 class Disk:
+    """Metadata superclass for a known disk device"""
     def __init__(self):
+        """Populates member variables with default empty values"""
         self.device_node = None
         self.mount_point = None
         self.is_mounted = False
         self.name = 'Unknown'
+        self.model = 'Unknown'
         self.bus_type = 'Unknown'
+        self.serial_no = 'Unknown'
         self.size = 0
         self.children = []
 
     def unmount(self):
+        """Named Stub. Implementation required by subclasses."""
         return False
 
     def eject(self):
+        """Named Stub. Implementation required by subclasses."""
         return False
 
     def is_valid(self):
-        return not self.device_node == None and self.size > 0
+        """A Disk is valid if it has a positive size and a known device node."""
+        return (self.device_node is not None) and (self.size > 0)
 
     def get_mounted_devices(self):
+        """Relies on subclass to provide details on mounting."""
         if self.is_mounted:
             yield self
         for child in self.children:
@@ -45,25 +47,26 @@ class Disk:
                 yield child
 
     def __str__(self):
-        """Defines how a disk is represented in a string"""
-        return '%s: %s (%s) - %0.03f GB' % (self.bus_type, self.name, self.device_node, self.size / 1000000000.0)
+        """Defines how any subclassed object inherited from Disk is represented as a string"""
+        return '%0.03fGB %s:%s %s' % (self.size / 1000000000.0, self.bus_type, self.device_node, self.name)
 
 
 class DiskManager:
+    """Compatibility superclass to instantiate managers other than udev"""
     @staticmethod
     def get_manager():
+        """Find a compatible manager class for a platform-specific disk subsystem"""
         import types
 
-        for name, type in globals().iteritems():
-            if isinstance(type, types.ClassType) and \
-                    issubclass(type, DiskManager) and \
-                    not type == DiskManager:
+        for name, type in globals().iteritems():  # Is there anyone defined out there that isn't us?
+            if isinstance(type, types.ClassType) and issubclass(type, DiskManager) and not type == DiskManager:
                 try:
                     return type()
                 except:
                     pass
 
     def get_devices(self):
+        """Named Stub. Implementation required by subclasses."""
         return
 
 # ------------------------------------------------------------------------
@@ -71,7 +74,9 @@ class DiskManager:
 # ------------------------------------------------------------------------
 
 class UdevDevice:
+    """Metadata superclass for a known device node managed by udev"""
     def __init__(self):
+        """Populates member variables with default empty values"""
         self.path = None
         self.name = None
         self.symlinks = []
@@ -79,7 +84,9 @@ class UdevDevice:
 
 
 class UdevDeviceManager:
+    """A management class for a filtered view of the udev device tree."""
     def __init__(self):
+        """Population and management of our filtered view of the udev device tree"""
         if not os.path.isdir('/sys') or \
                 not os.path.isfile('/sbin/udevadm'):
             raise Exception()
@@ -110,6 +117,7 @@ class UdevDeviceManager:
             self.devices.append(device)
 
     def query_by_properties(self, *matches):
+        """Search the udev device tree for objects with matching property values"""
         for dev in self.devices:
             match = True
             for match in matches:
@@ -127,14 +135,18 @@ class UdevDeviceManager:
 
 
 class UdevDisk(Disk):
+    """A subclass of Disk, providing udev specific properties to the superclass."""
     def __init__(self, udev_device, udev_manager):
+        """Pick apart the udev-specific properties and store them as instance-variables of a disk superclass."""
         Disk.__init__(self)
         self.device_node = udev_device.properties['DEVNAME']
         if not self.device_node[0] == '/':
             self.device_node = '/dev/%s' % self.device_node
 
-        self.name = udev_device.properties['ID_MODEL']
-        self.bus_type = udev_device.properties['ID_BUS']
+        self.bus_type = udev_device.properties['ID_BUS']  # What kind of bus is this device connected via?
+        self.name = udev_device.properties['ID_SERIAL']  # This is Vendor + Model + Serial
+        self.model = udev_device.properties['ID_MODEL']  # This is the model of the device.
+        self.serial_no = udev_device.properties['ID_SERIAL_SHORT']  # This is just the serial number
 
         try:
             with open('/sys/class/block/%s/size' % os.path.basename(self.device_node), 'r') as fp:
@@ -145,7 +157,7 @@ class UdevDisk(Disk):
         try:
             self.mount_point = udev_manager.mounts[self.device_node]
             self.is_mounted = not self.mount_point == None
-            print("Found that {} (type: {}) was mounted at: {}".format(self.device_node, self.bus_type, self.mount_point))
+            print("Found {} device: {} was mounted at: {}".format(self.bus_type, self.device_node, self.mount_point))
         except:
             pass
 
@@ -164,14 +176,18 @@ class UdevDisk(Disk):
                 pass
 
     def is_valid(self):
+        """Does this device still exist?"""
         return Disk.is_valid(self) and os.path.exists(self.device_node)
 
     def unmount(self):
+        """Execute an unmount action against this device node. Must be running as root."""
         sh.umount(self.device_node)
 
 
 class UdevDiskManager(DiskManager, UdevDeviceManager):
+    """Searches the device tree by properties to identify disks and their child partitions"""
     def __init__(self):
+        """Parses mounts to identify child partitions"""
         UdevDeviceManager.__init__(self)
 
         self.mounts = {}
@@ -184,6 +200,7 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
             pass
 
     def get_devices(self):
+        """Get any connected devices of type disk."""
         for dev in self.query_by_properties(
                 ['ID_TYPE', 'disk'],
                 ['DEVTYPE', 'disk']):
@@ -195,6 +212,7 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
                 pass
 
     def get_usb_devices(self):
+        """Get USB connected disk devices."""
         for dev in self.query_by_properties(
                 ['ID_BUS', 'usb'],
                 ['ID_TYPE', 'disk'],
@@ -207,6 +225,7 @@ class UdevDiskManager(DiskManager, UdevDeviceManager):
                 pass
 
     def get_ata_devices(self):
+        """Get non-USB devices that identify themselves as ATA connected."""
         for dev in self.query_by_properties(
                 ['ID_BUS', 'ata'],
                 ['ID_TYPE', 'disk'],
@@ -289,7 +308,6 @@ def image(in_path, out_path, progress_cb=None):
         pass
 
     bytes_read = 0
-    progress = 0
     last_raise_time = 0
     start_time = time()
 
@@ -326,6 +344,7 @@ def image(in_path, out_path, progress_cb=None):
     except KeyboardInterrupt:
         abort()
 
+
 def calc_eta(bytes_read, bytes_total, elapsed):
     if bytes_read < 1:
         return 0
@@ -352,62 +371,49 @@ def progress(progress, start_time, bytes_read, total_bytes):
 # Main program
 # ------------------------------------------------------------------------
 
+# If we're invoked as a program; instead of imported as a class...
 if __name__ == '__main__':
-    parser = OptionParser(
-        usage='Usage: %prog [options]'
-    )
-    parser.add_option('-i', '--image',
-                      action='store',
-                      dest='image_file',
-                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.'
-    )
-    parser.add_option('-d', '--device',
-                      action='store',
-                      dest='device',
-                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.'
-    )
-    parser.add_option('-f', '--force',
-                      action='store_true',
-                      dest='force',
-                      help='Force the writing of the image to device. This option will not prompt for confirmation before writing to the device, and implies the -u|--unmount option!'
-    )
-    parser.add_option('-u', '--unmount',
-                      action='store_true',
-                      dest='unmount',
-                      help='Unmount any mounted partitions on the device. This option will not prompt for unmounting any mounted partitions.')
-    parser.add_option('-s', '--checksum',
-                      action='store',
-                      dest='checksum',
-                      help='Checksum of IMAGE_FILE. This checksum may be prefixed with a hash type. For instance, \'md5:abc...\', \'sha1:abc...\', \'sha512:abc...\'; if no prefix is specified, md5 is assumed for the hash type.'
-    )
+    # Create the argparser object
+    parser = OptionParser(usage='Usage: %prog [options]')
 
+    # Define command line options we'll respond to.
+    parser.add_option('-i', '--image', action='store', dest='image_file',
+                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.')
+    parser.add_option('-d', '--device', action='store', dest='device',
+                      help='Manually selected device node. This device node must be a valid root level storage device node even if manually selected. Omitting this option will present a menu of valid nodes.')
+    parser.add_option('-f', '--force', action='store_true', dest='force',
+                      help='Force the writing of the image to device. This option will not prompt for confirmation before writing to the device, and implies the -u|--unmount option!')
+    parser.add_option('-u', '--unmount', action='store_true', dest='unmount',
+                      help='Unmount any mounted partitions on the device. This option will not prompt for unmounting any mounted partitions.')
+
+    # If -h or --help are passed, the above will be displayed.
     options, args = parser.parse_args()
 
     print('Parsing device information...')
 
+    # Begin constructing the objects we need from our classes.
     manager = DiskManager.get_manager()
     devices = [d for d in manager.get_devices()]
     target_device = None
 
     if len(devices) == 0:
-        sys.exit('No devices found.')
+        sys.exit('No suitable devices found to operate upon.')
 
-    print('')
-
-    if options.device:
-        for device in devices:
-            if device.device_node == options.device:
-                target_device = device
+    if options.device:  # If argparse was told about a device, we should use it.
+        for device in devices:  # Look through the udev device tree
+            if device.device_node == options.device:  # if they match
+                target_device = device  # Set the target device to the correct udev profile.
                 break
 
-        if not target_device:
+        if not target_device:  # We couldn't match that up with a udev identified device.
             sys.exit('Invalid device node: %s' % options.device)
-    else:
+
+    else:  # Otherwise, query the user which device node to operate on.
         print('Select a device node:\n')
         for i in range(0, len(devices)):
-            print('  %d) %s' % (i + 1, devices[i]))
+            print(' %d) %s' % (i + 1, devices[i]))
             for child in devices[i].children:
-                print('     - %s' % child)
+                print(' \- %s' % child)
             print('')
 
         def select(i):
@@ -416,8 +422,10 @@ if __name__ == '__main__':
 
         target_device = prompt('Choice: ', lambda i: select(int(i)))
 
-    print('\nSelected: %s\n' % target_device)
+    # We now have all of the device-specific information we need to operate.
+    print('Selected:\n%s' % target_device)
 
+    # Define a quick routine to respond to long and short yes/no.
     def select_yes_no(i):
         i = i.lower()
         if i in ('y', 'yes'):
@@ -425,6 +433,7 @@ if __name__ == '__main__':
         elif i in ('n', 'no'):
             return 'n'
 
+    # Check to see if the target device has any mounted child partitions
     mounts = [m for m in target_device.get_mounted_devices()]
     if len(mounts) > 0:
         print('Device has one or more mounted partitions:\n')
@@ -438,16 +447,21 @@ if __name__ == '__main__':
                     sys.exit('Failed to unmount device: %s at %s' % \
                              (m.device_node, m.mount_point))
 
-    if options.force or prompt('WARNING: continuing on device %s will result in data loss!\nContinue? [Y/N]: ' \
-                                       % target_device.device_node, select_yes_no) == 'y':
+    # Sanity check, we're gonna scribble on your device in a second.
+    if options.force or prompt(
+            'WARNING: continuing on device %s will result in data loss!\nContinue? [Y/N]: '
+            % target_device.device_node, select_yes_no) == 'y':
+
+        # Are we supposed to be writing an image or scribbling zeros?
         if options.image_file:
             if not os.path.isfile(options.image_file):
                 sys.exit('File not found: %s' % options.image_file)
-            else:
+            else:  # Write the image to the device node.
                 image(options.image_file, target_device.device_node, progress)
-        else:
+        else:  # Get out the big crayon!
             wipe(target_device.device_node, progress)
-        print('')
-        print('Done.')
+
+        # We've finished writing to the device.
+        print('Operation complete on device %s' % target_device.device_node)
     else:
         abort()
