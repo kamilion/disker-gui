@@ -2,7 +2,6 @@
 
 import os
 import sys
-import re
 import sh
 from time import time
 from optparse import OptionParser
@@ -14,6 +13,7 @@ from optparse import OptionParser
 
 class Disk:
     """Metadata superclass for a known disk device"""
+
     def __init__(self):
         """Populates member variables with default empty values"""
         self.device_node = None
@@ -53,6 +53,7 @@ class Disk:
 
 class DiskManager:
     """Compatibility superclass to instantiate managers other than udev"""
+
     @staticmethod
     def get_manager():
         """Find a compatible manager class for a platform-specific disk subsystem"""
@@ -75,6 +76,7 @@ class DiskManager:
 
 class UdevDevice:
     """Metadata superclass for a known device node managed by udev"""
+
     def __init__(self):
         """Populates member variables with default empty values"""
         self.path = None
@@ -85,6 +87,7 @@ class UdevDevice:
 
 class UdevDeviceManager:
     """A management class for a filtered view of the udev device tree."""
+
     def __init__(self):
         """Population and management of our filtered view of the udev device tree"""
         if not os.path.isdir('/sys') or \
@@ -138,6 +141,7 @@ class UdevDeviceManager:
 
 class UdevDisk(Disk):
     """A subclass of Disk, providing udev specific properties to the superclass."""
+
     def __init__(self, udev_device, udev_manager):
         """Pick apart the udev-specific properties and store them as instance-variables of a disk superclass.
         :param udev_device: A Reference to the udev device object.
@@ -161,7 +165,7 @@ class UdevDisk(Disk):
 
         try:
             self.mount_point = udev_manager.mounts[self.device_node]
-            self.is_mounted = not self.mount_point == None
+            self.is_mounted = self.mount_point is not None
             print("Found {} device: {} was mounted at: {}".format(self.bus_type, self.device_node, self.mount_point))
         except:
             pass
@@ -191,6 +195,7 @@ class UdevDisk(Disk):
 
 class UdevDiskManager(DiskManager, UdevDeviceManager):
     """Searches the device tree by properties to identify disks and their child partitions"""
+
     def __init__(self):
         """Parses mounts to identify child partitions"""
         UdevDeviceManager.__init__(self)
@@ -290,8 +295,7 @@ def wipe(out_path, progress_cb=None):
                     progress = int((bytes_read / float(bytes_total)) * 100)
 
                     current_time = time()
-                    if progress_cb and (r < buf_size or \
-                                        last_raise_time == 0 or current_time - last_raise_time > 1):
+                    if progress_cb and (r < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
                         progress_cb(progress, start_time, bytes_read, bytes_total)
 
@@ -339,8 +343,7 @@ def image(in_path, out_path, progress_cb=None):
                     progress = int((bytes_read / float(bytes_total)) * 100)
 
                     current_time = time()
-                    if progress_cb and (r < buf_size or \
-                                        last_raise_time == 0 or current_time - last_raise_time > 1):
+                    if progress_cb and (r < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time
                         progress_cb(progress, start_time, bytes_read, bytes_total)
 
@@ -485,8 +488,8 @@ if __name__ == '__main__':
 
     # Sanity check, we're gonna scribble on your device in a second.
     if options.force or prompt(
-            'WARNING: continuing on device %s will result in data loss!\nContinue? [Y/N]: '
-            % target_device.device_node, select_yes_no) == 'y':
+                    'WARNING: continuing on device %s will result in data loss!\nContinue? [Y/N]: '
+                    % target_device.device_node, select_yes_no) == 'y':
 
         # Are we supposed to be writing an image or scribbling zeros?
         if options.image_file:
