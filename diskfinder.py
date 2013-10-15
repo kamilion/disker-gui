@@ -494,6 +494,7 @@ def create_db(device):
         {'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
          'progress': "  0%", 'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size,
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
+    print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
     return inserted['generated_keys'][0]
 
 
@@ -518,6 +519,7 @@ def progress_db(progress, start_time, bytes_read, total_bytes, rethink_uuid):
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(bytes_read, total_bytes, elapsed)  # Calculate time until complete
+    bar = calc_bar(progress, 30)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
@@ -528,14 +530,13 @@ def progress_db(progress, start_time, bytes_read, total_bytes, rethink_uuid):
 
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
-        {'progress': fmt_progress,
+        {'progress': fmt_progress, 'progress_bar': bar,
          'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
          'read_megs': read_megs, 'total_megs': total_megs}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
-    sys.stdout.write("\r{}  {} - ETA {} ({})".format(fmt_progress, time_elapsed, time_remaining, rethink_uuid))
-    #sys.stdout.write("\r{}  {} - ETA {} {}M/{}M".format(
-    #    progress_amount, time_elapsed, time_remaining, read_megs, total_megs))
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M".format(
+        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
 
