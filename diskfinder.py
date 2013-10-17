@@ -369,7 +369,7 @@ def wipe(out_path, progress_cb=None, uuid=None):
                     #print('TICK! {} {}'.format(last_bytes, read_bytes))
 
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
-                        print('\nTOCK! {} {}'.format(last_bytes, read_bytes))
+                        #print('\nTOCK! {} {}'.format(last_bytes, read_bytes))
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
                             progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes, uuid)  # Inform the callback.
