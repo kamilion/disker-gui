@@ -413,6 +413,7 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
     last_raise_time = 0
+    last_bytes = 0
     read_bytes = 0
 
     # We have to figure out the total size on our own.
