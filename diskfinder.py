@@ -515,7 +515,7 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     speed_megs = (speed_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec   ".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
@@ -550,7 +550,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
          'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec   ".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
@@ -592,7 +592,7 @@ def create_db(device):
          'started_at': datetime.isoformat(datetime.now()), 'updated_at': datetime.isoformat(datetime.now()),
          'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
          'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
-         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
+         'finished': False, 'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
          'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
