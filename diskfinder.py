@@ -2,6 +2,7 @@
 
 import os
 import sys
+from datetime import datetime
 import sh
 from time import time
 from optparse import OptionParser
@@ -56,7 +57,11 @@ class Disk:
         self.name = 'Unknown'
         self.model = 'Unknown'
         self.bus_type = 'Unknown'
+        self.bus_path = 'Unknown'
+        self.bus_topology = 'Unknown'
         self.serial_no = 'Unknown'
+        self.wwn_id = 'Unknown'
+        self.wwn_long = 'Unknown'
         self.size = 0
         self.children = []
 
@@ -192,9 +197,17 @@ class UdevDisk(Disk):
             self.device_node = '/dev/%s' % self.device_node
 
         self.bus_type = udev_device.properties['ID_BUS']  # What kind of bus is this device connected via?
+        self.bus_path = udev_device.properties['ID_PATH']  # What is the topology identifier of the connection?
+        self.bus_topology = udev_device.properties['DEVPATH']  # What is the full topology of the connection?
         self.name = udev_device.properties['ID_SERIAL']  # This is Vendor + Model + Serial
         self.model = udev_device.properties['ID_MODEL']  # This is the model of the device.
         self.serial_no = udev_device.properties['ID_SERIAL_SHORT']  # This is just the serial number
+        self.wwn_id = udev_device.properties['ID_WWN']  # This is the disk World-Wide-Name.
+        self.wwn_long = udev_device.properties['ID_WWN_WITH_EXTENSION']  # This is the extended disk World-Wide-Name.
+
+        #print("DEBUG: Found Device Properties: {}".format(udev_device.properties))
+        #for prop in udev_device.properties:
+        #    print("DEBUG: UDEV_PROP: {}".format(prop))
 
         try:
             with open('/sys/class/block/%s/size' % os.path.basename(self.device_node), 'r') as fp:
@@ -331,9 +344,9 @@ def wipe(out_path, progress_cb=None, uuid=None):
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
     last_raise_time = 0
-    bytes_read = 0
+    read_bytes = 0
     # We have to figure out the total size on our own.
-    bytes_total = get_size(out_path)  # Get the size of the device.
+    total_bytes = get_size(out_path)  # Get the size of the device.
 
     try:
         with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
@@ -347,16 +360,16 @@ def wipe(out_path, progress_cb=None, uuid=None):
 
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    bytes_read += chunk  # Store the number of bytes we've gone through
-                    progress = int((bytes_read / float(bytes_total)) * 100)  # And figure out a percentage.
+                    read_bytes += chunk  # Store the number of bytes we've gone through
+                    progress = int((read_bytes / float(total_bytes)) * 100)  # And figure out a percentage.
 
                     current_time = time()  # Create a time object to give to the progress callback.
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
-                            progress_cb(progress, start_time, bytes_read, bytes_total, uuid)  # Inform the callback.
+                            progress_cb(progress, start_time, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
-                            progress_cb(progress, start_time, bytes_read, bytes_total)  # Inform the callback.
+                            progress_cb(progress, start_time, read_bytes, total_bytes)  # Inform the callback.
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -366,12 +379,18 @@ def wipe(out_path, progress_cb=None, uuid=None):
         if e.errno == 28:  # This is our expected outcome and considered a success.
             print("\nReached end of device.")
             if uuid is not None:
-                finish_db(uuid, bytes_total)  # Tell the DB we're done.
+                finish_db(uuid, read_bytes)  # Tell the DB we're done.
         elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
+            if uuid is not None:
+                abort_db(uuid)
             sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
         else:  # No sir, linux didn't like that.
+            if uuid is not None:
+                abort_db(uuid)
             sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except KeyboardInterrupt:  # Something or someone injected a ^C.
+        if uuid is not None:
+            abort_db(uuid)
         sys.exit("\nAborted")  # Bail out without a traceback.
 
 
@@ -385,10 +404,10 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
     last_raise_time = 0
-    bytes_read = 0
+    read_bytes = 0
 
     # We have to figure out the total size on our own.
-    bytes_total = os.stat(in_path).st_size  # Figure out the size of the source.
+    total_bytes = os.stat(in_path).st_size  # Figure out the size of the source.
 
     try:
         with open(in_path, 'rb') as in_fp:
@@ -403,16 +422,16 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                     # noinspection PyTypeChecker
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    bytes_read += chunk  # Store the number of bytes we've gone through
-                    progress = int((bytes_read / float(bytes_total)) * 100)  # And figure out a percentage.
+                    read_bytes += chunk  # Store the number of bytes we've gone through
+                    progress = int((read_bytes / float(total_bytes)) * 100)  # And figure out a percentage.
 
                     current_time = time()  # Create a time object to give to the progress callback.
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
-                            progress_cb(progress, start_time, bytes_read, bytes_total, uuid)  # Inform the callback.
+                            progress_cb(progress, start_time, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
-                            progress_cb(progress, start_time, bytes_read, bytes_total)  # Inform the callback.
+                            progress_cb(progress, start_time, read_bytes, total_bytes)  # Inform the callback.
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -422,17 +441,23 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
         if e.errno == 28:  # This is NOT our expected outcome, but still hopefully considered a success.
             print("\nReached end of device before end of image. Hope your image had some slack.")
             if uuid is not None:
-                finish_db(uuid, bytes_total)  # Tell the DB we're done.
+                finish_db(uuid, read_bytes)  # Tell the DB we're done.
         elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
+            if uuid is not None:
+                abort_db(uuid)
             sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
         else:  # No sir, linux didn't like that.
+            if uuid is not None:
+                abort_db(uuid)
             sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except EOFError:  # This is our expected outcome and considered a success.
         print("\nReached end of Image file.")
         if uuid is not None:
-            finish_db(uuid, bytes_total)  # Tell the DB we're done.
+            finish_db(uuid, read_bytes)  # Tell the DB we're done.
 
     except KeyboardInterrupt:  # Something or someone injected a ^C.
+        if uuid is not None:
+            abort_db(uuid)
         sys.exit("\nAborted")  # Bail out without a traceback.
 
 
@@ -441,15 +466,15 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
 # ------------------------------------------------------------------------
 
 
-def calc_finish(bytes_read, bytes_total, elapsed):
+def calc_finish(read_bytes, total_bytes, elapsed):
     """Calculate estimated time remaining until task completion
-    :param bytes_read: Number of bytes read since the operation was begun.
-    :param bytes_total: Number of bytes total before the operation is complete.
+    :param read_bytes: Number of bytes read since the operation was begun.
+    :param total_bytes: Number of bytes total before the operation is complete.
     :param elapsed: Number of seconds elapsed.
     """
-    if bytes_read < 1:  # We haven't done anything yet!
+    if read_bytes < 1:  # We haven't done anything yet!
         return 0  # Don't return something weird like None, just plain old zero.
-    return long(((bytes_total - bytes_read) * elapsed) / bytes_read)
+    return long(((total_bytes - read_bytes) * elapsed) / read_bytes)
 
 
 def calc_bar(progress, length):
@@ -462,22 +487,22 @@ def calc_bar(progress, length):
 
 
 # noinspection PyUnusedLocal
-def progress(progress, start_time, bytes_read, total_bytes, rethink_uuid=None):
+def progress(progress, start_time, read_bytes, total_bytes, rethink_uuid=None):
     """Callback to display a graphical callback bar. Optional.
     :param progress: Percentage of progress.
     :param start_time: Time object from the operation's initiation.
-    :param bytes_read: Number of bytes read since the operation was begun.
+    :param read_bytes: Number of bytes read since the operation was begun.
     :param total_bytes: Number of bytes total before the operation is complete.
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
-    eta = calc_finish(bytes_read, total_bytes, elapsed)  # Calculate time until complete
+    eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
     bar = calc_bar(progress, 30)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
     time_elapsed = "%ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
     time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
-    read_megs = (bytes_read / (1024 * 1024))
+    read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
@@ -491,52 +516,66 @@ def create_db(device):
     :param device: The device object
     """
     # Insert Data
-    inserted = r.db('wanwipe').table('wipe_results').insert(
-        {'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
-         'progress': "  0%", 'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size,
+    inserted = r.db('wanwipe').table('wipe_results').insert({'started_at': datetime.isoformat(datetime.now()),
+         'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
+         'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
+         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
+         'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
     return inserted['generated_keys'][0]
 
 
-def finish_db(rethink_uuid, total_bytes):
+def finish_db(rethink_uuid, read_bytes):
     """Finishes a document that has been updating with progress_db.
     :param rethink_uuid: The rethink UUID to finish
-    :param total_bytes: Total number of bytes that were read.
+    :param read_bytes: Total number of bytes that were read.
     """
-    read_megs = (total_bytes / (1024 * 1024))
+    read_megs = (read_bytes / (1024 * 1024))
     # Insert Data
     # noinspection PyUnusedLocal
-    inserted = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
-        {'progress': "100%", 'time_remaining': "0:00:00", 'progress_bar': "==============================",
-         'read_megs': read_megs, 'finished': True}).run(conn)
-    print("DB: Finished writing to key: {}".format(rethink_uuid))
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+         'progress': "100%", 'progress_bar': "==============================",
+         'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
+         'failed': False, 'success': True, 'finished_at': datetime.isoformat(datetime.now())}).run(conn)
+    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
-def progress_db(progress, start_time, bytes_read, total_bytes, rethink_uuid):
+def abort_db(rethink_uuid):
+    """Finishes a document that has been updating with progress_db.
+    :param rethink_uuid: The rethink UUID to finish
+    """
+    # Insert Data
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+         'failed': True, 'success': False, 'finished_at': datetime.isoformat(datetime.now())}).run(conn)
+    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
+
+
+def progress_db(progress, start_time, read_bytes, total_bytes, rethink_uuid):
     """Callback to update the database with our status periodically.
     :param progress: Percentage of progress.
     :param start_time: Time object from the operation's initiation.
-    :param bytes_read: Number of bytes read since the operation was begun.
+    :param read_bytes: Number of bytes read since the operation was begun.
     :param total_bytes: Number of bytes total before the operation is complete.
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
-    eta = calc_finish(bytes_read, total_bytes, elapsed)  # Calculate time until complete
+    eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
     bar = calc_bar(progress, 30)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
     time_elapsed = "%ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
     time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
-    read_megs = (bytes_read / (1024 * 1024))
+    read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
 
     # Insert Data
     # noinspection PyUnusedLocal
-    inserted = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
         {'progress': fmt_progress, 'progress_bar': bar,
          'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
-         'read_megs': read_megs, 'total_megs': total_megs}).run(conn)
+         'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
     sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M".format(
@@ -652,6 +691,6 @@ if __name__ == '__main__':
                 wipe(target_device.device_node, progress_db, uuid)
 
         # We've finished writing to the device.
-        print('Operation complete on device %s' % target_device.device_node)
+        print('\nOperation complete on device %s' % target_device.device_node)
     else:
         sys.exit("\nAborted")
