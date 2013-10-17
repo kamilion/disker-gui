@@ -503,7 +503,7 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
-    bar = calc_bar(progress, 30)  # Calculate a progress bar
+    bar = calc_bar(progress, 24)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
@@ -515,7 +515,7 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     speed_megs = (speed_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec   ".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/s   ".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
@@ -529,7 +529,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
-    bar = calc_bar(progress, 30)  # Calculate a progress bar
+    bar = calc_bar(progress, 24)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
@@ -550,7 +550,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
          'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec   ".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/s   ".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
