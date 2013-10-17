@@ -355,21 +355,24 @@ def wipe(out_path, progress_cb=None, uuid=None):
                 # noinspection PyArgumentList
                 chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                 while True:
+                    last_bytes = read_bytes  # Store the previous number of bytes we've gone through
                     if chunk < buf_size:  # If the chunk is less than the buffer size
                         buf = buf[:chunk]  # Append the chunk to the buffer
 
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    read_bytes += chunk  # Store the number of bytes we've gone through
+                    read_bytes += chunk  # Store the current number of bytes we've gone through
                     progress = int((read_bytes / float(total_bytes)) * 100)  # And figure out a percentage.
 
                     current_time = time()  # Create a time object to give to the progress callback.
+                    print('TICK! {}'.format(last_bytes))
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
+                        print('TOCK! {}'.format(last_bytes))
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
-                            progress_cb(progress, start_time, read_bytes, total_bytes, uuid)  # Inform the callback.
+                            progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
-                            progress_cb(progress, start_time, read_bytes, total_bytes)  # Inform the callback.
+                            progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes)  # Inform the callback.
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -413,6 +416,7 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
         with open(in_path, 'rb') as in_fp:
             with open(out_path, 'wb') as out_fp:
                 while True:
+                    last_bytes = read_bytes  # Store the previous number of bytes we've gone through
                     buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
                     # noinspection PyArgumentList
                     chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
@@ -422,16 +426,16 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                     # noinspection PyTypeChecker
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
-                    read_bytes += chunk  # Store the number of bytes we've gone through
+                    read_bytes += chunk  # Store the current number of bytes we've gone through
                     progress = int((read_bytes / float(total_bytes)) * 100)  # And figure out a percentage.
 
                     current_time = time()  # Create a time object to give to the progress callback.
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
-                            progress_cb(progress, start_time, read_bytes, total_bytes, uuid)  # Inform the callback.
+                            progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
-                            progress_cb(progress, start_time, read_bytes, total_bytes)  # Inform the callback.
+                            progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes)  # Inform the callback.
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -487,7 +491,7 @@ def calc_bar(progress, length):
 
 
 # noinspection PyUnusedLocal
-def progress(progress, start_time, read_bytes, total_bytes, rethink_uuid=None):
+def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_uuid=None):
     """Callback to display a graphical callback bar. Optional.
     :param progress: Percentage of progress.
     :param start_time: Time object from the operation's initiation.
@@ -504,10 +508,12 @@ def progress(progress, start_time, read_bytes, total_bytes, rethink_uuid=None):
     time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
     read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
+    speed_bytes = (total_bytes / elapsed)
+    speed_megs = (speed_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M".format(
-        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs))
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}B {}M/sec {}".format(
+        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_bytes, speed_megs, (read_bytes - last_bytes)))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
 
@@ -552,7 +558,7 @@ def abort_db(rethink_uuid):
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
-def progress_db(progress, start_time, read_bytes, total_bytes, rethink_uuid):
+def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_uuid):
     """Callback to update the database with our status periodically.
     :param progress: Percentage of progress.
     :param start_time: Time object from the operation's initiation.
