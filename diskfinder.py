@@ -503,7 +503,7 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
-    bar = calc_bar(progress, 24)  # Calculate a progress bar
+    bar = calc_bar(progress, 20)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
@@ -515,7 +515,7 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     speed_megs = (speed_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/s   ".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}/{}M {}M/s  \b\b".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
@@ -529,7 +529,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
     """
     elapsed = time() - start_time  # How much time has elapsed since we started?
     eta = calc_finish(read_bytes, total_bytes, elapsed)  # Calculate time until complete
-    bar = calc_bar(progress, 24)  # Calculate a progress bar
+    bar = calc_bar(progress, 20)  # Calculate a progress bar
 
     # Format the data
     fmt_progress = "%3d%%" % progress
@@ -550,7 +550,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
          'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/s   ".format(
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}/{}M {}M/s  \b\b".format(
         fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
@@ -561,7 +561,8 @@ def abort_db(rethink_uuid):
     """
     # Insert Data
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
+         'in_progress': False, 'finished': False, 'completed': True,
          'failed': True, 'success': False,  'updated_at': datetime.isoformat(datetime.now()),
          'finished_at': datetime.isoformat(datetime.now())}).run(conn)
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
@@ -575,7 +576,8 @@ def finish_db(rethink_uuid, read_bytes):
     read_megs = (read_bytes / (1024 * 1024))
     # Insert Data
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
+         'in_progress': False, 'finished': True, 'completed': True,
          'progress': "100%", 'progress_bar': "==============================",
          'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
          'failed': False, 'success': True, 'updated_at': datetime.isoformat(datetime.now()),
@@ -591,8 +593,9 @@ def create_db(device):
     inserted = r.db('wanwipe').table('wipe_results').insert({
          'started_at': datetime.isoformat(datetime.now()), 'updated_at': datetime.isoformat(datetime.now()),
          'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
+         'wwn': device.wwn_id, 'wwn_long': device.wwn_long, 'finished': False, 'completed': False,
          'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
-         'finished': False, 'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
+         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
          'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
