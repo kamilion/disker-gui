@@ -202,8 +202,11 @@ class UdevDisk(Disk):
         self.name = udev_device.properties['ID_SERIAL']  # This is Vendor + Model + Serial
         self.model = udev_device.properties['ID_MODEL']  # This is the model of the device.
         self.serial_no = udev_device.properties['ID_SERIAL_SHORT']  # This is just the serial number
-        self.wwn_id = udev_device.properties['ID_WWN']  # This is the disk World-Wide-Name.
-        self.wwn_long = udev_device.properties['ID_WWN_WITH_EXTENSION']  # This is the extended disk World-Wide-Name.
+        try:  # to use additional udev properties if they're available.
+            self.wwn_id = udev_device.properties['ID_WWN']  # This is the disk World-Wide-Name.
+            self.wwn_long = udev_device.properties['ID_WWN_WITH_EXTENSION']  # This is the extended disk World-Wide-Name.
+        except:
+            pass
 
         #print("DEBUG: Found Device Properties: {}".format(udev_device.properties))
         #for prop in udev_device.properties:
