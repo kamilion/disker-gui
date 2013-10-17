@@ -340,10 +340,11 @@ def wipe(out_path, progress_cb=None, uuid=None):
     :param out_path: Path to device node to wipe.
     :param progress_cb: Optional progress callback.
     """
-    megs_per_block = 16
+    megs_per_block = 1  # Try a default buffer size of 1MB for best progress granularity.
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
     last_raise_time = 0
+    last_bytes = 0
     read_bytes = 0
     # We have to figure out the total size on our own.
     total_bytes = get_size(out_path)  # Get the size of the device.
@@ -355,7 +356,6 @@ def wipe(out_path, progress_cb=None, uuid=None):
                 # noinspection PyArgumentList
                 chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                 while True:
-                    last_bytes = read_bytes  # Store the previous number of bytes we've gone through
                     if chunk < buf_size:  # If the chunk is less than the buffer size
                         buf = buf[:chunk]  # Append the chunk to the buffer
 
@@ -365,14 +365,17 @@ def wipe(out_path, progress_cb=None, uuid=None):
                     progress = int((read_bytes / float(total_bytes)) * 100)  # And figure out a percentage.
 
                     current_time = time()  # Create a time object to give to the progress callback.
-                    print('TICK! {}'.format(last_bytes))
+
+                    #print('TICK! {} {}'.format(last_bytes, read_bytes))
+
                     if progress_cb and (chunk < buf_size or last_raise_time == 0 or current_time - last_raise_time > 1):
-                        print('TOCK! {}'.format(last_bytes))
+                        print('\nTOCK! {} {}'.format(last_bytes, read_bytes))
                         last_raise_time = current_time  # We fired, scribble out a note.
                         if uuid is not None:
                             progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
                             progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes)  # Inform the callback.
+                        last_bytes = read_bytes  # Store the previous number of bytes we've gone through
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -403,7 +406,7 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
     :param out_path: Path to device node to image.
     :param progress_cb: Optional progress callback.
     """
-    megs_per_block = 4  # Try a default buffer size of 4MB
+    megs_per_block = 1  # Try a default buffer size of 1MB for best progress granularity.
     buf_size = (1024 * 1024 * megs_per_block)
     start_time = time()
     last_raise_time = 0
@@ -416,7 +419,6 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
         with open(in_path, 'rb') as in_fp:
             with open(out_path, 'wb') as out_fp:
                 while True:
-                    last_bytes = read_bytes  # Store the previous number of bytes we've gone through
                     buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
                     # noinspection PyArgumentList
                     chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
@@ -436,6 +438,7 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                             progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes, uuid)  # Inform the callback.
                         else:
                             progress_cb(progress, start_time, last_bytes, read_bytes, total_bytes)  # Inform the callback.
+                        last_bytes = read_bytes  # Store the previous number of bytes we've gone through
 
                     if chunk < buf_size:  # Short write, but it's okay.
                         break  # Just go to the next iteration
@@ -508,54 +511,13 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
     time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
     read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
-    speed_bytes = (total_bytes / elapsed)
+    speed_bytes = read_bytes - last_bytes
     speed_megs = (speed_bytes / (1024 * 1024))
 
     # Print the collected information to stdout. Should barely fit in 80-column.
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}B {}M/sec {}".format(
-        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_bytes, speed_megs, (read_bytes - last_bytes)))
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec".format(
+        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
-
-
-def create_db(device):
-    """Creates a document to update with progress_db.
-    :param device: The device object
-    """
-    # Insert Data
-    inserted = r.db('wanwipe').table('wipe_results').insert({'started_at': datetime.isoformat(datetime.now()),
-         'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
-         'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
-         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
-         'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
-         'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
-    print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
-    return inserted['generated_keys'][0]
-
-
-def finish_db(rethink_uuid, read_bytes):
-    """Finishes a document that has been updating with progress_db.
-    :param rethink_uuid: The rethink UUID to finish
-    :param read_bytes: Total number of bytes that were read.
-    """
-    read_megs = (read_bytes / (1024 * 1024))
-    # Insert Data
-    # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
-         'progress': "100%", 'progress_bar': "==============================",
-         'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
-         'failed': False, 'success': True, 'finished_at': datetime.isoformat(datetime.now())}).run(conn)
-    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
-
-
-def abort_db(rethink_uuid):
-    """Finishes a document that has been updating with progress_db.
-    :param rethink_uuid: The rethink UUID to finish
-    """
-    # Insert Data
-    # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
-         'failed': True, 'success': False, 'finished_at': datetime.isoformat(datetime.now())}).run(conn)
-    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
 def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_uuid):
@@ -575,18 +537,66 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
     time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
     read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
+    speed_bytes = read_bytes - last_bytes
+    speed_megs = (speed_bytes / (1024 * 1024))
 
     # Insert Data
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
         {'progress': fmt_progress, 'progress_bar': bar,
+         'updated_at': datetime.isoformat(datetime.now()),
          'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
+         'speed_megs': speed_megs, 'speed_bytes': speed_bytes,
          'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
-    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M".format(
-        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs))
+    sys.stdout.write("\r{}  {}  [{}]  ETA {} {}M/{}M {}M/sec".format(
+        fmt_progress, time_elapsed, bar, time_remaining, read_megs, total_megs, speed_megs))
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
+
+
+def abort_db(rethink_uuid):
+    """Finishes a document that has been updating with progress_db.
+    :param rethink_uuid: The rethink UUID to finish
+    """
+    # Insert Data
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+         'failed': True, 'success': False,  'updated_at': datetime.isoformat(datetime.now()),
+         'finished_at': datetime.isoformat(datetime.now())}).run(conn)
+    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
+
+
+def finish_db(rethink_uuid, read_bytes):
+    """Finishes a document that has been updating with progress_db.
+    :param rethink_uuid: The rethink UUID to finish
+    :param read_bytes: Total number of bytes that were read.
+    """
+    read_megs = (read_bytes / (1024 * 1024))
+    # Insert Data
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({'in_progress': False, 'finished': True,
+         'progress': "100%", 'progress_bar': "==============================",
+         'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
+         'failed': False, 'success': True, 'updated_at': datetime.isoformat(datetime.now()),
+         'finished_at': datetime.isoformat(datetime.now())}).run(conn)
+    print("\nDB: Finished writing to key: {}".format(rethink_uuid))
+
+
+def create_db(device):
+    """Creates a document to update with progress_db.
+    :param device: The device object
+    """
+    # Insert Data
+    inserted = r.db('wanwipe').table('wipe_results').insert({
+         'started_at': datetime.isoformat(datetime.now()), 'updated_at': datetime.isoformat(datetime.now()),
+         'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
+         'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
+         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
+         'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
+         'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
+    print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
+    return inserted['generated_keys'][0]
 
 
 # ------------------------------------------------------------------------
@@ -613,7 +623,8 @@ if __name__ == '__main__':
     # If -h or --help are passed, the above will be displayed.
     options, args = parser.parse_args()
 
-    verify_db_tables()  # Verify DB and tables exist
+    if not options.no_db:
+        verify_db_tables()  # Verify DB and tables exist
 
     print('Parsing device information...')
 
