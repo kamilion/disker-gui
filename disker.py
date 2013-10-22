@@ -11,72 +11,17 @@ from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
 try:
     conn = r.connect()  # We don't select a specific database or table.
-    print("DB: Connected to rethinkdb successfully.")
+    print("LocalDB: Connected to rethinkdb successfully.")
 except RqlDriverError:
-    print("DB: Failed to connect to rethinkdb. Check the daemon status and try again.")
+    print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
 
+from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
 def verify_db_tables():
     try:
-        result = r.db_create('wanwipe').run(conn)
-        print("DB: wanwipe database created: {}".format(result))
+        verify_db_machine_state()
     except RqlRuntimeError:
-        print("DB: wanwipe database found.")
-    try:
-        result = r.db('wanwipe').table_create('machine_state').run(conn)
-        print("DB: machine_state table created: {}".format(result))
-        result = r.db('wanwipe').table('machine_state').index_create('machine_id').run(conn)
-        print("DB: machine_state index created: {}".format(result))
-    except RqlRuntimeError:
-        print("DB: machine_state table found.")
-
-
-def get_dbus_machine_id():
-    with open("/var/lib/dbus/machine-id") as myfile:
-        data="".join(line.rstrip() for line in myfile)
-    return data
-
-
-def get_boot_id():
-    with open("/proc/sys/kernel/random/boot_id") as myfile:
-        data="".join(line.rstrip() for line in myfile)
-    return data
-
-
-def create_machine_state():
-    """
-    create this machine's base state in the database.
-    """
-    machine_id = get_dbus_machine_id()
-    boot_id = get_boot_id()
-    try:
-        inserted = r.db('wanwipe').table('machine_state').insert({
-            'machine_id': machine_id, 'boot_id': boot_id,
-            'updated_at': datetime.isoformat(datetime.now())
-        }).run(conn)
-        print("DB: machine_state created: {}".format(inserted['generated_keys'][0]))
-        return inserted['generated_keys'][0]
-    except RqlRuntimeError as kaboom:
-        print("DB: machine_state creation failed somehow: {}".format(kaboom))
-
-
-def find_machine_state():
-    """
-    locate this machine's state in the database.
-    """
-    try:
-        verify_db_tables()  # First make sure our DB tables are all in order.
-        result = r.db('wanwipe').table('machine_state').get_all(get_dbus_machine_id(), index='machine_id').run(conn)
-        if result.chunks == [[]]:  # No documents were returned.
-            return create_machine_state()  # Just create a machine state and return it if none exists.
-        else:  # one or more documents were returned.
-            for document in result:  # Look over the returned documents.
-                if document.get('boot_id') == get_boot_id():  # Found a current state.
-                    return document.get('id')  # Return the current state.
-                else:  # Found a previous state.
-                    return create_machine_state()  # Just create a machine state and return it if none exists.
-    except RqlRuntimeError as kaboom:
-        print("DB: machine_state lookup failed somehow: {}".format(kaboom))
+        print("LocalDB: wanwipe database verified.")
 
 
 # GTK imports
