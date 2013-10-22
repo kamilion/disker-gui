@@ -20,6 +20,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+# noinspection PyStatementEffect
 """
 Module for working with UDisks2 from python2.
 
@@ -59,6 +60,7 @@ try:
 except RqlDriverError:
     print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
 
+# noinspection PyUnresolvedReferences
 from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
 def verify_db_tables():
@@ -71,6 +73,7 @@ def verify_db_tables():
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException
 from dbus.mainloop.glib import DBusGMainLoop
+# noinspection PyUnresolvedReferences
 from gi.repository import GObject
 
 __all__ = ['UDisks2Observer', 'UDisks2Model', 'main_shield', 'Signal']

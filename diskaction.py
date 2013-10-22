@@ -17,6 +17,7 @@ try:
 except RqlDriverError:
     print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
 
+# noinspection PyUnresolvedReferences
 from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
 def verify_db_tables():

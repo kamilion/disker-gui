@@ -15,6 +15,7 @@ try:
 except RqlDriverError:
     print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
 
+# noinspection PyUnresolvedReferences
 from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
 def verify_db_tables():
@@ -25,6 +26,7 @@ def verify_db_tables():
 
 
 # GTK imports
+# noinspection PyUnresolvedReferences
 from gi.repository import Gtk, Gdk
 
 # Redis-Queue imports
@@ -183,7 +185,7 @@ class M3Window(Gtk.Window):
     def on_menu_make_it_go(self, widget):
         job = q.enqueue(get_disk_info, "/dev/sda")
         print job
-        while job.result == None:
+        while job.result is None:
             sleep(0.1)
         print job.result
 
@@ -209,7 +211,7 @@ class M3Window(Gtk.Window):
         t_beginning = time()
         seconds_passed = 0
         timeout = 30
-        while job.result == None:
+        while job.result is None:
             seconds_passed = time() - t_beginning
             sleep(0.333)
             if timeout and seconds_passed > timeout:
@@ -221,7 +223,7 @@ class M3Window(Gtk.Window):
         which_button = "{}".format(widget.get_label().decode('utf-8'))
         job = q.enqueue(get_disk_info, which_button)
         print job
-        while job.result == None:
+        while job.result is None:
             sleep(0.1)
         print job.result
 
