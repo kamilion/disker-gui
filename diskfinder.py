@@ -132,9 +132,8 @@ class UdevDeviceManager:
 
     def __init__(self):
         """Population and management of our filtered view of the udev device tree"""
-        if not os.path.isdir('/sys') or \
-                not os.path.isfile('/sbin/udevadm'):
-            raise Exception()
+        if not os.path.isdir('/sys') or not os.path.isfile('/sbin/udevadm'):
+            raise Exception()  # Bail out early with 'fail' and let another manager take over if udevadm isn't around.
 
         self.devices = []
         device = None
