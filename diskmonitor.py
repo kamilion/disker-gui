@@ -47,6 +47,8 @@ To work with this model you will likely want to look at:
 import errno
 import logging
 import sys
+import string
+
 
 
 # RethinkDB imports
@@ -376,6 +378,49 @@ def _sanitize_dbus_value(value):
         return value
 
 
+def _sanitize_dbus_path(path):
+    """
+    Convert certain DBus type combinations so that they are easier to read
+    """
+    path_list = string.split(path, '/')
+    try:
+        path_list.remove('org')
+        path_list.remove('freedesktop')
+        path_list.remove('UDisks2')
+    except:
+        pass
+    return '/'.join(path_list)
+
+
+def _sanitize_dbus_key(key):
+    """
+    Convert certain DBus type combinations so that they are easier to read
+    """
+    key_list = string.split(key, '.')
+    try:
+        key_list.remove('org')
+        key_list.remove('freedesktop')
+        key_list.remove('UDisks2')
+    except:
+        pass
+    return '.'.join(key_list)
+
+
+def _check_property(interfaces_and_properties, property_name):
+    """
+    Search properties for a property name and return it's value
+
+    The argument is the value of the dictionary _values_, as returned from
+    GetManagedObjects() for example. See this for details:
+        http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
+    """
+    for interface_name, properties in interfaces_and_properties.items():
+        for prop_name, prop_value in properties.items():
+            if property_name == prop_name:
+                return _sanitize_dbus_value(prop_value)
+
+
+
 def _print_interfaces_and_properties(interfaces_and_properties):
     """
     Print a collection of interfaces and properties exported by some object
@@ -385,13 +430,16 @@ def _print_interfaces_and_properties(interfaces_and_properties):
         http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
     """
     for interface_name, properties in interfaces_and_properties.items():
-        print("   - Interface {}".format(interface_name))
+        print("   - Interface {}".format(_sanitize_dbus_key(interface_name)))
         for prop_name, prop_value in properties.items():
             # Ignore the spammy properties...
-            if prop_name not in ["Symlinks", "PreferredDevice", "Device", "Configuration", "MountPoints"]:
+            spammy = ["Symlinks", "PreferredDevice", "Device", "Configuration", "MountPoints", "MediaCompatibility"]
+            if prop_name not in spammy:
+                prop_value = _sanitize_dbus_value(prop_value)
                 if prop_value not in [0, "0", "/", ""]:
-                    prop_value = _sanitize_dbus_value(prop_value)
-                    print("     * Property {}: {}".format(prop_name, prop_value))
+                    print("     F Property {}: {}".format(prop_name, prop_value))
+                else:
+                    print("     T Property {}: {}".format(prop_name, prop_value))
 
 
 def main():
@@ -418,10 +466,30 @@ def main():
 
     # Let's print everything we know about initially for the users to see
     def print_initial_objects(managed_objects):
-        print("UDisks2 knows about the following objects:")
+        print("Known:")
         for object_path, interfaces_and_properties in managed_objects.items():
-            print(" * {}".format(object_path))
-            _print_interfaces_and_properties(interfaces_and_properties)
+            if 'block_devices' in object_path:
+                # Is it special? (Ram, loopback, optical)
+                if 'ram' in object_path:
+                    pass  # It's a ramdisk. Do not want.
+                    #print(" R {}".format(object_path))
+                elif 'loop' in object_path:
+                    pass  # It's a loopback. Do not want.
+                    #print(" L {}".format(object_path))
+                elif 'sr' in object_path:
+                    pass  # It's an optical. Do not want.
+                    #print(" O {}".format(object_path))
+                else:  # It's a normal block_device.
+                    print(" B {}".format(_sanitize_dbus_path(object_path)))
+                    #_print_interfaces_and_properties(interfaces_and_properties)
+
+            elif 'drives' in object_path:
+                if not _check_property(interfaces_and_properties, 'MediaRemovable'):
+                    print(" D {}".format(_sanitize_dbus_path(object_path)))
+                    #_print_interfaces_and_properties(interfaces_and_properties)
+            else:  # Not a block_device or a drive, eh?
+                print(" * {}".format(_sanitize_dbus_path(object_path)))
+                _print_interfaces_and_properties(interfaces_and_properties)
         sys.stdout.flush()
     observer.on_initial_objects.connect(print_initial_objects)
 
@@ -430,10 +498,28 @@ def main():
     # means that all objects that are added/removed will be advertised through
     # this mechanism
     def print_interfaces_added(object_path, interfaces_and_properties):
-        print("The object:")
-        print("  {}".format(object_path))
-        print("has gained the following interfaces and properties:")
-        _print_interfaces_and_properties(interfaces_and_properties)
+        if 'block_devices' in object_path:
+            # Is it special? (Ram, loopback, optical)
+            if 'ram' in object_path:
+                pass  # It's a ramdisk. Do not want.
+            elif 'loop' in object_path:
+                pass  # It's a loopback. Do not want.
+            elif 'sr' in object_path:
+                pass  # It's an optical. Do not want.
+            else:  # It's a normal block_device.
+                print("Gained:\n B {}".format(_sanitize_dbus_path(object_path)))
+                #_print_interfaces_and_properties(interfaces_and_properties)
+
+        elif 'drives' in object_path:
+            if not _check_property(interfaces_and_properties, 'MediaRemovable'):
+                print("Gained:\n D {}".format(_sanitize_dbus_path(object_path)))
+                #_print_interfaces_and_properties(interfaces_and_properties)
+        elif 'jobs' in object_path:
+            print("Gained:\n J {}".format(_sanitize_dbus_path(object_path)))
+        else:  # Not a block_device or a drive, eh?
+            print("Gained:\n * {}".format(_sanitize_dbus_path(object_path)))
+
+        #_print_interfaces_and_properties(interfaces_and_properties)
         sys.stdout.flush()
     observer.on_interfaces_added.connect(print_interfaces_added)
 
@@ -441,11 +527,27 @@ def main():
     # out explicitly but it seems that objects with no interfaces left are
     # simply gone. We'll treat them as such
     def print_interfaces_removed(object_path, interfaces):
-        print("The object:")
-        print("  {}".format(object_path))
-        print("has lost the following interfaces:")
+        print("Lost {}:".format(_sanitize_dbus_path(object_path)))
         for interface in interfaces:
-            print(" * {}".format(interface))
+            if 'block_devices' in object_path:
+                # Is it special? (Ram, loopback, optical)
+                if 'ram' in object_path:
+                    pass  # It's a ramdisk. Do not want.
+                elif 'loop' in object_path:
+                    pass  # It's a loopback. Do not want.
+                elif 'sr' in object_path:
+                    pass  # It's an optical. Do not want.
+                else:  # It's a normal block_device.
+                    print(" B {}".format(_sanitize_dbus_key(interface)))
+                    #_print_interfaces_and_properties(interfaces_and_properties)
+
+            elif 'drives' in object_path:
+                print(" D {}".format(_sanitize_dbus_key(interface)))
+                #_print_interfaces_and_properties(interfaces_and_properties)
+            elif 'jobs' in object_path:
+                print(" J {}".format(_sanitize_dbus_key(interface)))
+            else:  # Not a block_device or a drive, eh?
+                print(" * {}".format(_sanitize_dbus_key(interface)))
         sys.stdout.flush()
     observer.on_interfaces_removed.connect(print_interfaces_removed)
 
