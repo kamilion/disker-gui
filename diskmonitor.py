@@ -63,12 +63,8 @@ except RqlDriverError:
 # noinspection PyUnresolvedReferences
 from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
-def verify_db_tables():
-    try:
-        verify_db_machine_state()
-    except RqlRuntimeError:
-        print("LocalDB: wanwipe database verified.")
-
+machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
+print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
 
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException

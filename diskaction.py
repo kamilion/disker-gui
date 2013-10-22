@@ -20,12 +20,16 @@ except RqlDriverError:
 # noinspection PyUnresolvedReferences
 from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
+machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
+print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
+
+
 def verify_db_tables():
     try:
-        verify_db_machine_state()
         verify_db_table('wipe_results')
     except RqlRuntimeError:
         print("LocalDB: wanwipe database verified.")
+
 
 # ------------------------------------------------------------------------
 # Base Disk superclasses
@@ -578,6 +582,7 @@ def create_db(device):
     """Creates a document to update with progress_db.
     :param device: The device object
     """
+    verify_db_table('wipe_results')
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').insert({
          'started_at': datetime.isoformat(datetime.now()), 'updated_at': datetime.isoformat(datetime.now()),
@@ -614,9 +619,6 @@ if __name__ == '__main__':
 
     # If -h or --help are passed, the above will be displayed.
     options, args = parser.parse_args()
-
-    if not options.no_db:
-        verify_db_tables()  # Verify DB and tables exist
 
     print('Parsing device information...')
 
