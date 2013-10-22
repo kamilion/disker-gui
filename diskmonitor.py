@@ -60,7 +60,7 @@ __all__ = ['UDisks2Observer', 'UDisks2Model', 'main_shield', 'Signal']
 OBJECT_MANAGER_INTERFACE = "org.freedesktop.DBus.ObjectManager"
 
 
-# TODO: move Signal and _SignalDescriptor to a dedicated modules as they are just too cool to lose. :-)
+# A minimal signals implementation to support GObject based listeners.
 class Signal(object):
     """
     Basic signal that supports arbitrary listeners.
