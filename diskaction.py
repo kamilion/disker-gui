@@ -346,10 +346,14 @@ def wipe(out_path, progress_cb=None, uuid=None):
             with open(out_path, 'wb') as out_fp:
                 buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
                 # noinspection PyArgumentList
-                chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
                 while True:
+                    chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
+                    remain_bytes = total_bytes - read_bytes  # Update the remaining bytes count.
+                    if remain_bytes < buf_size:  # If the remaining bytes are less than the buffer size
+                        chunk = remain_bytes  # Use the remaining bytes count instead of the chunk size.
+
                     if chunk < buf_size:  # If the chunk is less than the buffer size
-                        buf = buf[:chunk]  # Append the chunk to the buffer
+                        buf = buf[:chunk]  # Append the chunk to the buffer with the size of '$chunk' bytes
 
                     out_fp.write(buf)  # Write the entire buffer to the device.
 
@@ -415,8 +419,13 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                     buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
                     # noinspection PyArgumentList
                     chunk = in_fp.readinto(buf)  # Read a chunk of data into our buffer.
+
+                    remain_bytes = total_bytes - read_bytes  # Update the remaining bytes count.
+                    if remain_bytes < buf_size:  # If the remaining bytes are less than the buffer size
+                        chunk = remain_bytes  # Use the remaining bytes count instead of the chunk size.
+
                     if chunk < buf_size:  # If the chunk is less than the buffer size
-                        buf = buf[:chunk]  # Append the chunk to the buffer
+                        buf = buf[:chunk]  # Append the chunk to the buffer with the size of '$chunk' bytes
 
                     # noinspection PyTypeChecker
                     out_fp.write(buf)  # Write the entire buffer to the device.
