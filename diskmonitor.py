@@ -48,7 +48,7 @@ import errno
 import logging
 import sys
 import string
-
+import re
 
 
 # RethinkDB imports
@@ -378,6 +378,20 @@ def _sanitize_dbus_value(value):
         return value
 
 
+def _sanitize_dbus_key(key):
+    """
+    Convert certain DBus type combinations so that they are easier to read
+    """
+    key_list = string.split(key, '.')
+    try:
+        key_list.remove('org')
+        key_list.remove('freedesktop')
+        key_list.remove('UDisks2')
+    except:
+        pass
+    return '.'.join(key_list)
+
+
 def _sanitize_dbus_path(path):
     """
     Convert certain DBus type combinations so that they are easier to read
@@ -392,18 +406,19 @@ def _sanitize_dbus_path(path):
     return '/'.join(path_list)
 
 
-def _sanitize_dbus_key(key):
+def _extract_dbus_blockpath(path):
     """
-    Convert certain DBus type combinations so that they are easier to read
+    Return a block device name for a block path.
     """
-    key_list = string.split(key, '.')
+    path_list = string.split(path, '/')
     try:
-        key_list.remove('org')
-        key_list.remove('freedesktop')
-        key_list.remove('UDisks2')
+        path_list.remove('org')
+        path_list.remove('freedesktop')
+        path_list.remove('UDisks2')
+        path_list.remove('block_devices')
     except:
         pass
-    return '.'.join(key_list)
+    return ''.join(path_list)
 
 
 def _check_property(interfaces_and_properties, property_name):
@@ -437,9 +452,37 @@ def _print_interfaces_and_properties(interfaces_and_properties):
             if prop_name not in spammy:
                 prop_value = _sanitize_dbus_value(prop_value)
                 if prop_value not in [0, "0", "/", ""]:
-                    print("     F Property {}: {}".format(prop_name, prop_value))
-                else:
                     print("     T Property {}: {}".format(prop_name, prop_value))
+                else:
+                    print("     F Property {}: {}".format(prop_name, prop_value))
+
+
+# Hacky little hack for filtering partition devices
+_digits = re.compile('\d')
+def contains_digits(d):
+    return bool(_digits.search(d))
+
+### Fun with DBs
+
+def db_add_disk(device):
+    """Adds a disk to the database.
+    :param device: The device to add
+    """
+    # Insert Data
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        device: {'available': True, 'busy': False, 'updated_at': datetime.isoformat(datetime.now())},
+        'updated_at': datetime.isoformat(datetime.now())}).run(conn)  # Update the record timestamp.
+
+def db_remove_disk(device):
+    """Removes a disk to the database.
+    :param device: The device to add
+    """
+    # Insert Data r.table("posts").get("1").replace(r.row.without('author')).run()
+    # noinspection PyUnusedLocal
+    replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        'updated_at': datetime.isoformat(datetime.now())}).run(conn)  # Update the record timestamp.
 
 
 def main():
@@ -480,8 +523,13 @@ def main():
                     pass  # It's an optical. Do not want.
                     #print(" O {}".format(object_path))
                 else:  # It's a normal block_device.
-                    print(" B {}".format(_sanitize_dbus_path(object_path)))
-                    #_print_interfaces_and_properties(interfaces_and_properties)
+                    if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
+                        print(" P {}".format(_sanitize_dbus_path(object_path)))
+                        #_print_interfaces_and_properties(interfaces_and_properties)
+                    else:  # It's a raw device, what we're looking for!
+                        db_add_disk(_extract_dbus_blockpath(object_path))
+                        print(" B {} to key: {}".format(_sanitize_dbus_path(object_path), machine_state_uuid))
+                        #_print_interfaces_and_properties(interfaces_and_properties)
 
             elif 'drives' in object_path:
                 if not _check_property(interfaces_and_properties, 'MediaRemovable'):
@@ -507,8 +555,13 @@ def main():
             elif 'sr' in object_path:
                 pass  # It's an optical. Do not want.
             else:  # It's a normal block_device.
-                print("Gained:\n B {}".format(_sanitize_dbus_path(object_path)))
-                #_print_interfaces_and_properties(interfaces_and_properties)
+                if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
+                    print("Gained:\n P {}".format(_sanitize_dbus_path(object_path)))
+                    #_print_interfaces_and_properties(interfaces_and_properties)
+                else:  # It's a raw device, what we're looking for!
+                    db_add_disk(_extract_dbus_blockpath(object_path))
+                    print("Gained:\n B {} to key: {}".format(_sanitize_dbus_path(object_path), machine_state_uuid))
+                    #_print_interfaces_and_properties(interfaces_and_properties)
 
         elif 'drives' in object_path:
             if not _check_property(interfaces_and_properties, 'MediaRemovable'):
@@ -516,6 +569,7 @@ def main():
                 #_print_interfaces_and_properties(interfaces_and_properties)
         elif 'jobs' in object_path:
             print("Gained:\n J {}".format(_sanitize_dbus_path(object_path)))
+            _print_interfaces_and_properties(interfaces_and_properties)
         else:  # Not a block_device or a drive, eh?
             print("Gained:\n * {}".format(_sanitize_dbus_path(object_path)))
 
@@ -538,8 +592,13 @@ def main():
                 elif 'sr' in object_path:
                     pass  # It's an optical. Do not want.
                 else:  # It's a normal block_device.
-                    print(" B {}".format(_sanitize_dbus_key(interface)))
-                    #_print_interfaces_and_properties(interfaces_and_properties)
+                    if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
+                        print(" P {}".format(_sanitize_dbus_key(interface)))
+                        #_print_interfaces_and_properties(interfaces_and_properties)
+                    else:  # It's a raw device, what we're looking for!
+                        db_remove_disk(_extract_dbus_blockpath(object_path))
+                        print(" B {} from key: {}".format(_sanitize_dbus_key(interface), machine_state_uuid))
+                        #_print_interfaces_and_properties(interfaces_and_properties)
 
             elif 'drives' in object_path:
                 print(" D {}".format(_sanitize_dbus_key(interface)))
