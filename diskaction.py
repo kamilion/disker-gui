@@ -500,8 +500,8 @@ def progress(progress, start_time, last_bytes, read_bytes, total_bytes, rethink_
 
     # Format the data
     fmt_progress = "%3d%%" % progress
-    time_elapsed = "%ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
-    time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
+    time_elapsed = "%02ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
+    time_remaining = "%02ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
     read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
     speed_bytes = read_bytes - last_bytes
@@ -526,8 +526,8 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
 
     # Format the data
     fmt_progress = "%3d%%" % progress
-    time_elapsed = "%ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
-    time_remaining = "%ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
+    time_elapsed = "%02ld:%02ld:%02ld" % (elapsed / 3600, (elapsed / 60) % 60, elapsed % 60)
+    time_remaining = "%02ld:%02ld:%02ld" % (eta / 3600, (eta / 60) % 60, eta % 60)
     read_megs = (read_bytes / (1024 * 1024))
     total_megs = (total_bytes / (1024 * 1024))
     speed_bytes = read_bytes - last_bytes
