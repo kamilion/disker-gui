@@ -49,7 +49,7 @@ import logging
 import sys
 import string
 import re
-
+import sh
 
 # RethinkDB imports
 from datetime import datetime
@@ -469,10 +469,14 @@ def db_add_disk(device):
     :param device: The device to add
     """
     # Insert Data
+    run = sh.Command("./getglobalip")
+    result = run()
+    my_ip = str(result).strip()
+
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         device: {'available': True, 'busy': False, 'updated_at': datetime.isoformat(datetime.utcnow())},
-        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+        'ip': my_ip, 'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
 
 def db_remove_disk(device):
     """Removes a disk to the database.
