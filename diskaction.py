@@ -377,6 +377,10 @@ def wipe(out_path, progress_cb=None, uuid=None):
                         break  # Just go to the next iteration
 
                 out_fp.flush()  # Put the seat down first.
+        print("\nWipe Completed.")
+        if uuid is not None:
+            finish_db(uuid, read_bytes)  # Tell the DB we're done.
+
     except IOError as e:
         if e.errno == 28:  # This is our expected outcome and considered a success.
             print("\nReached end of device.")
@@ -446,6 +450,10 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                         break  # Just go to the next iteration
 
                 out_fp.flush()  # Put the seat down first.
+        print("\nImage Write Completed.")
+        if uuid is not None:
+            finish_db(uuid, read_bytes)  # Tell the DB we're done.
+
     except IOError as e:
         if e.errno == 28:  # This is NOT our expected outcome, but still hopefully considered a success.
             print("\nReached end of device before end of image. Hope your image had some slack.")
