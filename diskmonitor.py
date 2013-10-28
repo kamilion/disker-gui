@@ -56,16 +56,12 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-try:
-    conn = r.connect()  # We don't select a specific database or table.
-    print("LocalDB: Connected to rethinkdb successfully.")
-except RqlDriverError:
-    print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
-
 # noinspection PyUnresolvedReferences
-from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
-machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
+conn = connect_db(None)
+
+machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
 print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
 
 from dbus import Array, SystemBus, Interface

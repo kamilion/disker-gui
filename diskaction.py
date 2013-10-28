@@ -3,6 +3,7 @@
 import os
 import sys
 import sh
+import string
 from time import time
 from optparse import OptionParser
 
@@ -11,22 +12,18 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-try:
-    conn = r.connect()  # We don't select a specific database or table.
-    print("LocalDB: Connected to rethinkdb successfully.")
-except RqlDriverError:
-    print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
-
 # noinspection PyUnresolvedReferences
-from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
-machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
+conn = connect_db(None)
+
+machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
 print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
 
 
 def verify_db_tables():
     try:
-        verify_db_table('wipe_results')
+        verify_db_table(conn, 'wipe_results')
     except RqlRuntimeError:
         print("LocalDB: wanwipe database verified.")
 
@@ -342,6 +339,9 @@ def wipe(out_path, progress_cb=None, uuid=None):
     total_bytes = get_size(out_path)  # Get the size of the device.
 
     try:
+        my_device_list = string.split(str(target_device.device_node), "/")
+        my_device_list.remove('dev')
+        my_device = ''.join(my_device_list)
         with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
             with open(out_path, 'wb') as out_fp:
                 buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
@@ -379,24 +379,24 @@ def wipe(out_path, progress_cb=None, uuid=None):
                 out_fp.flush()  # Put the seat down first.
         print("\nWipe Completed.")
         if uuid is not None:
-            finish_db(uuid, read_bytes)  # Tell the DB we're done.
+            finish_db(uuid, my_device, read_bytes)  # Tell the DB we're done.
 
     except IOError as e:
         if e.errno == 28:  # This is our expected outcome and considered a success.
             print("\nReached end of device.")
             if uuid is not None:
-                finish_db(uuid, read_bytes)  # Tell the DB we're done.
+                finish_db(uuid, my_device, read_bytes)  # Tell the DB we're done.
         elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
             if uuid is not None:
-                abort_db(uuid)
+                abort_db(uuid, my_device)
             sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
         else:  # No sir, linux didn't like that.
             if uuid is not None:
-                abort_db(uuid)
+                abort_db(uuid, my_device)
             sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except KeyboardInterrupt:  # Something or someone injected a ^C.
         if uuid is not None:
-            abort_db(uuid)
+            abort_db(uuid, my_device)
         sys.exit("\nAborted")  # Bail out without a traceback.
 
 
@@ -417,6 +417,9 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
     total_bytes = os.stat(in_path).st_size  # Figure out the size of the source.
 
     try:
+        my_device_list = string.split(str(target_device.device_node), "/")
+        my_device_list.remove('dev')
+        my_device = ''.join(my_device_list)
         with open(in_path, 'rb') as in_fp:
             with open(out_path, 'wb') as out_fp:
                 while True:
@@ -452,29 +455,29 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
                 out_fp.flush()  # Put the seat down first.
         print("\nImage Write Completed.")
         if uuid is not None:
-            finish_db(uuid, read_bytes)  # Tell the DB we're done.
+            finish_db(uuid, my_device, read_bytes)  # Tell the DB we're done.
 
     except IOError as e:
         if e.errno == 28:  # This is NOT our expected outcome, but still hopefully considered a success.
             print("\nReached end of device before end of image. Hope your image had some slack.")
             if uuid is not None:
-                finish_db(uuid, read_bytes)  # Tell the DB we're done.
+                finish_db(uuid, my_device, read_bytes)  # Tell the DB we're done.
         elif e.errno == 13:  # You no like passport? I understand. I come back again with better one.
             if uuid is not None:
-                abort_db(uuid)
+                abort_db(uuid, my_device)
             sys.exit("\nYou don't have permission to write to that device node. Try again as the superuser, perhaps?")
         else:  # No sir, linux didn't like that.
             if uuid is not None:
-                abort_db(uuid)
+                abort_db(uuid, my_device)
             sys.exit("\nOperating system reports an I/O error number {0}: {1}".format(e.errno, e.strerror))
     except EOFError:  # This is our expected outcome and considered a success.
         print("\nReached end of Image file.")
         if uuid is not None:
-            finish_db(uuid, read_bytes)  # Tell the DB we're done.
+            finish_db(uuid, my_device, read_bytes)  # Tell the DB we're done.
 
     except KeyboardInterrupt:  # Something or someone injected a ^C.
         if uuid is not None:
-            abort_db(uuid)
+            abort_db(uuid, my_device)
         sys.exit("\nAborted")  # Bail out without a traceback.
 
 
@@ -565,9 +568,10 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
     sys.stdout.flush()  # Flush the stdout buffer to the screen.
 
 
-def abort_db(rethink_uuid):
+def abort_db(rethink_uuid, db_device):
     """Finishes a document that has been updating with progress_db.
     :param rethink_uuid: The rethink UUID to finish
+    :param db_device: The bare name of the device ('sda', 'sdb')
     """
     # Insert Data
     # noinspection PyUnusedLocal
@@ -575,12 +579,18 @@ def abort_db(rethink_uuid):
          'in_progress': False, 'finished': False, 'completed': True,
          'failed': True, 'success': False,  'updated_at': datetime.isoformat(datetime.utcnow()),
          'finished_at': datetime.isoformat(datetime.utcnow())}).run(conn)
+    # noinspection PyUnusedLocal
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        db_device: {'available': True, 'busy': False, 'wipe_completed': False, 'aborted': True,
+                    'updated_at': datetime.isoformat(datetime.utcnow())},
+        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
-def finish_db(rethink_uuid, read_bytes):
+def finish_db(rethink_uuid, db_device, read_bytes):
     """Finishes a document that has been updating with progress_db.
     :param rethink_uuid: The rethink UUID to finish
+    :param db_device: The bare name of the device ('sda', 'sdb')
     :param read_bytes: Total number of bytes that were read.
     """
     read_megs = (read_bytes / (1024 * 1024))
@@ -592,14 +602,20 @@ def finish_db(rethink_uuid, read_bytes):
          'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
          'failed': False, 'success': True, 'updated_at': datetime.isoformat(datetime.utcnow()),
          'finished_at': datetime.isoformat(datetime.utcnow())}).run(conn)
+    # noinspection PyUnusedLocal
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        db_device: {'available': True, 'busy': False, 'wipe_completed': True, 'aborted': False,
+                    'updated_at': datetime.isoformat(datetime.utcnow())},
+        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
-def create_db(device):
+def create_db(device, db_device):
     """Creates a document to update with progress_db.
     :param device: The device object
+    :param db_device: The bare name of the device ('sda', 'sdb')
     """
-    verify_db_table('wipe_results')
+    verify_db_table(conn, 'wipe_results')
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').insert({
          'started_at': datetime.isoformat(datetime.utcnow()), 'updated_at': datetime.isoformat(datetime.utcnow()),
@@ -610,6 +626,11 @@ def create_db(device):
          'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
+    # noinspection PyUnusedLocal
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        db_device: {'available': False, 'busy': True, 'wipe_results': inserted['generated_keys'][0],
+                    'updated_at': datetime.isoformat(datetime.utcnow())},
+        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
     return inserted['generated_keys'][0]
 
 
@@ -708,14 +729,20 @@ if __name__ == '__main__':
                 if options.no_db:
                     image(options.image_file, target_device.device_node, progress)
                 else:
-                    uuid = create_db(target_device)
+                    my_device_list = string.split(str(target_device.device_node), "/")
+                    my_device_list.remove('dev')
+                    my_device = ''.join(my_device_list)
+                    uuid = create_db(target_device, my_device)
                     image(options.image_file, target_device.device_node, progress_db, uuid)
 
         else:  # Get out the big crayon!
             if options.no_db:
                 wipe(target_device.device_node, progress)
             else:
-                uuid = create_db(target_device)
+                my_device_list = string.split(str(target_device.device_node), "/")
+                my_device_list.remove('dev')
+                my_device = ''.join(my_device_list)
+                uuid = create_db(target_device, my_device)
                 wipe(target_device.device_node, progress_db, uuid)
 
         # We've finished writing to the device.

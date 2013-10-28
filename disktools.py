@@ -13,24 +13,21 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-try:
-    conn = r.connect()  # We don't select a specific database or table.
-    print("LocalDB: Connected to rethinkdb successfully.")
-except RqlDriverError:
-    print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
-
 # noinspection PyUnresolvedReferences
-from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
-machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
+conn = None
+conn = connect_db(conn)
+
+machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
 print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
 
 ### Local functions
-def verify_db_tables():
+def verify_db_tables(conn):
     try:
-        verify_db_machine_state()
-        verify_db_table('disk_results')
-        verify_db_table('job_results')
+        verify_db_machine_state(conn)
+        verify_db_table(conn, 'disk_results')
+        verify_db_table(conn, 'job_results')
     except RqlRuntimeError:
         print("LocalDB: wanwipe database verified.")
 
@@ -39,12 +36,18 @@ def verify_db_tables():
 
 #  This will end up in the failed queue
 def broken_mirror(device):
-    raise Filesystem.GenericError("A Million Shades of Light")
-    return None
+    raise NotImplementedError("A Million Shades of Light")
+
+
+def start_wipe(device):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("./diskaction.py")
+    result = run("-f", "-d", str(device))
+    return str(device)
 
 
 def get_disk_info(device):
-    verify_db_tables()  # Verify DB and tables exist
+    verify_db_tables(conn)  # Verify DB and tables exist
     # Insert Data
     inserted = r.db('wanwipe').table('disk_results').insert({
         'serial': get_disk_sdinfo(device), 'throughput': get_disk_throughput(device),
@@ -189,7 +192,7 @@ def read_values(device):
     disk_record["created_at"] = datetime.isoformat(datetime.utcnow())
     disk_record["updated_at"] = datetime.isoformat(datetime.utcnow())
 
-    verify_db_tables()  # Verify DB and Tables exist
+    verify_db_tables(conn)  # Verify DB and Tables exist
     disk_inserted = r.db('wanwipe').table('disk_results').insert(disk_record).run(conn)
     record_id = disk_inserted['generated_keys'][0]
     print("Inserted disk information as record UUID: {}".format(record_id))

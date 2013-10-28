@@ -3,23 +3,15 @@
 # System imports
 import os
 from time import sleep, time
+from optparse import OptionParser
 
 # RethinkDB imports
 from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-try:
-    conn = r.connect()  # We don't select a specific database or table.
-    print("LocalDB: Connected to rethinkdb successfully.")
-except RqlDriverError:
-    print("LocalDB: Failed to connect to rethinkdb. Check the daemon status and try again.")
-
 # noinspection PyUnresolvedReferences
-from diskerbasedb import verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
-
-machine_state_uuid = find_machine_state()  # Verifies DB Automatically.
-print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
+from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
 
 # GTK imports
 # noinspection PyUnresolvedReferences
@@ -29,10 +21,8 @@ from gi.repository import Gtk, Gdk
 import redis
 from rq import Queue, Worker, job
 # Local imports
-from disktools import get_disk_info, get_disk_throughput, read_values, broken_mirror
+#from disktools import get_disk_info, get_disk_throughput, read_values, broken_mirror
 
-# Redis queue connection setup so we can pass authentication
-q = Queue(connection=redis.StrictRedis(host='localhost', port=6379, db=0, password=None))
 
 UI_INFO = """
 <ui>
@@ -80,39 +70,39 @@ class M3Window(Gtk.Window):
 
         self.grid = self.create_grid()
 
-        self.button1 = Gtk.Button(label="/dev/sda")
-        self.button2 = Gtk.Button(label="/dev/sdb")
-        self.button3 = Gtk.Button(label="/dev/sdc")
-        self.button4 = Gtk.Button(label="/dev/sdd")
-        self.button5 = Gtk.Button(label="/dev/sde")
-        self.button6 = Gtk.Button(label="/dev/sdf")
-        self.button7 = Gtk.Button(label="/dev/sdg")
-        self.button8 = Gtk.Button(label="/dev/sdh")
-        self.button9 = Gtk.Button(label="/dev/sdi")
-        self.button10 = Gtk.Button(label="/dev/sdj")
-        self.button11 = Gtk.Button(label="/dev/sdk")
-        self.button12 = Gtk.Button(label="/dev/sdl")
-        self.button13 = Gtk.Button(label="/dev/sdm")
-        self.button14 = Gtk.Button(label="/dev/sdn")
-        self.button15 = Gtk.Button(label="/dev/sdo")
-        self.button16 = Gtk.Button(label="/dev/sdp")
+        self.button1 = Gtk.Button(label="/dev/sdb")
+        self.button2 = Gtk.Button(label="/dev/sdc")
+        self.button3 = Gtk.Button(label="/dev/sdd")
+        self.button4 = Gtk.Button(label="/dev/sde")
+        self.button5 = Gtk.Button(label="/dev/sdf")
+        self.button6 = Gtk.Button(label="/dev/sdg")
+        self.button7 = Gtk.Button(label="/dev/sdh")
+        self.button8 = Gtk.Button(label="/dev/sdi")
+        self.button9 = Gtk.Button(label="/dev/sdj")
+        self.button10 = Gtk.Button(label="/dev/sdk")
+        self.button11 = Gtk.Button(label="/dev/sdl")
+        self.button12 = Gtk.Button(label="/dev/sdm")
+        self.button13 = Gtk.Button(label="/dev/sdn")
+        self.button14 = Gtk.Button(label="/dev/sdo")
+        self.button15 = Gtk.Button(label="/dev/sdp")
+        self.button16 = Gtk.Button(label="/dev/sdq")
 
-        self.button1.connect("clicked", self.on_disk_button_clicked, "/dev/sda")
-        self.button2.connect("clicked", self.on_disk_button_clicked, "/dev/sdb")
-        self.button3.connect("clicked", self.on_disk_button_clicked, "/dev/sdc")
-        self.button4.connect("clicked", self.on_disk_button_clicked, "/dev/sdd")
-        self.button5.connect("clicked", self.on_disk_button_clicked, "/dev/sde")
-        self.button6.connect("clicked", self.on_disk_button_clicked, "/dev/sdf")
-        self.button7.connect("clicked", self.on_disk_button_clicked, "/dev/sdg")
-        self.button8.connect("clicked", self.on_disk_button_clicked, "/dev/sdh")
-        self.button9.connect("clicked", self.on_disk_button_clicked, "/dev/sdi")
-        self.button10.connect("clicked", self.on_disk_button_clicked, "/dev/sdj")
-        self.button11.connect("clicked", self.on_disk_button_clicked, "/dev/sdk")
-        self.button12.connect("clicked", self.on_disk_button_clicked, "/dev/sdl")
-        self.button13.connect("clicked", self.on_disk_button_clicked, "/dev/sdm")
-        self.button14.connect("clicked", self.on_disk_button_clicked, "/dev/sdn")
-        self.button15.connect("clicked", self.on_disk_button_clicked, "/dev/sdo")
-        self.button16.connect("clicked", self.on_disk_button_clicked, "/dev/sdp")
+        self.button1.connect("clicked", self.on_disk_button_clicked, "/dev/sdb")
+        self.button2.connect("clicked", self.on_disk_button_clicked, "/dev/sdc")
+        self.button3.connect("clicked", self.on_disk_button_clicked, "/dev/sdd")
+        self.button4.connect("clicked", self.on_disk_button_clicked, "/dev/sde")
+        self.button5.connect("clicked", self.on_disk_button_clicked, "/dev/sdf")
+        self.button6.connect("clicked", self.on_disk_button_clicked, "/dev/sdg")
+        self.button7.connect("clicked", self.on_disk_button_clicked, "/dev/sdh")
+        self.button8.connect("clicked", self.on_disk_button_clicked, "/dev/sdi")
+        self.button9.connect("clicked", self.on_disk_button_clicked, "/dev/sdj")
+        self.button10.connect("clicked", self.on_disk_button_clicked, "/dev/sdk")
+        self.button11.connect("clicked", self.on_disk_button_clicked, "/dev/sdl")
+        self.button12.connect("clicked", self.on_disk_button_clicked, "/dev/sdm")
+        self.button13.connect("clicked", self.on_disk_button_clicked, "/dev/sdn")
+        self.button14.connect("clicked", self.on_disk_button_clicked, "/dev/sdo")
+        self.button15.connect("clicked", self.on_disk_button_clicked, "/dev/sdp")
+        self.button16.connect("clicked", self.on_disk_button_clicked, "/dev/sdq")
 
         self.grid.attach(self.button1, 0, 0, 1, 1)
         self.grid.attach(self.button2, 1, 0, 1, 1)
@@ -179,7 +169,7 @@ class M3Window(Gtk.Window):
         return uimanager
 
     def on_menu_make_it_go(self, widget):
-        job = q.enqueue(get_disk_info, "/dev/sda")
+        job = q.enqueue_call('disktools.broken_mirror', ["/dev/sdd"])
         print job
         while job.result is None:
             sleep(0.1)
@@ -202,7 +192,13 @@ class M3Window(Gtk.Window):
 
     def on_disk_button_clicked(self, widget, device):
         which_button = "{}".format(device)
-        job = q.enqueue(read_values, which_button)
+        job = q.enqueue_call('disktools.start_wipe', [which_button])
+        print job
+        widget.set_label("Wiping")
+
+    def on_button_clicked(self, widget):
+        which_button = "{}".format(widget.get_label().decode('utf-8'))
+        job = q.enqueue_call('disktools.read_values', [which_button])
         print job
         t_beginning = time()
         seconds_passed = 0
@@ -213,18 +209,35 @@ class M3Window(Gtk.Window):
             if timeout and seconds_passed > timeout:
                 break  # just forget about the job
         print job.result
-        widget.set_label(job.result)
-
-    def on_button_clicked(self, widget):
-        which_button = "{}".format(widget.get_label().decode('utf-8'))
-        job = q.enqueue(get_disk_info, which_button)
-        print job
-        while job.result is None:
-            sleep(0.1)
-        print job.result
 
 
-if __name__ == "__main__":
+# If we're invoked as a program; instead of imported as a class...
+if __name__ == '__main__':
+    # Create the option parser object
+    parser = OptionParser(usage='Usage: %prog [options]')
+
+    # Define command line options we'll respond to.
+    parser.add_option('-c', '--connect', action='store', dest='hostname',
+                      help='Manually select an image file. This image file must exist and be valid. Omitting this option will wipe a disk instead.')
+    parser.add_option('-f', '--force', action='store_true', dest='force',
+                      help='Force actions. This option will not prompt for confirmation before writing to a device, and implies the -u|--unmount option!')
+    parser.add_option('-u', '--unmount', action='store_true', dest='unmount',
+                      help='Unmount any mounted partitions on a device. This option will not prompt for unmounting any mounted partitions.')
+
+    # If -h or --help are passed, the above will be displayed.
+    options, args = parser.parse_args()
+
+    if options.hostname:
+        myhostname = options.hostname
+    else:
+        myhostname = 'localhost'
+
+    # Redis queue connection setup so we can pass authentication
+    q = Queue(connection=redis.StrictRedis(host=myhostname, port=6379, db=0, password=None))
+
+    print("Trying to connect to Rethink...")
+    conn = connect_db(None, myhostname)
+
     window = M3Window()
     window.connect("delete-event", Gtk.main_quit)
     window.show_all()
