@@ -557,7 +557,7 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
         {'progress': fmt_progress, 'progress_bar': bar,
-         'updated_at': datetime.isoformat(datetime.utcnow()),
+         'updated_at': r.iso8601(r.now()),
          'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
          'speed_megs': speed_megs, 'speed_bytes': speed_bytes,
          'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
@@ -577,13 +577,13 @@ def abort_db(rethink_uuid, db_device):
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
          'in_progress': False, 'finished': False, 'completed': True,
-         'failed': True, 'success': False,  'updated_at': datetime.isoformat(datetime.utcnow()),
-         'finished_at': datetime.isoformat(datetime.utcnow())}).run(conn)
+         'failed': True, 'success': False,  'updated_at': r.iso8601(r.now()),
+         'finished_at': r.iso8601(r.now())}).run(conn)
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         db_device: {'available': True, 'busy': False, 'wipe_completed': False, 'aborted': True,
-                    'updated_at': datetime.isoformat(datetime.utcnow())},
-        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+                    'updated_at': r.iso8601(r.now())},
+        'updated_at': r.iso8601(r.now())}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
@@ -600,13 +600,13 @@ def finish_db(rethink_uuid, db_device, read_bytes):
          'in_progress': False, 'finished': True, 'completed': True,
          'progress': "100%", 'progress_bar': "==============================",
          'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
-         'failed': False, 'success': True, 'updated_at': datetime.isoformat(datetime.utcnow()),
-         'finished_at': datetime.isoformat(datetime.utcnow())}).run(conn)
+         'failed': False, 'success': True, 'updated_at': r.iso8601(r.now()),
+         'finished_at': r.iso8601(r.now())}).run(conn)
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         db_device: {'available': True, 'busy': False, 'wipe_completed': True, 'aborted': False,
-                    'updated_at': datetime.isoformat(datetime.utcnow())},
-        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+                    'updated_at': r.iso8601(r.now())},
+        'updated_at': r.iso8601(r.now())}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
 
@@ -618,7 +618,7 @@ def create_db(device, db_device):
     verify_db_table(conn, 'wipe_results')
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').insert({
-         'started_at': datetime.isoformat(datetime.utcnow()), 'updated_at': datetime.isoformat(datetime.utcnow()),
+         'started_at': r.iso8601(r.now()), 'updated_at': r.iso8601(r.now()),
          'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
          'wwn': device.wwn_id, 'wwn_long': device.wwn_long, 'finished': False, 'completed': False,
          'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
@@ -629,8 +629,8 @@ def create_db(device, db_device):
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         db_device: {'available': False, 'busy': True, 'wipe_results': inserted['generated_keys'][0],
-                    'updated_at': datetime.isoformat(datetime.utcnow())},
-        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+                    'updated_at': r.iso8601(r.now())},
+        'updated_at': r.iso8601(r.now())}).run(conn)  # Update the record timestamp.
     return inserted['generated_keys'][0]
 
 

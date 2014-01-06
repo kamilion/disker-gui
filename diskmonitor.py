@@ -471,8 +471,8 @@ def db_add_disk(device):
 
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
-        device: {'available': True, 'busy': False, 'updated_at': datetime.isoformat(datetime.utcnow())},
-        'ip': my_ip, 'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+        device: {'available': True, 'busy': False, 'updated_at': r.iso8601(r.now())},
+        'ip': my_ip, 'updated_at': r.iso8601(r.now())}).run(conn)  # Update the record timestamp.
 
 def db_remove_disk(device):
     """Removes a disk to the database.
@@ -482,7 +482,7 @@ def db_remove_disk(device):
     # noinspection PyUnusedLocal
     replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
-        'updated_at': datetime.isoformat(datetime.utcnow())}).run(conn)  # Update the record timestamp.
+        'updated_at': r.iso8601(r.now())}).run(conn)  # Update the record timestamp.
 
 
 def main():

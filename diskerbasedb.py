@@ -76,7 +76,7 @@ def create_machine_state(conn):
     try:
         inserted = r.db('wanwipe').table('machine_state').insert({
             'machine_id': machine_id, 'boot_id': boot_id,
-            'updated_at': datetime.isoformat(datetime.utcnow())
+            'updated_at': r.iso8601(r.now())
         }).run(conn)
         print("BaseDB: machine_state created: {}".format(inserted['generated_keys'][0]))
         return inserted['generated_keys'][0]

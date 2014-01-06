@@ -51,7 +51,7 @@ def get_disk_info(device):
     # Insert Data
     inserted = r.db('wanwipe').table('disk_results').insert({
         'serial': get_disk_sdinfo(device), 'throughput': get_disk_throughput(device),
-        'updated_at': datetime.isoformat(datetime.utcnow())
+        'updated_at': r.iso8601(r.now())
     }).run(conn)
     return inserted['generated_keys'][0]
 
@@ -189,8 +189,8 @@ def read_values(device):
         disk_record["throughput"] = "Failed"
 
     disk_record["last_known_as"] = device
-    disk_record["created_at"] = datetime.isoformat(datetime.utcnow())
-    disk_record["updated_at"] = datetime.isoformat(datetime.utcnow())
+    disk_record["created_at"] = r.iso8601(r.now())
+    disk_record["updated_at"] = r.iso8601(r.now())
 
     verify_db_tables(conn)  # Verify DB and Tables exist
     disk_inserted = r.db('wanwipe').table('disk_results').insert(disk_record).run(conn)
