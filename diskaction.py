@@ -580,9 +580,9 @@ def abort_db(rethink_uuid, db_device):
          'failed': True, 'success': False,  'updated_at': r.now(),
          'finished_at': r.now()}).run(conn)
     # noinspection PyUnusedLocal
-    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
         db_device: {'available': True, 'busy': False, 'wipe_completed': False, 'aborted': True,
-                    'updated_at': r.now()},
+                    'updated_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
@@ -603,9 +603,9 @@ def finish_db(rethink_uuid, db_device, read_bytes):
          'failed': False, 'success': True, 'updated_at': r.now(),
          'finished_at': r.now()}).run(conn)
     # noinspection PyUnusedLocal
-    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
         db_device: {'available': True, 'busy': False, 'wipe_completed': True, 'aborted': False,
-                    'updated_at': r.now()},
+                    'updated_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
     print("\nDB: Finished writing to key: {}".format(rethink_uuid))
 
@@ -627,9 +627,9 @@ def create_db(device, db_device):
          'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
     # noinspection PyUnusedLocal
-    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+    machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
         db_device: {'available': False, 'busy': True, 'wipe_results': inserted['generated_keys'][0],
-                    'updated_at': r.now()},
+                    'updated_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
     return inserted['generated_keys'][0]
 
