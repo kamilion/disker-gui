@@ -20,7 +20,7 @@ conn = None
 conn = connect_db(conn)
 
 machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
-print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
+print("LocalDB: DiskTools found a machine state: {}".format(machine_state_uuid))
 
 ### Local functions
 def verify_db_tables(conn):

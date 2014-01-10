@@ -50,6 +50,8 @@ import sys
 import string
 import re
 
+from datetime import datetime
+
 # RethinkDB imports
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
@@ -60,7 +62,9 @@ from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, v
 conn = connect_db(None)
 
 machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
-print("LocalDB: Found a machine state: {}".format(machine_state_uuid))
+print("LocalDB: DiskMonitor found a machine state: {}".format(machine_state_uuid))
+
+from disktools import get_disk_sdinfo
 
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException
@@ -438,17 +442,18 @@ def _print_interfaces_and_properties(interfaces_and_properties):
     GetManagedObjects() for example. See this for details:
         http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
     """
+    t = "{}".format(datetime.isoformat(datetime.now()))
     for interface_name, properties in interfaces_and_properties.items():
-        print("   - Interface {}".format(_sanitize_dbus_key(interface_name)))
+        print("{}:   - Interface {}".format(t, _sanitize_dbus_key(interface_name)))
         for prop_name, prop_value in properties.items():
             # Ignore the spammy properties...
             spammy = ["Symlinks", "PreferredDevice", "Device", "Configuration", "MountPoints", "MediaCompatibility"]
             if prop_name not in spammy:
                 prop_value = _sanitize_dbus_value(prop_value)
                 if prop_value not in [0, "0", "/", ""]:
-                    print("     T Property {}: {}".format(prop_name, prop_value))
+                    print("{}:     T Property {}: {}".format(t, prop_name, prop_value))
                 else:
-                    print("     F Property {}: {}".format(prop_name, prop_value))
+                    print("{}:     F Property {}: {}".format(t, prop_name, prop_value))
 
 
 # Hacky little hack for filtering partition devices
@@ -463,9 +468,11 @@ def db_add_disk(device):
     """Adds a disk to the database.
     :param device: The device to add
     """
+    disk_id = get_disk_sdinfo("/dev/{}".format(device))
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
-        device: {'available': True, 'busy': False, 'updated_at': r.now(), 'discovered_at': r.now()}},
+        device: {'target': device, 'available': True, 'busy': False, 'disk_id': disk_id,
+                 'updated_at': r.now(), 'discovered_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
 
 
@@ -479,8 +486,24 @@ def db_remove_disk(device):
     #    'updated_at': r.now()}).run(conn)  # Update the record timestamp.
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
-        device: {'available': False, 'busy': False, 'updated_at': r.now(), 'removed_at': r.now()}},
+        device: {'target': device, 'available': False, 'busy': False, 'updated_at': r.now(), 'removed_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+
+def db_refresh():
+    """Refresh the timestamp on the database entry to act as a heartbeat.
+    """
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+        'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+
+
+def timer_fired():
+    """Do periodic housekeeping tasks.
+    """
+    db_refresh()  # Refresh the timestamp on the machine_state
+    print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
+
+    return True  # To fire the timer again.
 
 
 def main():
@@ -507,34 +530,35 @@ def main():
 
     # Let's print everything we know about initially for the users to see
     def print_initial_objects(managed_objects):
-        print("Known:")
+        t = "{}".format(datetime.isoformat(datetime.now()))
+        print("{}: Known:".format(t))
         for object_path, interfaces_and_properties in managed_objects.items():
             if 'block_devices' in object_path:
                 # Is it special? (Ram, loopback, optical)
                 if 'ram' in object_path:
                     pass  # It's a ramdisk. Do not want.
-                    #print(" R {}".format(object_path))
+                    #print("{}: R {}".format(t, object_path))
                 elif 'loop' in object_path:
                     pass  # It's a loopback. Do not want.
-                    #print(" L {}".format(object_path))
+                    #print("{}: L {}".format(t, object_path))
                 elif 'sr' in object_path:
                     pass  # It's an optical. Do not want.
-                    #print(" O {}".format(object_path))
+                    #print("{}: O {}".format(t, object_path))
                 else:  # It's a normal block_device.
                     if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
-                        print(" P {}".format(_sanitize_dbus_path(object_path)))
+                        print("{}: P {}".format(t, _sanitize_dbus_path(object_path)))
                         #_print_interfaces_and_properties(interfaces_and_properties)
                     else:  # It's a raw device, what we're looking for!
                         db_add_disk(_extract_dbus_blockpath(object_path))
-                        print(" B {} to key: {}".format(_sanitize_dbus_path(object_path), machine_state_uuid))
+                        print("{}: B {} to key: {}".format(t, _sanitize_dbus_path(object_path), machine_state_uuid))
                         #_print_interfaces_and_properties(interfaces_and_properties)
 
             elif 'drives' in object_path:
                 if not _check_property(interfaces_and_properties, 'MediaRemovable'):
-                    print(" D {}".format(_sanitize_dbus_path(object_path)))
+                    print("{}: D {}".format(t, _sanitize_dbus_path(object_path)))
                     #_print_interfaces_and_properties(interfaces_and_properties)
             else:  # Not a block_device or a drive, eh?
-                print(" * {}".format(_sanitize_dbus_path(object_path)))
+                print("{}: * {}".format(t, _sanitize_dbus_path(object_path)))
                 _print_interfaces_and_properties(interfaces_and_properties)
         sys.stdout.flush()
     observer.on_initial_objects.connect(print_initial_objects)
@@ -544,6 +568,7 @@ def main():
     # means that all objects that are added/removed will be advertised through
     # this mechanism
     def print_interfaces_added(object_path, interfaces_and_properties):
+        t = "{}".format(datetime.isoformat(datetime.now()))
         if 'block_devices' in object_path:
             # Is it special? (Ram, loopback, optical)
             if 'ram' in object_path:
@@ -554,22 +579,22 @@ def main():
                 pass  # It's an optical. Do not want.
             else:  # It's a normal block_device.
                 if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
-                    print("Gained:\n P {}".format(_sanitize_dbus_path(object_path)))
+                    print("{}: Gained:\n{}: P {}".format(t, t, _sanitize_dbus_path(object_path)))
                     #_print_interfaces_and_properties(interfaces_and_properties)
                 else:  # It's a raw device, what we're looking for!
                     db_add_disk(_extract_dbus_blockpath(object_path))
-                    print("Gained:\n B {} to key: {}".format(_sanitize_dbus_path(object_path), machine_state_uuid))
+                    print("{}: Gained:\n{}: B {} to key: {}".format(t, t, _sanitize_dbus_path(object_path), machine_state_uuid))
                     #_print_interfaces_and_properties(interfaces_and_properties)
 
         elif 'drives' in object_path:
             if not _check_property(interfaces_and_properties, 'MediaRemovable'):
-                print("Gained:\n D {}".format(_sanitize_dbus_path(object_path)))
+                print("{}: Gained:\n{}: D {}".format(t, t, _sanitize_dbus_path(object_path)))
                 #_print_interfaces_and_properties(interfaces_and_properties)
         elif 'jobs' in object_path:
-            print("Gained:\n J {}".format(_sanitize_dbus_path(object_path)))
+            print("{}: Gained:\n{}: J {}".format(t, t, _sanitize_dbus_path(object_path)))
             _print_interfaces_and_properties(interfaces_and_properties)
         else:  # Not a block_device or a drive, eh?
-            print("Gained:\n * {}".format(_sanitize_dbus_path(object_path)))
+            print("{}: Gained:\n{}: * {}".format(t, t, _sanitize_dbus_path(object_path)))
 
         #_print_interfaces_and_properties(interfaces_and_properties)
         sys.stdout.flush()
@@ -579,7 +604,8 @@ def main():
     # out explicitly but it seems that objects with no interfaces left are
     # simply gone. We'll treat them as such
     def print_interfaces_removed(object_path, interfaces):
-        print("Lost {}:".format(_sanitize_dbus_path(object_path)))
+        t = "{}".format(datetime.isoformat(datetime.now()))
+        print("{}: Lost {}:".format(t, _sanitize_dbus_path(object_path)))
         for interface in interfaces:
             if 'block_devices' in object_path:
                 # Is it special? (Ram, loopback, optical)
@@ -591,20 +617,20 @@ def main():
                     pass  # It's an optical. Do not want.
                 else:  # It's a normal block_device.
                     if contains_digits(_sanitize_dbus_path(object_path)):  # It's a partition.
-                        print(" P {}".format(_sanitize_dbus_key(interface)))
+                        print("{}: P {}".format(t, _sanitize_dbus_key(interface)))
                         #_print_interfaces_and_properties(interfaces_and_properties)
                     else:  # It's a raw device, what we're looking for!
                         db_remove_disk(_extract_dbus_blockpath(object_path))
-                        print(" B {} from key: {}".format(_sanitize_dbus_key(interface), machine_state_uuid))
+                        print("{}: B {} from key: {}".format(t, _sanitize_dbus_key(interface), machine_state_uuid))
                         #_print_interfaces_and_properties(interfaces_and_properties)
 
             elif 'drives' in object_path:
-                print(" D {}".format(_sanitize_dbus_key(interface)))
+                print("{}: D {}".format(t, _sanitize_dbus_key(interface)))
                 #_print_interfaces_and_properties(interfaces_and_properties)
             elif 'jobs' in object_path:
-                print(" J {}".format(_sanitize_dbus_key(interface)))
+                print("{}: J {}".format(t, _sanitize_dbus_key(interface)))
             else:  # Not a block_device or a drive, eh?
-                print(" * {}".format(_sanitize_dbus_key(interface)))
+                print("{}: * {}".format(t, _sanitize_dbus_key(interface)))
         sys.stdout.flush()
     observer.on_interfaces_removed.connect(print_interfaces_removed)
 
@@ -629,14 +655,19 @@ def main():
             raise  # main_shield() will catch this one
 
     # Now start the event loop and just display any device changes
-    print("Waiting for device changes (press ctrl+c to exit)")
+    print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
+
+    # Start a timer to keep the machine_state entry refreshed
+    GObject.timeout_add_seconds(300, timer_fired)  # Five minutes should be good.
+
     logging.debug("Entering event loop")
     sys.stdout.flush()  # Explicitly flush to allow tee users to see things
     try:
         loop.run()
     except KeyboardInterrupt:
         loop.quit()
-    print("No longer monitoring for changes. Exited.")
+    print("")
+    print("{}: No longer monitoring for changes. Exited.".format(datetime.isoformat(datetime.now())))
 
 
 def main_shield():
