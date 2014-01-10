@@ -3,8 +3,9 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import sh
+
 # RethinkDB imports
-from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
@@ -66,6 +67,10 @@ def get_boot_id():
         data="".join(line.rstrip() for line in myfile)
     return data
 
+def get_global_ip():
+    run = sh.Command("./getglobalip")
+    result = run()
+    return str(result).strip()
 
 def create_machine_state(conn):
     """
@@ -73,10 +78,12 @@ def create_machine_state(conn):
     """
     machine_id = get_dbus_machine_id()
     boot_id = get_boot_id()
+    my_ip = get_global_ip()
+
     try:
         inserted = r.db('wanwipe').table('machine_state').insert({
             'machine_id': machine_id, 'boot_id': boot_id,
-            'updated_at': r.now()
+            'ip': my_ip, 'updated_at': r.now()
         }).run(conn)
         print("BaseDB: machine_state created: {}".format(inserted['generated_keys'][0]))
         return inserted['generated_keys'][0]

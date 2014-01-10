@@ -49,10 +49,8 @@ import logging
 import sys
 import string
 import re
-import sh
 
 # RethinkDB imports
-from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
@@ -460,28 +458,28 @@ def contains_digits(d):
 
 ### Fun with DBs
 
+
 def db_add_disk(device):
     """Adds a disk to the database.
     :param device: The device to add
     """
-    # Insert Data
-    run = sh.Command("./getglobalip")
-    result = run()
-    my_ip = str(result).strip()
-
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
-        device: {'available': True, 'busy': False, 'updated_at': r.now()},
-        'ip': my_ip, 'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
+        device: {'available': True, 'busy': False, 'updated_at': r.now(), 'discovered_at': r.now()}},
+        'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+
 
 def db_remove_disk(device):
     """Removes a disk to the database.
-    :param device: The device to add
+    :param device: The device to remove
     """
     # Insert Data r.table("posts").get("1").replace(r.row.without('author')).run()
+    #replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
+    #updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+    #    'updated_at': r.now()}).run(conn)  # Update the record timestamp.
     # noinspection PyUnusedLocal
-    replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
-    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
+        device: {'available': False, 'busy': False, 'updated_at': r.now(), 'removed_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
 
 
