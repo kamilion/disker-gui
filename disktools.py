@@ -43,7 +43,8 @@ def start_wipe(device):
     verify_db_tables(conn)  # Verify DB and tables exist
     run = sh.Command("./start_wipe.sh")
     result = run("-d", str(device), _bg=True)
-    return str(device)
+    return str(result)
+    #return str(device)
 
 
 def get_disk_info(device):
