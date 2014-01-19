@@ -50,7 +50,7 @@ def verify_db_index(conn, table, index):
 
 def verify_db_machine_state(conn):
     try:
-        verify_db_table(conn, table)
+        verify_db_table(conn, 'machine_state')
         verify_db_index(conn, 'machine_state', 'boot_id')
         verify_db_index(conn, 'machine_state', 'machine_id')
     except RqlRuntimeError:
