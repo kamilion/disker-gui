@@ -42,7 +42,6 @@ def verify_db_table(conn, table):
 
 def verify_db_index(conn, table, index):
     try:
-        verify_db_table(conn, table)
         result = r.db('wanwipe').table(table).index_create(index).run(conn)
         print("BaseDB: {} table index {} created: {}".format(table, index, result))
     except RqlRuntimeError:
@@ -51,6 +50,8 @@ def verify_db_index(conn, table, index):
 
 def verify_db_machine_state(conn):
     try:
+        verify_db_table(conn, table)
+        verify_db_index(conn, 'machine_state', 'boot_id')
         verify_db_index(conn, 'machine_state', 'machine_id')
     except RqlRuntimeError:
         print("BaseDB: machine_state table found.")
@@ -97,54 +98,16 @@ def find_machine_state(conn):
     """
     try:
         verify_db_machine_state(conn)  # First make sure our DB tables are all in order.
-        result = r.db('wanwipe').table('machine_state').get_all(get_dbus_machine_id(), index='machine_id').run(conn)
-        for document in result:  # Look over the returned documents.
-            if document.get('boot_id') == get_boot_id():  # Found a current state.
-                return document.get('id')  # Return the current state.
-            else:  # Found a previous state.
-                return create_machine_state(conn)  # Just create a machine state and return it if none exists.
-        print("BaseDB: couldn't find any machine_states. Creating new state.")
+        result = r.db('wanwipe').table('machine_state').get_all(get_boot_id(), index='boot_id').run(conn)
+        for document in result:  # Look over the returned documents. There should only be one, boot_id is unique.
+            print("BaseDB: machine_state query found a matching document: {}".format(document))
+            if document.get('machine_id') == get_dbus_machine_id():  # Found a current state for this machine.
+                return document.get('id')  # Return the current state, skipping the below.
+        print("BaseDB: couldn't find any machine_states. Creating new state.") # We didn't return above, so...
         return create_machine_state(conn)  # Just create a machine state and return it if none exists.
     except RqlRuntimeError as kaboom:
         print("BaseDB: machine_state lookup failed somehow: {}".format(kaboom))
 
-# ------------------------------------------------------------------------
-# Debugging
-# ------------------------------------------------------------------------
-
-def find_machine_state_loud(conn):
-    """
-    locate this machine's state in the database.
-    """
-    machine_id = get_dbus_machine_id()
-    boot_id = get_boot_id()
-    print("BaseDB: machine_state lookup...")
-
-    try:
-        result = r.db('wanwipe').table('machine_state').get_all(machine_id, index='machine_id').run(conn)
-        print("BaseDB: machine_state query was executed for {}.".format(machine_id))
-        for document in result:  # Look over the returned documents.
-            print("BaseDB: machine_state query found a matching document: {}".format(document))
-            #record_details = dir(document)
-            this_record_id = document.get('id')
-            this_machine_id = document.get('machine_id')
-            this_boot_id = document.get('boot_id')
-            record_details = "record id: {}:\n machine_id: {}, boot_id: {}".format(this_record_id, this_machine_id, this_boot_id)
-            print("BaseDB: machine_state document contains: {}".format(record_details))
-            if this_boot_id == boot_id:  # Found a current state.
-                print("BaseDB: machine_state query has located the current state: {}".format(this_record_id))
-                return this_record_id
-            else:  # Found a previous state!
-                print("BaseDB: machine_state query has located a previous state: {}".format(this_record_id))
-                new_state = create_machine_state(conn)  # Just create a machine state and return it if none exists.
-                print("BaseDB: machine_state query has created a new state: {}".format(new_state))
-                return new_state
-        print("BaseDB: machine_state query returned no documents.")
-        new_state = create_machine_state(conn)  # Just create a machine state and return it if none exists.
-        print("BaseDB: machine_state query has created a new state: {}".format(new_state))
-        return new_state
-    except RqlRuntimeError as kaboom:
-        print("BaseDB: machine_state lookup failed somehow: {}".format(kaboom))
 
 # ------------------------------------------------------------------------
 # Main program
