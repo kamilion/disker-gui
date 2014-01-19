@@ -658,7 +658,7 @@ def main():
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
 
     # Start a timer to keep the machine_state entry refreshed
-    GObject.timeout_add_seconds(300, timer_fired)  # Five minutes should be good.
+    GObject.timeout_add_seconds(60, timer_fired)  # One minute should be good.
 
     logging.debug("Entering event loop")
     sys.stdout.flush()  # Explicitly flush to allow tee users to see things
