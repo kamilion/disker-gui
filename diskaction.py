@@ -12,8 +12,7 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-# noinspection PyUnresolvedReferences
-from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id
 
 conn = connect_db(None)
 
@@ -618,7 +617,7 @@ def create_db(device, db_device):
     verify_db_table(conn, 'wipe_results')
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').insert({
-         'started_at': r.now(), 'updated_at': r.now(),
+         'started_at': r.now(), 'updated_at': r.now(), 'boot_id': get_boot_id(), 'machine_id': get_dbus_machine_id(),
          'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
          'wwn': device.wwn_id, 'wwn_long': device.wwn_long, 'finished': False, 'completed': False,
          'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,

@@ -13,8 +13,7 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-# noinspection PyUnresolvedReferences
-from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+from diskerbasedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
 
 conn = None
 conn = connect_db(conn)
