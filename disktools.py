@@ -39,6 +39,20 @@ def broken_mirror(device):
     raise NotImplementedError("A Million Shades of Light")
 
 
+def start_shutdown(hostname):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-shutdown.sh")
+    result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
+    return str(result)
+
+
+def start_reboot(hostname):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-reboot.sh")
+    result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
+    return str(result)
+
+
 def start_wipe(device):
     verify_db_tables(conn)  # Verify DB and tables exist
     run = sh.Command("./start_wipe.sh")
