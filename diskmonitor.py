@@ -69,7 +69,7 @@ from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException
 from dbus.mainloop.glib import DBusGMainLoop
 # noinspection PyUnresolvedReferences
-from gi.repository import GObject
+from gi.repository import GObject, GLib
 
 __all__ = ['UDisks2Observer', 'UDisks2Model', 'main_shield', 'Signal']
 
@@ -657,7 +657,7 @@ def main():
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
 
     # Start a timer to keep the machine_state entry refreshed
-    GObject.timeout_add_seconds(60, timer_fired)  # One minute should be good.
+    GLib.timeout_add_seconds(60, timer_fired)  # One minute should be good.
 
     logging.debug("Entering event loop")
     sys.stdout.flush()  # Explicitly flush to allow tee users to see things
