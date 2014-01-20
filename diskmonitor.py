@@ -493,15 +493,19 @@ def db_remove_disk(device):
 def db_refresh():
     """Refresh the timestamp on the database entry to act as a heartbeat.
     """
-    conn = connect_db(db_conn)  # Make sure we're connected
+    conn = connect_db(None)  # Make sure we're connected
     print("{}: Refreshing Database.".format(datetime.isoformat(datetime.now())), file=sys.stderr)
+    try:
+        r.now().run(conn, time_format="raw")  # Ping the database first.
+    except RqlDriverError:
+        conn = connect_db(None)  # Make sure we're connected
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
 
 
 def timer_fired():
-    """Do periodic housekeeping tasks.
+    """Do periodic housekeeping tasks. I'm a thread!
     """
     db_refresh()  # Refresh the timestamp on the machine_state
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
