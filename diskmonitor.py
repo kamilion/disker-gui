@@ -493,7 +493,7 @@ def db_remove_disk(device):
 def db_refresh():
     """Refresh the timestamp on the database entry to act as a heartbeat.
     """
-    conn = connect_db(None)  # Make sure we're connected
+    conn = connect_db(db_conn)  # Make sure we're connected
     print("{}: Refreshing Database.".format(dt.isoformat(dt.now())), file=sys.stderr)
     try:
         r.now().run(conn, time_format="raw")  # Ping the database first.
