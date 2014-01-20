@@ -50,7 +50,7 @@ import sys
 import string
 import re
 
-from datetime import datetime
+from datetime import datetime as dt
 
 # RethinkDB imports
 import rethinkdb as r
@@ -441,7 +441,7 @@ def _print_interfaces_and_properties(interfaces_and_properties):
     GetManagedObjects() for example. See this for details:
         http://dbus.freedesktop.org/doc/dbus-specification.html#standard-interfaces-objectmanager
     """
-    t = "{}".format(datetime.isoformat(datetime.now()))
+    t = "{}".format(dt.isoformat(dt.now()))
     for interface_name, properties in interfaces_and_properties.items():
         print("{}:   - Interface {}".format(t, _sanitize_dbus_key(interface_name)))
         for prop_name, prop_value in properties.items():
@@ -494,21 +494,23 @@ def db_refresh():
     """Refresh the timestamp on the database entry to act as a heartbeat.
     """
     conn = connect_db(None)  # Make sure we're connected
-    print("{}: Refreshing Database.".format(datetime.isoformat(datetime.now())), file=sys.stderr)
+    print("{}: Refreshing Database.".format(dt.isoformat(dt.now())), file=sys.stderr)
     try:
         r.now().run(conn, time_format="raw")  # Ping the database first.
     except RqlDriverError:
+        print("{}: Database connection problem. Reconnecting.".format(dt.isoformat(dt.now())), file=sys.stderr)
         conn = connect_db(None)  # Make sure we're connected
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+    print("{}: Refreshed Database successfully.".format(dt.isoformat(dt.now())), file=sys.stderr)
 
 
 def timer_fired():
     """Do periodic housekeeping tasks. I'm a thread!
     """
     db_refresh()  # Refresh the timestamp on the machine_state
-    print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
+    print("{}: Waiting for device changes (press ctrl+c to exit)".format(dt.isoformat(dt.now())))
 
     return True  # To fire the timer again.
 
@@ -537,7 +539,7 @@ def main():
 
     # Let's print everything we know about initially for the users to see
     def print_initial_objects(managed_objects):
-        t = "{}".format(datetime.isoformat(datetime.now()))
+        t = "{}".format(dt.isoformat(dt.now()))
         print("{}: Known:".format(t))
         for object_path, interfaces_and_properties in managed_objects.items():
             if 'block_devices' in object_path:
@@ -575,7 +577,7 @@ def main():
     # means that all objects that are added/removed will be advertised through
     # this mechanism
     def print_interfaces_added(object_path, interfaces_and_properties):
-        t = "{}".format(datetime.isoformat(datetime.now()))
+        t = "{}".format(dt.isoformat(dt.now()))
         if 'block_devices' in object_path:
             # Is it special? (Ram, loopback, optical)
             if 'ram' in object_path:
@@ -611,7 +613,7 @@ def main():
     # out explicitly but it seems that objects with no interfaces left are
     # simply gone. We'll treat them as such
     def print_interfaces_removed(object_path, interfaces):
-        t = "{}".format(datetime.isoformat(datetime.now()))
+        t = "{}".format(dt.isoformat(dt.now()))
         print("{}: Lost {}:".format(t, _sanitize_dbus_path(object_path)))
         for interface in interfaces:
             if 'block_devices' in object_path:
@@ -662,8 +664,8 @@ def main():
             raise  # main_shield() will catch this one
 
     # Now start the event loop and just display any device changes
-    print("{}: Startup loop completed.".format(datetime.isoformat(datetime.now())), file=sys.stderr)
-    print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
+    print("{}: Startup loop completed.".format(dt.isoformat(dt.now())), file=sys.stderr)
+    print("{}: Waiting for device changes (press ctrl+c to exit)".format(dt.isoformat(dt.now())))
 
     # Start a timer to keep the machine_state entry refreshed
     GLib.timeout_add_seconds(60, timer_fired)  # One minute should be good.
@@ -675,7 +677,7 @@ def main():
     except KeyboardInterrupt:
         loop.quit()
     print("")
-    print("{}: No longer monitoring for changes. Exited.".format(datetime.isoformat(datetime.now())))
+    print("{}: No longer monitoring for changes. Exited.".format(dt.isoformat(dt.now())))
 
 
 def main_shield():
