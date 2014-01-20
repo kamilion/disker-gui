@@ -58,9 +58,9 @@ from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
 from diskerbasedb import connect_db, find_machine_state
 
-conn = connect_db(None)
+db_conn = connect_db(None)
 
-machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
+machine_state_uuid = find_machine_state(db_conn)  # Verifies DB Automatically.
 print("LocalDB: DiskMonitor found a machine state: {}".format(machine_state_uuid))
 
 from disktools import get_disk_sdinfo
@@ -467,6 +467,7 @@ def db_add_disk(device):
     """Adds a disk to the database.
     :param device: The device to add
     """
+    conn = connect_db(db_conn)  # Make sure we're connected
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
@@ -479,6 +480,7 @@ def db_remove_disk(device):
     """Removes a disk to the database.
     :param device: The device to remove
     """
+    conn = connect_db(db_conn)  # Make sure we're connected
     # Insert Data r.table("posts").get("1").replace(r.row.without('author')).run()
     #replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
     #updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
@@ -491,6 +493,8 @@ def db_remove_disk(device):
 def db_refresh():
     """Refresh the timestamp on the database entry to act as a heartbeat.
     """
+    conn = connect_db(db_conn)  # Make sure we're connected
+    print("{}: Refreshing Database.".format(datetime.isoformat(datetime.now())), file=sys.stderr)
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
@@ -654,6 +658,7 @@ def main():
             raise  # main_shield() will catch this one
 
     # Now start the event loop and just display any device changes
+    print("{}: Startup loop completed.".format(datetime.isoformat(datetime.now())), file=sys.stderr)
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(datetime.isoformat(datetime.now())))
 
     # Start a timer to keep the machine_state entry refreshed
