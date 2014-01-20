@@ -463,11 +463,10 @@ def contains_digits(d):
 ### Fun with DBs
 
 
-def db_add_disk(device):
+def db_add_disk(conn, device):
     """Adds a disk to the database.
     :param device: The device to add
     """
-    conn = connect_db(db_conn)  # Make sure we're connected
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
@@ -476,11 +475,10 @@ def db_add_disk(device):
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
 
 
-def db_remove_disk(device):
+def db_remove_disk(conn, device):
     """Removes a disk to the database.
     :param device: The device to remove
     """
-    conn = connect_db(db_conn)  # Make sure we're connected
     # Insert Data r.table("posts").get("1").replace(r.row.without('author')).run()
     #replaced = r.db('wanwipe').table('machine_state').get(machine_state_uuid).replace(r.row.without(device)).run(conn)
     #updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
@@ -490,16 +488,10 @@ def db_remove_disk(device):
         device: {'target': device, 'available': False, 'busy': False, 'updated_at': r.now(), 'removed_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
 
-def db_refresh():
+def db_refresh(conn):
     """Refresh the timestamp on the database entry to act as a heartbeat.
     """
-    conn = connect_db(db_conn)  # Make sure we're connected
     print("{}: Refreshing Database.".format(dt.isoformat(dt.now())), file=sys.stderr)
-    try:
-        r.now().run(conn, time_format="raw")  # Ping the database first.
-    except RqlDriverError:
-        print("{}: Database connection problem. Reconnecting.".format(dt.isoformat(dt.now())), file=sys.stderr)
-        conn = connect_db(None)  # Make sure we're connected
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
@@ -507,9 +499,16 @@ def db_refresh():
 
 
 def timer_fired():
-    """Do periodic housekeeping tasks. I'm a thread!
+    """Do periodic housekeeping tasks. I'm a transient thread!
     """
-    db_refresh()  # Refresh the timestamp on the machine_state
+    conn = connect_db(None)  # Assure this thread is connected to rethinkdb.
+    try:
+        r.now().run(conn, time_format="raw")  # Ping the database first.
+    except RqlDriverError:
+        print("{}: Database connection problem. Reconnecting.".format(dt.isoformat(dt.now())), file=sys.stderr)
+        conn = connect_db(None)  # Make very sure we're connected to rethinkdb.
+    db_refresh(conn)  # Refresh the timestamp on the machine_state
+    conn.close()
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(dt.isoformat(dt.now())))
 
     return True  # To fire the timer again.
@@ -558,7 +557,7 @@ def main():
                         print("{}: P {}".format(t, _sanitize_dbus_path(object_path)))
                         #_print_interfaces_and_properties(interfaces_and_properties)
                     else:  # It's a raw device, what we're looking for!
-                        db_add_disk(_extract_dbus_blockpath(object_path))
+                        db_add_disk(db_conn, _extract_dbus_blockpath(object_path))
                         print("{}: B {} to key: {}".format(t, _sanitize_dbus_path(object_path), machine_state_uuid))
                         #_print_interfaces_and_properties(interfaces_and_properties)
 
@@ -591,7 +590,7 @@ def main():
                     print("{}: Gained:\n{}: P {}".format(t, t, _sanitize_dbus_path(object_path)))
                     #_print_interfaces_and_properties(interfaces_and_properties)
                 else:  # It's a raw device, what we're looking for!
-                    db_add_disk(_extract_dbus_blockpath(object_path))
+                    db_add_disk(db_conn, _extract_dbus_blockpath(object_path))
                     print("{}: Gained:\n{}: B {} to key: {}".format(t, t, _sanitize_dbus_path(object_path), machine_state_uuid))
                     #_print_interfaces_and_properties(interfaces_and_properties)
 
@@ -629,7 +628,7 @@ def main():
                         print("{}: P {}".format(t, _sanitize_dbus_key(interface)))
                         #_print_interfaces_and_properties(interfaces_and_properties)
                     else:  # It's a raw device, what we're looking for!
-                        db_remove_disk(_extract_dbus_blockpath(object_path))
+                        db_remove_disk(db_conn, _extract_dbus_blockpath(object_path))
                         print("{}: B {} from key: {}".format(t, _sanitize_dbus_key(interface), machine_state_uuid))
                         #_print_interfaces_and_properties(interfaces_and_properties)
 
@@ -664,7 +663,7 @@ def main():
             raise  # main_shield() will catch this one
 
     # Now start the event loop and just display any device changes
-    print("{}: Startup loop completed.".format(dt.isoformat(dt.now())), file=sys.stderr)
+    print("{}: Startup completed, setting timers, entering event loop.".format(dt.isoformat(dt.now())), file=sys.stderr)
     print("{}: Waiting for device changes (press ctrl+c to exit)".format(dt.isoformat(dt.now())))
 
     # Start a timer to keep the machine_state entry refreshed
