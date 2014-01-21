@@ -12,7 +12,7 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id
+from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id, get_global_ip
 
 conn = connect_db(None)
 
@@ -554,12 +554,17 @@ def progress_db(progress, start_time, last_bytes, read_bytes, total_bytes, rethi
 
     # Insert Data
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update(
-        {'progress': fmt_progress, 'progress_bar': bar,
-         'updated_at': r.now(),
-         'time_elapsed': time_elapsed, 'time_remaining': time_remaining,
-         'speed_megs': speed_megs, 'speed_bytes': speed_bytes,
-         'read_megs': read_megs, 'read_bytes': read_bytes}).run(conn)
+    updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
+        'progress': fmt_progress,
+        'progress_bar': bar,
+        'updated_at': r.now(),
+        'time_elapsed': time_elapsed,
+        'time_remaining': time_remaining,
+        'speed_megs': speed_megs,
+        'speed_bytes': speed_bytes,
+        'read_megs': read_megs,
+        'read_bytes': read_bytes
+    }).run(conn)
     # Print the collected information to stdout. Should barely fit in 80-column.
 
     sys.stdout.write("\r{}  {}  [{}]  ETA {} {}/{}M {}M/s  \b\b".format(
@@ -575,9 +580,14 @@ def abort_db(rethink_uuid, db_device):
     # Insert Data
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
-         'in_progress': False, 'finished': False, 'completed': True,
-         'failed': True, 'success': False,  'updated_at': r.now(),
-         'finished_at': r.now()}).run(conn)
+         'in_progress': False,
+         'finished': False,
+         'completed': True,
+         'failed': True,
+         'success': False,
+         'updated_at': r.now(),
+         'finished_at': r.now()
+    }).run(conn)
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
         db_device: {'available': True, 'busy': False, 'wipe_completed': False, 'aborted': True,
@@ -596,11 +606,19 @@ def finish_db(rethink_uuid, db_device, read_bytes):
     # Insert Data
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('wipe_results').get(rethink_uuid).update({
-         'in_progress': False, 'finished': True, 'completed': True,
-         'progress': "100%", 'progress_bar': "==============================",
-         'time_remaining': "0:00:00", 'read_bytes': read_bytes, 'read_megs': read_megs,
-         'failed': False, 'success': True, 'updated_at': r.now(),
-         'finished_at': r.now()}).run(conn)
+        'in_progress': False,
+        'finished': True,
+        'completed': True,
+        'progress': "100%",
+        'progress_bar': "==============================",
+        'time_remaining': "0:00:00",
+        'read_bytes': read_bytes,
+        'read_megs': read_megs,
+        'failed': False,
+        'success': True,
+        'updated_at': r.now(),
+        'finished_at': r.now()
+    }).run(conn)
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
         db_device: {'available': True, 'busy': False, 'wipe_completed': True, 'aborted': False,
@@ -617,13 +635,33 @@ def create_db(device, db_device):
     verify_db_table(conn, 'wipe_results')
     # Insert Data
     inserted = r.db('wanwipe').table('wipe_results').insert({
-         'started_at': r.now(), 'updated_at': r.now(), 'boot_id': get_boot_id(), 'machine_id': get_dbus_machine_id(),
-         'device': device.device_node, 'name': device.name, 'model': device.model, 'serial': device.serial_no,
-         'wwn': device.wwn_id, 'wwn_long': device.wwn_long, 'finished': False, 'completed': False,
-         'bus_type': device.bus_type, 'bus_path': device.bus_path, 'bus_topology': device.bus_topology,
-         'in_progress': True, 'progress': "  0%", 'progress_bar': "==============================",
-         'time_elapsed': "0:00:00", 'time_remaining': "0:00:00", 'total_bytes': device.size, 'read_bytes': 0,
-         'read_megs': 0, 'total_megs': (device.size / (1024 * 1024)), 'long_info':"{}".format(device)}).run(conn)
+        'started_at': r.now(),
+        'updated_at': r.now(),
+        'boot_id': get_boot_id(),
+        'machine_id': get_dbus_machine_id(),
+        'ip': get_global_ip(),
+        'device': device.device_node,
+        'name': device.name,
+        'model': device.model,
+        'serial': device.serial_no,
+        'wwn': device.wwn_id,
+        'wwn_long': device.wwn_long,
+        'finished': False,
+        'completed': False,
+        'bus_type': device.bus_type,
+        'bus_path': device.bus_path,
+        'bus_topology': device.bus_topology,
+        'in_progress': True,
+        'progress': "  0%",
+        'progress_bar': "==============================",
+        'time_elapsed': "0:00:00",
+        'time_remaining': "0:00:00",
+        'total_bytes': device.size,
+        'read_bytes': 0,
+        'read_megs': 0,
+        'total_megs': (device.size / (1024 * 1024)),
+        'long_info': "{}".format(device)
+    }).run(conn)
     print("DB: Writing to key: {}".format(inserted['generated_keys'][0]))
     # noinspection PyUnusedLocal
     machine_updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({ 'disks': {
