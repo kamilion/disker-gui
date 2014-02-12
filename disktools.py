@@ -60,6 +60,41 @@ def start_wipe(device):
     #return str(device)
 
 
+def check_dco(device):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("hdparm")
+    result = run("--dco-identify", str(device), _bg=True)
+    return str(result)
+    #return str(device)
+
+
+def remove_dco(device):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("hdparm")
+    result = run("--yes-i-know-what-i-am-doing", "--dco-restore", str(device), _bg=True)
+    return str(result)
+    #return str(device)
+
+
+def check_hpa(device):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    run = sh.Command("hdparm")
+    result = run("-N", str(device), _bg=True)
+    return str(result)
+    #return str(device)
+
+
+def remove_hpa(device):
+    verify_db_tables(conn)  # Verify DB and tables exist
+    # TODO: Get max sector count first
+    max_sectors = "60000000"
+    max_sectors_perm = "p60000000"
+    run = sh.Command("hdparm")
+    result = run("-N", max_sectors, str(device), _bg=True)
+    return str(result)
+    #return str(device)
+
+
 def get_disk_info(device):
     verify_db_tables(conn)  # Verify DB and tables exist
     # Insert Data
