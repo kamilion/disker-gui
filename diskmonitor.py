@@ -463,8 +463,20 @@ def contains_digits(d):
 ### Fun with DBs
 
 
-def db_add_disk(conn, device):
+def db_register_disk(conn, device):
     """Adds a disk to the database.
+    :param device: The device to add
+    """
+    disk_id = get_disk_sdinfo("/dev/{}".format(device))
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
+        device: {'target': device, 'available': True, 'busy': False, 'disk_id': disk_id,
+                 'updated_at': r.now(), 'discovered_at': r.now()}},
+        'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+
+
+def db_found_disk(conn, device):
+    """Adds a newly discovered disk to the database.
     :param device: The device to add
     """
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
@@ -487,6 +499,7 @@ def db_remove_disk(conn, device):
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
         device: {'target': device, 'available': False, 'busy': False, 'updated_at': r.now(), 'removed_at': r.now()}},
         'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+
 
 def db_refresh(conn):
     """Refresh the timestamp on the database entry to act as a heartbeat.
@@ -557,7 +570,7 @@ def main():
                         print("{}: P {}".format(t, _sanitize_dbus_path(object_path)))
                         #_print_interfaces_and_properties(interfaces_and_properties)
                     else:  # It's a raw device, what we're looking for!
-                        db_add_disk(db_conn, _extract_dbus_blockpath(object_path))
+                        db_found_disk(db_conn, _extract_dbus_blockpath(object_path))
                         print("{}: B {} to key: {}".format(t, _sanitize_dbus_path(object_path), machine_state_uuid))
                         #_print_interfaces_and_properties(interfaces_and_properties)
 
@@ -590,7 +603,7 @@ def main():
                     print("{}: Gained:\n{}: P {}".format(t, t, _sanitize_dbus_path(object_path)))
                     #_print_interfaces_and_properties(interfaces_and_properties)
                 else:  # It's a raw device, what we're looking for!
-                    db_add_disk(db_conn, _extract_dbus_blockpath(object_path))
+                    db_found_disk(db_conn, _extract_dbus_blockpath(object_path))
                     print("{}: Gained:\n{}: B {} to key: {}".format(t, t, _sanitize_dbus_path(object_path), machine_state_uuid))
                     #_print_interfaces_and_properties(interfaces_and_properties)
 
