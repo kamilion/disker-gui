@@ -1,0 +1,292 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0108
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x50000392f8094514
+Serial number:        EA00PAC069V7
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:03:41 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: SERVO IMPENDING FAILURE SEEK ERROR RATE TOO HIGH [asc=5d, ascq=43]
+
+Current Drive Temperature:     29 C
+Drive Trip Temperature:        65 C
+Manufactured in week 49 of year 2010
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  128
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  81
+Elements in grown defect list: 0
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0      368         8         0          0     320547.264           8
+write:         0       94         0         0          0      12623.233           0
+verify:        0        0         0         0          0      14125.495           0
+
+Non-medium error count:      169
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]
+
+Background scan results log
+  Status: halted due to fatal error
+    Accumulated power on time, hours:minutes 9527:35 [571655 minutes]
+    Number of background scans performed: 396,  scan progress: 99.21%
+    Number of background medium scans performed: 0
+
+   #  when        lba(hex)    [sk,asc,ascq]    reassign_status
+   1 6267:20  0000000044c05a50  [1,18,7]   Recovered via rewrite in-place
+   2 6338:15  00000000314188a6  [1,18,7]   Recovered via rewrite in-place
+   3 6338:18  000000003246266a  [1,18,7]   Recovered via rewrite in-place
+   4 6338:28  0000000035dbc512  [1,18,7]   Recovered via rewrite in-place
+   5 6338:30  0000000036832bba  [1,18,7]   Recovered via rewrite in-place
+   6 6338:35  000000003800f41e  [1,18,7]   Recovered via rewrite in-place
+   7 6338:38  000000003901bf93  [1,18,7]   Recovered via rewrite in-place
+   8 6338:39  00000000391e6b7d  [1,18,7]   Recovered via rewrite in-place
+   9 6338:42  0000000039f206c0  [1,18,7]   Recovered via rewrite in-place
+  10 6338:42  000000003a26a81b  [1,18,7]   Recovered via rewrite in-place
+  11 6338:43  000000003a689357  [1,18,7]   Recovered via rewrite in-place
+  12 6338:45  000000003b08494c  [1,18,7]   Recovered via rewrite in-place
+  13 6338:46  000000003b2fb652  [1,18,7]   Recovered via rewrite in-place
+  14 6338:46  000000003b303d49  [1,18,7]   Recovered via rewrite in-place
+  15 6338:53  000000003d5040f6  [1,18,7]   Recovered via rewrite in-place
+  16 6338:58  000000003ecf1ee4  [1,18,7]   Recovered via rewrite in-place
+  17 6338:59  000000003f01e826  [1,18,7]   Recovered via rewrite in-place
+  18 6339:05  00000000406431ea  [1,18,7]   Recovered via rewrite in-place
+  19 6339:08  00000000417644c9  [1,18,7]   Recovered via rewrite in-place
+  20 6339:09  00000000419c151d  [1,18,7]   Recovered via rewrite in-place
+  21 6339:13  0000000042c3b96c  [1,18,7]   Recovered via rewrite in-place
+  22 6339:14  00000000430e1ac1  [1,18,7]   Recovered via rewrite in-place
+  23 6339:18  00000000443adc64  [1,18,7]   Recovered via rewrite in-place
+  24 6339:19  0000000044537be9  [1,18,7]   Recovered via rewrite in-place
+  25 6339:19  000000004490d1f4  [1,18,7]   Recovered via rewrite in-place
+  26 6845:59  00000000164ac410  [1,18,7]   Recovered via rewrite in-place
+  27 6847:48  00000000200ffdbf  [1,18,7]   Recovered via rewrite in-place
+  28 6847:49  00000000201f86d1  [1,18,7]   Recovered via rewrite in-place
+  29 6847:53  0000000020474c5b  [1,18,7]   Recovered via rewrite in-place
+  30 6847:54  00000000204cc5b1  [1,18,7]   Recovered via rewrite in-place
+  31 6864:10  00000000009e48bb  [3,11,1]   Reassigned by app, has valid data
+  32 6864:11  00000000009e493e  [1,18,7]   Recovered via rewrite in-place
+  33 6864:11  00000000009e4b07  [3,11,1]   Reassigned by app, has valid data
+  34 6864:11  00000000009e4b2c  [3,11,1]   Reassigned by app, has valid data
+  35 6864:11  00000000009e5210  [3,11,1]   Reassigned by app, has valid data
+  36 6864:12  00000000009e52fc  [3,11,1]   Reassigned by app, has valid data
+  37 6864:12  00000000009e5870  [3,11,1]   Reassigned by app, has valid data
+  38 6864:12  00000000009e5b25  [3,11,1]   Reassigned by app, has valid data
+  39 6864:12  00000000009e5c36  [3,11,1]   Reassigned by app, has valid data
+  40 6864:15  0000000000df9fc9  [1,18,7]   Recovered via rewrite in-place
+  41 6864:34  0000000004e5a683  [1,18,7]   Recovered via rewrite in-place
+  42 6888:09  00000000009e48bb  [3,11,1]   Reassigned by app, has valid data
+  43 6888:09  00000000009e4b07  [3,11,1]   Reassigned by app, has valid data
+  44 6888:09  00000000009e4b2c  [3,11,1]   Reassigned by app, has valid data
+  45 6888:10  00000000009e5210  [3,11,1]   Reassigned by app, has valid data
+  46 6888:10  00000000009e52fc  [3,11,1]   Reassigned by app, has valid data
+  47 6888:10  00000000009e5870  [3,11,1]   Reassigned by app, has valid data
+  48 6888:10  00000000009e5b25  [3,11,1]   Reassigned by app, has valid data
+  49 6888:10  00000000009e5c36  [3,11,1]   Reassigned by app, has valid data
+  50 6912:09  00000000009e48bb  [3,11,1]   Reassigned by app, has valid data
+  51 6912:10  00000000009e4b07  [3,11,1]   Reassigned by app, has valid data
+  52 6912:10  00000000009e4b2c  [3,11,1]   Reassigned by app, has valid data
+  53 6912:10  00000000009e5210  [3,11,1]   Reassigned by app, has valid data
+  54 6912:10  00000000009e52fc  [3,11,1]   Reassigned by app, has valid data
+  55 6912:10  00000000009e5870  [3,11,1]   Reassigned by app, has valid data
+  56 6912:10  00000000009e5b25  [3,11,1]   Reassigned by app, has valid data
+  57 6912:10  00000000009e5c36  [3,11,1]   Reassigned by app, has valid data
+  58 6912:41  000000000c536721  [1,18,7]   Recovered via rewrite in-place
+  59 6912:41  000000000c536720  [1,18,7]   Recovered via rewrite in-place
+  60 6936:10  00000000009e48bb  [3,11,1]   Reassigned by app, has valid data
+  61 6936:10  00000000009e4b07  [3,11,1]   Reassigned by app, has valid data
+  62 6936:10  00000000009e4b2c  [3,11,1]   Reassigned by app, has valid data
+  63 6936:10  00000000009e5210  [3,11,1]   Reassigned by app, has valid data
+  64 6936:10  00000000009e52fc  [3,11,1]   Reassigned by app, has valid data
+  65 6936:10  00000000009e5870  [3,11,1]   Reassigned by app, has valid data
+  66 6936:10  00000000009e5b25  [3,11,1]   Reassigned by app, has valid data
+  67 6936:10  00000000009e5c36  [3,11,1]   Reassigned by app, has valid data
+  68 7008:43  000000000c535f67  [1,18,7]   Recovered via rewrite in-place
+  69 7394:45  000000002c13706a  [1,18,7]   Recovered via rewrite in-place
+  70 8401:31  000000002c12938b  [1,18,7]   Recovered via rewrite in-place
+  71 8401:52  0000000035cdd6ca  [1,18,7]   Recovered via rewrite in-place
+  72 8401:52  0000000035cebc2a  [1,18,7]   Recovered via rewrite in-place
+  73 8401:52  0000000035ced7d1  [1,18,7]   Recovered via rewrite in-place
+  74 8402:20  00000000412c3849  [1,18,7]   Recovered via rewrite in-place
+  75 8402:32  00000000459413eb  [1,18,7]   Recovered via rewrite in-place
+  76 9267:42  0000000035cdb639  [1,18,7]   Recovered via rewrite in-place
+  77 9267:42  0000000035cdd6cf  [1,18,7]   Recovered via rewrite in-place
+  78 9267:42  0000000035cea92c  [1,18,7]   Recovered via rewrite in-place
+  79 9268:23  000000004224c56a  [b,15,1]   Reserved [0x0]
+  80 9268:23  000000004224c56b  [b,15,1]   Reserved [0x0]
+  81 9268:24  000000004224c56c  [b,15,1]   Reserved [0x0]
+  82 9268:24  000000004224c56d  [b,15,1]   Reserved [0x0]
+  83 9268:24  000000004224c56e  [b,15,1]   Reserved [0x0]
+  84 9268:24  000000004224c56f  [b,15,1]   Reserved [0x0]
+  85 9268:24  00000000423d786a  [b,15,1]   Reserved [0x0]
+  86 9268:24  00000000423d786b  [b,15,1]   Reserved [0x0]
+  87 9268:25  0000000042551d6a  [b,15,1]   Reserved [0x0]
+  88 9268:25  0000000042551d6b  [b,15,1]   Reserved [0x0]
+  89 9268:25  0000000042551d6c  [b,15,1]   Reserved [0x0]
+  90 9268:25  0000000042551d6d  [b,15,1]   Reserved [0x0]
+  91 9268:25  0000000042551d6e  [b,15,1]   Reserved [0x0]
+  92 9268:25  0000000042551d6f  [b,15,1]   Reserved [0x0]
+  93 9268:25  0000000042551d70  [b,15,1]   Reserved [0x0]
+  94 9268:25  0000000042551d71  [b,15,1]   Reserved [0x0]
+  95 9268:25  0000000042551d72  [b,15,1]   Reserved [0x0]
+  96 9268:26  0000000042551d73  [b,15,1]   Reserved [0x0]
+  97 9268:26  0000000042551d74  [b,15,1]   Reserved [0x0]
+  98 9268:26  0000000042551d75  [b,15,1]   Reserved [0x0]
+  99 9268:26  0000000042551d76  [b,15,1]   Reserved [0x0]
+ 100 9268:26  0000000042551d77  [b,15,1]   Reserved [0x0]
+ 101 9268:26  0000000042551d78  [b,15,1]   Reserved [0x0]
+ 102 9268:27  0000000042ab6a6a  [b,15,1]   Reserved [0x0]
+ 103 9268:27  0000000042ab6a6b  [b,15,1]   Reserved [0x0]
+ 104 9268:27  0000000042ab6a6c  [b,15,1]   Reserved [0x0]
+ 105 9268:27  0000000042ab6a6d  [b,15,1]   Reserved [0x0]
+ 106 9268:27  0000000042ab6a6e  [b,15,1]   Reserved [0x0]
+ 107 9268:28  0000000042ab6a6f  [b,15,1]   Reserved [0x0]
+ 108 9268:28  0000000042ab6a70  [b,15,1]   Reserved [0x0]
+ 109 9268:28  0000000042ab6a71  [b,15,1]   Reserved [0x0]
+ 110 9268:28  0000000042ab6f6a  [b,15,1]   Reserved [0x0]
+ 111 9268:28  0000000042b8de6a  [b,15,1]   Reserved [0x0]
+ 112 9268:28  0000000042b8de6b  [b,15,1]   Reserved [0x0]
+ 113 9268:29  0000000042c3d26a  [b,15,1]   Reserved [0x0]
+ 114 9268:29  0000000042c4d66a  [b,15,1]   Reserved [0x0]
+ 115 9268:29  0000000042c4d66b  [b,15,1]   Reserved [0x0]
+ 116 9268:30  0000000042e9636a  [b,15,1]   Reserved [0x0]
+ 117 9268:36  00000000446be720  [b,15,1]   Reserved [0x0]
+ 118 9268:36  00000000446be721  [b,15,1]   Reserved [0x0]
+ 119 9268:37  0000000044cbf04e  [b,15,1]   Reserved [0x0]
+ 120 9268:37  0000000044cbf04f  [b,15,1]   Reserved [0x0]
+ 121 9268:37  0000000044ccbd0e  [b,15,1]   Reserved [0x0]
+ 122 9268:37  0000000044ccbd0f  [b,15,1]   Reserved [0x0]
+ 123 9268:38  0000000044e3f5c2  [b,15,1]   Reserved [0x0]
+ 124 9268:38  0000000044e3f5c3  [b,15,1]   Reserved [0x0]
+ 125 9268:38  0000000044e3f5c4  [b,15,1]   Reserved [0x0]
+ 126 9268:38  0000000044e3f5c5  [b,15,1]   Reserved [0x0]
+ 127 9268:38  0000000044e3f5c6  [b,15,1]   Reserved [0x0]
+ 128 9268:39  00000000450650f0  [b,15,1]   Reserved [0x0]
+ 129 9268:39  00000000450650f1  [b,15,1]   Reserved [0x0]
+ 130 9268:39  00000000450655d0  [b,15,1]   Reserved [0x0]
+ 131 9268:39  00000000450655d1  [b,15,1]   Reserved [0x0]
+ 132 9268:39  00000000450655d2  [b,15,1]   Reserved [0x0]
+ 133 9268:39  00000000450655d3  [b,15,1]   Reserved [0x0]
+ 134 9268:39  0000000045068b70  [b,15,1]   Reserved [0x0]
+ 135 9268:39  0000000045068b71  [b,15,1]   Reserved [0x0]
+ 136 9268:41  00000000455ad21f  [b,15,1]   Reserved [0x0]
+ 137 9268:41  00000000455ad220  [b,15,1]   Reserved [0x0]
+ 138 9268:41  00000000455ad221  [b,15,1]   Reserved [0x0]
+ 139 9268:42  00000000455ad222  [b,15,1]   Reserved [0x0]
+ 140 9268:42  00000000457258d3  [b,15,1]   Reserved [0x0]
+ 141 9268:42  00000000457258d4  [b,15,1]   Reserved [0x0]
+ 142 9268:42  00000000457258d5  [b,15,1]   Reserved [0x0]
+ 143 9268:42  00000000457258d6  [b,15,1]   Reserved [0x0]
+ 144 9268:42  00000000457258d7  [b,15,1]   Reserved [0x0]
+ 145 9268:42  00000000457258d8  [b,15,1]   Reserved [0x0]
+ 146 9268:42  00000000457258d9  [b,15,1]   Reserved [0x0]
+ 147 9268:42  00000000457258da  [b,15,1]   Reserved [0x0]
+ 148 9268:43  00000000457258db  [b,15,1]   Reserved [0x0]
+ 149 9268:43  00000000457258dc  [b,15,1]   Reserved [0x0]
+ 150 9268:43  00000000457258dd  [b,15,1]   Reserved [0x0]
+ 151 9268:43  00000000457258de  [b,15,1]   Reserved [0x0]
+ 152 9268:43  00000000457258df  [b,15,1]   Reserved [0x0]
+ 153 9268:43  00000000457258e0  [b,15,1]   Reserved [0x0]
+ 154 9268:43  00000000457258e1  [b,15,1]   Reserved [0x0]
+ 155 9268:43  00000000457258e2  [b,15,1]   Reserved [0x0]
+ 156 9268:43  00000000457258e3  [b,15,1]   Reserved [0x0]
+ 157 9268:43  00000000457258e4  [b,15,1]   Reserved [0x0]
+ 158 9268:43  00000000457258e5  [b,15,1]   Reserved [0x0]
+ 159 9268:44  00000000457258e6  [b,15,1]   Reserved [0x0]
+ 160 9268:44  00000000457258e7  [b,15,1]   Reserved [0x0]
+ 161 9268:44  00000000457258e8  [b,15,1]   Reserved [0x0]
+ 162 9268:44  00000000457258e9  [b,15,1]   Reserved [0x0]
+ 163 9268:44  00000000457258ea  [b,15,1]   Reserved [0x0]
+ 164 9268:44  00000000457258eb  [b,15,1]   Reserved [0x0]
+ 165 9268:44  00000000457258ec  [b,15,1]   Reserved [0x0]
+ 166 9268:44  00000000457258ed  [b,15,1]   Reserved [0x0]
+ 167 9268:44  00000000457258ee  [b,15,1]   Reserved [0x0]
+ 168 9268:44  00000000457258ef  [b,15,1]   Reserved [0x0]
+ 169 9268:44  00000000457258f0  [b,15,1]   Reserved [0x0]
+ 170 9268:45  00000000457258f1  [b,15,1]   Reserved [0x0]
+ 171 9268:45  00000000457258f2  [b,15,1]   Reserved [0x0]
+ 172 9268:45  00000000457258f3  [b,15,1]   Reserved [0x0]
+ 173 9268:45  00000000457258f4  [b,15,1]   Reserved [0x0]
+ 174 9268:45  00000000457258f5  [b,15,1]   Reserved [0x0]
+ 175 9268:45  00000000457258f6  [b,15,1]   Reserved [0x0]
+ 176 9268:45  00000000457258f7  [b,15,1]   Reserved [0x0]
+ 177 9268:45  00000000457258f8  [b,15,1]   Reserved [0x0]
+ 178 9268:45  00000000457258f9  [b,15,1]   Reserved [0x0]
+ 179 9268:45  00000000457258fa  [b,15,1]   Reserved [0x0]
+ 180 9268:45  00000000457258fb  [b,15,1]   Reserved [0x0]
+ 181 9268:45  00000000457258fc  [b,15,1]   Reserved [0x0]
+ 182 9268:45  00000000457258fd  [b,15,1]   Reserved [0x0]
+ 183 9268:45  00000000457258fe  [b,15,1]   Reserved [0x0]
+ 184 9268:46  00000000457258ff  [b,15,1]   Reserved [0x0]
+ 185 9268:46  0000000045725900  [b,15,1]   Reserved [0x0]
+ 186 9268:46  0000000045725901  [b,15,1]   Reserved [0x0]
+ 187 9268:46  0000000045725902  [b,15,1]   Reserved [0x0]
+ 188 9268:46  0000000045725903  [b,15,1]   Reserved [0x0]
+ 189 9268:46  0000000045725904  [b,15,1]   Reserved [0x0]
+ 190 9268:46  0000000045725905  [b,15,1]   Reserved [0x0]
+ 191 9268:46  0000000045725906  [b,15,1]   Reserved [0x0]
+ 192 9268:46  0000000045725907  [b,15,1]   Reserved [0x0]
+ 193 9268:46  0000000045725908  [b,15,1]   Reserved [0x0]
+ 194 9268:46  0000000045725909  [b,15,1]   Reserved [0x0]
+ 195 9268:46  000000004572590a  [b,15,1]   Reserved [0x0]
+ 196 9268:46  000000004572590b  [b,15,1]   Reserved [0x0]
+ 197 9268:46  000000004572590c  [b,15,1]   Reserved [0x0]
+ 198 9268:47  000000004572590d  [b,15,1]   Reserved [0x0]
+ 199 9268:47  000000004572590e  [b,15,1]   Reserved [0x0]
+ 200 9268:47  000000004572590f  [b,15,1]   Reserved [0x0]
+ 201 9268:47  0000000045725910  [b,15,1]   Reserved [0x0]
+ 202 9268:47  0000000045725911  [b,15,1]   Reserved [0x0]
+ 203 9268:47  0000000045725912  [b,15,1]   Reserved [0x0]
+ 204 9268:47  0000000045725913  [b,15,1]   Reserved [0x0]
+ 205 9268:47  0000000045725914  [b,15,1]   Reserved [0x0]
+ 206 9268:48  0000000045725915  [b,15,1]   Reserved [0x0]
+ 207 9268:48  0000000045725916  [b,15,1]   Reserved [0x0]
+ 208 9268:48  0000000045725917  [b,15,1]   Reserved [0x0]
+ 209 9268:48  0000000045725918  [b,15,1]   Reserved [0x0]
+ 210 9268:48  0000000045725919  [b,15,1]   Reserved [0x0]
+ 211 9268:48  000000004572591a  [b,15,1]   Reserved [0x0]
+ 212 9268:48  000000004572591b  [b,15,1]   Reserved [0x0]
+Protocol Specific port log page for SAS SSP
+relative target port id = 1
+  generation code = 2
+  number of phys = 1
+  phy identifier = 0
+    attached device type: expander device
+    attached reason: SMP phy control function
+    reason: loss of dword synchronization
+    negotiated logical link rate: phy enabled; 6 Gbps
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=1
+    SAS address = 0x50000392f8094516
+    attached SAS address = 0x500e0810100e977f
+    attached phy identifier = 10
+    Invalid DWORD count = 3300
+    Running disparity error count = 3293
+    Loss of DWORD synchronization = 825
+    Phy reset problem = 0
+relative target port id = 2
+  generation code = 2
+  number of phys = 1
+  phy identifier = 1
+    attached device type: no device attached
+    attached reason: unknown
+    reason: unknown
+    negotiated logical link rate: phy enabled; unknown
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=0
+    SAS address = 0x50000392f8094517
+    attached SAS address = 0x0
+    attached phy identifier = 0
+    Invalid DWORD count = 0
+    Running disparity error count = 0
+    Loss of DWORD synchronization = 0
+    Phy reset problem = 0

@@ -1,0 +1,752 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0108
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x50000392f80a9658
+Serial number:        EA00PAC06JVB
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:05:33 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: HARDWARE IMPENDING FAILURE DATA ERROR RATE TOO HIGH [asc=5d, ascq=12]
+
+Current Drive Temperature:     28 C
+Drive Trip Temperature:        65 C
+Manufactured in week 50 of year 2010
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  30
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  794
+Elements in grown defect list: 0
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0    13495         0         0          0     884284.318           0
+write:         0        0         0         0          0      15753.102           0
+verify:        0        0         0         0          0      12969.783           0
+
+Non-medium error count:       33
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]
+
+Background scan results log
+  Status: halted due to fatal error
+    Accumulated power on time, hours:minutes 17128:55 [1027735 minutes]
+    Number of background scans performed: 713,  scan progress: 23.77%
+    Number of background medium scans performed: 0
+
+   #  when        lba(hex)    [sk,asc,ascq]    reassign_status
+   1 16958:57  000000000a8c5b81  [1,18,7]   Recovered via rewrite in-place
+   2 16958:57  000000000a8c64e3  [1,18,7]   Recovered via rewrite in-place
+   3 16958:57  000000000a8c78a9  [1,18,7]   Recovered via rewrite in-place
+   4 16958:57  000000000a8c78ab  [1,18,7]   Recovered via rewrite in-place
+   5 16958:57  000000000a8c7cf9  [1,18,7]   Recovered via rewrite in-place
+   6 16958:57  000000000a8c7cfb  [1,18,7]   Recovered via rewrite in-place
+   7 16958:57  000000000a8d7fec  [1,18,7]   Recovered via rewrite in-place
+   8 16958:57  000000000a8dd410  [1,18,7]   Recovered via rewrite in-place
+   9 16958:59  000000000b425434  [1,18,7]   Recovered via rewrite in-place
+  10 16958:59  000000000b42a3a7  [1,18,7]   Recovered via rewrite in-place
+  11 16958:59  000000000b42a619  [1,18,7]   Recovered via rewrite in-place
+  12 16958:59  000000000b429f00  [1,18,7]   Recovered via rewrite in-place
+  13 16958:59  000000000b42dc29  [1,18,7]   Recovered via rewrite in-place
+  14 16958:59  000000000b42f323  [1,17,6]   Successfully reassigned
+  15 16958:59  000000000b42f328  [1,18,7]   Recovered via rewrite in-place
+  16 16959:06  000000000ed1ca9f  [1,18,7]   Recovered via rewrite in-place
+  17 16959:08  000000001043da2b  [1,18,7]   Recovered via rewrite in-place
+  18 16959:30  000000001b4fdb14  [1,18,7]   Recovered via rewrite in-place
+  19 16959:32  000000001c4ab11e  [1,18,7]   Recovered via rewrite in-place
+  20 16960:09  000000002db7fafc  [1,18,7]   Recovered via rewrite in-place
+  21 16960:21  0000000032d36f2a  [1,18,7]   Recovered via rewrite in-place
+  22 16960:24  0000000034555d60  [1,18,7]   Recovered via rewrite in-place
+  23 16960:45  000000003cc23dae  [1,18,7]   Recovered via rewrite in-place
+  24 16960:45  000000003ccfb8b4  [1,18,7]   Recovered via rewrite in-place
+  25 16960:46  000000003d1d6128  [1,18,7]   Recovered via rewrite in-place
+  26 16960:46  000000003d1d671f  [1,18,7]   Recovered via rewrite in-place
+  27 16960:46  000000003d1d6b0a  [1,18,7]   Recovered via rewrite in-place
+  28 16960:46  000000003d1d6b0d  [1,18,7]   Recovered via rewrite in-place
+  29 16960:46  000000003d1eadb8  [1,18,7]   Recovered via rewrite in-place
+  30 16960:47  000000003d511679  [1,18,7]   Recovered via rewrite in-place
+  31 16960:49  000000003deaa487  [1,18,7]   Recovered via rewrite in-place
+  32 16960:51  000000003eb767db  [1,18,7]   Recovered via rewrite in-place
+  33 16960:52  000000003ee9f5f2  [1,18,7]   Recovered via rewrite in-place
+  34 16960:52  000000003eea3a17  [1,18,7]   Recovered via rewrite in-place
+  35 16960:52  000000003ef639e0  [1,18,7]   Recovered via rewrite in-place
+  36 16960:52  000000003ef64aa0  [1,18,7]   Recovered via rewrite in-place
+  37 16960:52  000000003ef6b928  [1,18,7]   Recovered via rewrite in-place
+  38 16960:52  000000003ef73379  [1,18,7]   Recovered via rewrite in-place
+  39 16960:52  000000003ef76ed4  [1,18,7]   Recovered via rewrite in-place
+  40 16960:52  000000003ef76ed7  [1,18,7]   Recovered via rewrite in-place
+  41 16960:52  000000003ef7eb56  [1,18,7]   Recovered via rewrite in-place
+  42 16982:43  0000000002ba8fdc  [1,18,7]   Recovered via rewrite in-place
+  43 16982:57  000000000a485cdc  [1,18,7]   Recovered via rewrite in-place
+  44 16982:57  000000000a485cdd  [1,18,7]   Recovered via rewrite in-place
+  45 16982:57  000000000a48c6a4  [1,18,7]   Recovered via rewrite in-place
+  46 16982:57  000000000a48c6a5  [1,18,7]   Recovered via rewrite in-place
+  47 16982:57  000000000a5b1d43  [1,18,7]   Recovered via rewrite in-place
+  48 16982:57  000000000a5b2c8c  [1,18,7]   Recovered via rewrite in-place
+  49 16982:57  000000000a5b360f  [1,18,7]   Recovered via rewrite in-place
+  50 16982:57  000000000a5b4591  [1,18,7]   Recovered via rewrite in-place
+  51 16982:57  000000000a5b437d  [1,18,7]   Recovered via rewrite in-place
+  52 16982:57  000000000a5b46d9  [1,18,7]   Recovered via rewrite in-place
+  53 16982:57  000000000a697198  [1,18,7]   Recovered via rewrite in-place
+  54 16982:57  000000000a696d4b  [1,17,6]   Successfully reassigned
+  55 16982:57  000000000a696cc0  [1,17,6]   Successfully reassigned
+  56 16982:57  000000000a696a05  [1,18,7]   Recovered via rewrite in-place
+  57 16982:57  000000000a69717d  [1,18,7]   Recovered via rewrite in-place
+  58 16982:57  000000000a69a7dc  [1,18,7]   Recovered via rewrite in-place
+  59 16982:57  000000000a69b0b4  [1,18,7]   Recovered via rewrite in-place
+  60 16982:57  000000000a69cd53  [1,18,7]   Recovered via rewrite in-place
+  61 16982:57  000000000a69cd54  [1,17,6]   Successfully reassigned
+  62 16982:57  000000000a69d58d  [1,17,6]   Successfully reassigned
+  63 16982:57  000000000a69dc98  [1,17,6]   Successfully reassigned
+  64 16982:57  000000000a69ecd6  [1,18,7]   Recovered via rewrite in-place
+  65 16982:57  000000000a69ee16  [1,18,7]   Recovered via rewrite in-place
+  66 16982:57  000000000a6a0368  [1,18,7]   Recovered via rewrite in-place
+  67 16982:57  000000000a6a0587  [1,18,7]   Recovered via rewrite in-place
+  68 16982:57  000000000a6a081d  [1,18,7]   Recovered via rewrite in-place
+  69 16982:57  000000000a6a048b  [1,18,7]   Recovered via rewrite in-place
+  70 16982:57  000000000a6a0504  [1,18,7]   Recovered via rewrite in-place
+  71 16982:57  000000000a6a06b9  [1,18,7]   Recovered via rewrite in-place
+  72 16982:58  000000000a6a0a02  [1,17,6]   Successfully reassigned
+  73 16982:58  000000000a6a02fd  [1,18,7]   Recovered via rewrite in-place
+  74 16982:58  000000000a6a19ef  [1,18,7]   Recovered via rewrite in-place
+  75 16982:58  000000000a6a2472  [1,18,7]   Recovered via rewrite in-place
+  76 16982:58  000000000a6a2196  [1,17,6]   Successfully reassigned
+  77 16982:58  000000000a6a2195  [1,18,7]   Recovered via rewrite in-place
+  78 16982:58  000000000a6a219e  [1,18,7]   Recovered via rewrite in-place
+  79 16982:58  000000000a6a26e6  [1,18,7]   Recovered via rewrite in-place
+  80 16982:58  000000000a6a26e9  [1,18,7]   Recovered via rewrite in-place
+  81 16982:58  000000000a6a2c85  [1,17,6]   Successfully reassigned
+  82 16982:58  000000000a6a35b0  [1,18,7]   Recovered via rewrite in-place
+  83 16982:58  000000000a6a35b1  [1,18,7]   Recovered via rewrite in-place
+  84 16982:58  000000000a6a323e  [1,18,7]   Recovered via rewrite in-place
+  85 16982:58  000000000a6a3745  [1,17,6]   Successfully reassigned
+  86 16982:58  000000000a6a30e1  [1,17,6]   Successfully reassigned
+  87 16982:58  000000000a6a3434  [1,17,6]   Successfully reassigned
+  88 16982:58  000000000a6a34a3  [1,18,7]   Recovered via rewrite in-place
+  89 16982:58  000000000a6a361c  [1,18,7]   Recovered via rewrite in-place
+  90 16982:58  000000000a6a30e2  [1,18,7]   Recovered via rewrite in-place
+  91 16982:58  000000000a6a37fc  [1,18,7]   Recovered via rewrite in-place
+  92 16982:58  000000000a6a30e2  [1,18,7]   Recovered via rewrite in-place
+  93 16982:58  000000000a6a35a9  [1,18,7]   Recovered via rewrite in-place
+  94 16982:58  000000000a6a43c7  [1,18,7]   Recovered via rewrite in-place
+  95 16982:58  000000000a6a440a  [1,18,7]   Recovered via rewrite in-place
+  96 16982:58  000000000a6a441e  [1,18,7]   Recovered via rewrite in-place
+  97 16982:58  000000000a6a41b8  [1,18,7]   Recovered via rewrite in-place
+  98 16982:58  000000000a6a5ed0  [1,18,7]   Recovered via rewrite in-place
+  99 16982:58  000000000a6a7f83  [1,17,6]   Successfully reassigned
+ 100 16982:58  000000000a6a80a1  [1,18,7]   Recovered via rewrite in-place
+ 101 16982:58  000000000a6a7d60  [1,18,7]   Recovered via rewrite in-place
+ 102 16982:58  000000000a6a7d61  [1,18,7]   Recovered via rewrite in-place
+ 103 16982:58  000000000a6b2606  [1,18,7]   Recovered via rewrite in-place
+ 104 16982:58  000000000a6b5b2c  [1,18,7]   Recovered via rewrite in-place
+ 105 16982:58  000000000a6b6cf6  [1,18,7]   Recovered via rewrite in-place
+ 106 16982:58  000000000a6bf5cf  [1,18,7]   Recovered via rewrite in-place
+ 107 16982:58  000000000a6bf4d5  [1,18,7]   Recovered via rewrite in-place
+ 108 16982:58  000000000a6bff50  [1,18,7]   Recovered via rewrite in-place
+ 109 16982:58  000000000a790ba9  [1,18,7]   Recovered via rewrite in-place
+ 110 16982:58  000000000a79105c  [1,18,7]   Recovered via rewrite in-place
+ 111 16982:58  000000000a790be9  [1,18,7]   Recovered via rewrite in-place
+ 112 16982:58  000000000a79097f  [1,18,7]   Recovered via rewrite in-place
+ 113 16982:58  000000000a792075  [1,18,7]   Recovered via rewrite in-place
+ 114 16982:58  000000000a79207b  [1,17,6]   Successfully reassigned
+ 115 16982:58  000000000a792071  [1,18,7]   Recovered via rewrite in-place
+ 116 16982:58  000000000a792649  [1,18,7]   Recovered via rewrite in-place
+ 117 16982:58  000000000a792665  [1,18,7]   Recovered via rewrite in-place
+ 118 16982:58  000000000a79207c  [1,18,7]   Recovered via rewrite in-place
+ 119 16982:58  000000000a79207d  [1,18,7]   Recovered via rewrite in-place
+ 120 16982:58  000000000a794a38  [1,18,7]   Recovered via rewrite in-place
+ 121 16982:58  000000000a79609e  [1,18,7]   Recovered via rewrite in-place
+ 122 16982:58  000000000a796134  [1,18,7]   Recovered via rewrite in-place
+ 123 16983:02  000000000c96f07b  [1,18,7]   Recovered via rewrite in-place
+ 124 16983:02  000000000c971d5d  [1,18,7]   Recovered via rewrite in-place
+ 125 16983:03  000000000ccc9f06  [1,18,7]   Recovered via rewrite in-place
+ 126 16983:13  0000000011f410e9  [1,18,7]   Recovered via rewrite in-place
+ 127 16983:30  000000001aa7b2eb  [1,18,7]   Recovered via rewrite in-place
+ 128 16983:41  0000000020000586  [1,18,7]   Recovered via rewrite in-place
+ 129 16983:42  000000002050988b  [1,18,7]   Recovered via rewrite in-place
+ 130 16983:42  000000002083de83  [1,18,7]   Recovered via rewrite in-place
+ 131 16983:43  000000002091c02d  [1,18,7]   Recovered via rewrite in-place
+ 132 16983:43  0000000020a2434e  [1,18,7]   Recovered via rewrite in-place
+ 133 16983:43  0000000020b3a948  [1,18,7]   Recovered via rewrite in-place
+ 134 16983:43  0000000020b3eca9  [1,18,7]   Recovered via rewrite in-place
+ 135 16983:43  0000000020b3ecd2  [1,18,7]   Recovered via rewrite in-place
+ 136 16983:43  0000000020b41aea  [1,18,7]   Recovered via rewrite in-place
+ 137 16983:44  0000000020e4091c  [1,18,7]   Recovered via rewrite in-place
+ 138 16983:44  0000000020e5242e  [1,18,7]   Recovered via rewrite in-place
+ 139 16983:44  000000002103944c  [1,18,7]   Recovered via rewrite in-place
+ 140 16983:44  00000000210506b6  [1,18,7]   Recovered via rewrite in-place
+ 141 16983:44  0000000021051301  [1,18,7]   Recovered via rewrite in-place
+ 142 16983:53  0000000024cb4529  [1,18,7]   Recovered via rewrite in-place
+ 143 16983:58  0000000026f7c3cb  [1,18,7]   Recovered via rewrite in-place
+ 144 16983:58  0000000026f820bc  [1,18,7]   Recovered via rewrite in-place
+ 145 16983:58  000000002706fa4a  [1,18,7]   Recovered via rewrite in-place
+ 146 16984:12  000000002d7e15e2  [1,18,7]   Recovered via rewrite in-place
+ 147 16984:22  000000003197c4d7  [1,18,7]   Recovered via rewrite in-place
+ 148 16984:23  0000000031b55d57  [1,18,7]   Recovered via rewrite in-place
+ 149 16984:25  00000000327e7dde  [1,18,7]   Recovered via rewrite in-place
+ 150 16984:25  00000000327e7ddf  [1,18,7]   Recovered via rewrite in-place
+ 151 16984:26  0000000032f177fd  [1,18,7]   Recovered via rewrite in-place
+ 152 16984:29  000000003455745a  [1,18,7]   Recovered via rewrite in-place
+ 153 16984:29  0000000034571973  [1,18,7]   Recovered via rewrite in-place
+ 154 16984:33  0000000036089152  [1,18,7]   Recovered via rewrite in-place
+ 155 16984:35  0000000036a32bc6  [1,18,7]   Recovered via rewrite in-place
+ 156 16984:36  0000000036f7205f  [1,18,7]   Recovered via rewrite in-place
+ 157 16984:36  0000000037117781  [1,18,7]   Recovered via rewrite in-place
+ 158 16984:36  0000000037118e5d  [1,18,7]   Recovered via rewrite in-place
+ 159 16984:36  000000003711d94b  [1,18,7]   Recovered via rewrite in-place
+ 160 16984:37  00000000377286bc  [1,18,7]   Recovered via rewrite in-place
+ 161 16984:38  0000000037eda2c0  [1,18,7]   Recovered via rewrite in-place
+ 162 16984:40  000000003876fc42  [1,18,7]   Recovered via rewrite in-place
+ 163 17006:38  000000000001d137  [1,18,7]   Recovered via rewrite in-place
+ 164 17006:38  000000000001d225  [1,18,7]   Recovered via rewrite in-place
+ 165 17006:38  000000000001d18a  [1,18,7]   Recovered via rewrite in-place
+ 166 17006:38  000000000001d2b7  [1,18,7]   Recovered via rewrite in-place
+ 167 17006:38  000000000001d10a  [1,18,7]   Recovered via rewrite in-place
+ 168 17006:38  000000000001d128  [1,18,7]   Recovered via rewrite in-place
+ 169 17006:38  000000000001d22f  [1,18,7]   Recovered via rewrite in-place
+ 170 17006:38  000000000001d2e9  [1,18,7]   Recovered via rewrite in-place
+ 171 17006:38  000000000001d0d7  [1,18,7]   Recovered via rewrite in-place
+ 172 17006:38  000000000001d236  [1,18,7]   Recovered via rewrite in-place
+ 173 17006:38  000000000001d23a  [1,18,7]   Recovered via rewrite in-place
+ 174 17006:38  000000000001d27b  [1,18,7]   Recovered via rewrite in-place
+ 175 17006:38  000000000001d108  [1,18,7]   Recovered via rewrite in-place
+ 176 17006:38  000000000001d1f7  [1,18,7]   Recovered via rewrite in-place
+ 177 17006:38  000000000001d28f  [1,18,7]   Recovered via rewrite in-place
+ 178 17006:38  000000000001d31c  [1,18,7]   Recovered via rewrite in-place
+ 179 17006:38  000000000001d376  [1,18,7]   Recovered via rewrite in-place
+ 180 17006:38  000000000001d166  [1,18,7]   Recovered via rewrite in-place
+ 181 17006:38  000000000001d526  [1,18,7]   Recovered via rewrite in-place
+ 182 17006:38  000000000001d0f6  [1,18,7]   Recovered via rewrite in-place
+ 183 17006:38  000000000001d152  [1,18,7]   Recovered via rewrite in-place
+ 184 17006:38  000000000001d299  [1,18,7]   Recovered via rewrite in-place
+ 185 17006:38  000000000001d892  [1,18,7]   Recovered via rewrite in-place
+ 186 17006:38  000000000001d893  [1,18,7]   Recovered via rewrite in-place
+ 187 17006:38  000000000001d9be  [1,18,7]   Recovered via rewrite in-place
+ 188 17006:38  000000000001da4d  [1,18,7]   Recovered via rewrite in-place
+ 189 17006:38  000000000001f5e6  [1,18,7]   Recovered via rewrite in-place
+ 190 17006:38  000000000001fbbe  [1,18,7]   Recovered via rewrite in-place
+ 191 17006:38  000000000001fbbb  [1,18,7]   Recovered via rewrite in-place
+ 192 17006:38  000000000001fbc0  [1,18,7]   Recovered via rewrite in-place
+ 193 17006:38  000000000001f597  [1,18,7]   Recovered via rewrite in-place
+ 194 17006:39  0000000000020990  [1,18,7]   Recovered via rewrite in-place
+ 195 17006:39  0000000000020994  [1,18,7]   Recovered via rewrite in-place
+ 196 17006:39  000000000002099b  [1,18,7]   Recovered via rewrite in-place
+ 197 17006:39  000000000002097c  [1,18,7]   Recovered via rewrite in-place
+ 198 17006:39  0000000000020634  [1,18,7]   Recovered via rewrite in-place
+ 199 17006:39  00000000000209c1  [1,18,7]   Recovered via rewrite in-place
+ 200 17006:39  00000000000204fd  [1,18,7]   Recovered via rewrite in-place
+ 201 17006:39  0000000000020622  [1,18,7]   Recovered via rewrite in-place
+ 202 17006:39  00000000000209a6  [1,18,7]   Recovered via rewrite in-place
+ 203 17006:39  00000000000209b8  [1,18,7]   Recovered via rewrite in-place
+ 204 17006:39  0000000000020991  [1,18,7]   Recovered via rewrite in-place
+ 205 17006:39  0000000000020998  [1,18,7]   Recovered via rewrite in-place
+ 206 17006:39  0000000000020a0f  [1,18,7]   Recovered via rewrite in-place
+ 207 17006:39  0000000000020995  [1,18,7]   Recovered via rewrite in-place
+ 208 17006:39  0000000000020621  [1,18,7]   Recovered via rewrite in-place
+ 209 17006:39  000000000002099a  [1,18,7]   Recovered via rewrite in-place
+ 210 17006:39  00000000000209b7  [1,18,7]   Recovered via rewrite in-place
+ 211 17006:39  0000000000020bfe  [1,18,7]   Recovered via rewrite in-place
+ 212 17006:39  0000000000020625  [1,18,7]   Recovered via rewrite in-place
+ 213 17006:39  00000000000208d3  [1,18,7]   Recovered via rewrite in-place
+ 214 17006:39  00000000000209b0  [1,18,7]   Recovered via rewrite in-place
+ 215 17006:39  00000000000209b1  [1,18,7]   Recovered via rewrite in-place
+ 216 17006:39  00000000000209a2  [1,18,7]   Recovered via rewrite in-place
+ 217 17006:39  00000000000209a5  [1,18,7]   Recovered via rewrite in-place
+ 218 17006:39  000000000002062d  [1,18,7]   Recovered via rewrite in-place
+ 219 17006:39  0000000000020bda  [1,18,7]   Recovered via rewrite in-place
+ 220 17006:39  00000000000209ad  [1,18,7]   Recovered via rewrite in-place
+ 221 17006:39  00000000000209af  [1,18,7]   Recovered via rewrite in-place
+ 222 17006:39  000000000002096e  [1,18,7]   Recovered via rewrite in-place
+ 223 17006:39  000000000002062c  [1,18,7]   Recovered via rewrite in-place
+ 224 17006:39  000000000002062f  [1,18,7]   Recovered via rewrite in-place
+ 225 17006:39  0000000000020636  [1,18,7]   Recovered via rewrite in-place
+ 226 17006:39  00000000000209c0  [1,18,7]   Recovered via rewrite in-place
+ 227 17006:39  0000000000020633  [1,18,7]   Recovered via rewrite in-place
+ 228 17006:39  00000000000209f3  [1,18,7]   Recovered via rewrite in-place
+ 229 17006:39  0000000000020632  [1,18,7]   Recovered via rewrite in-place
+ 230 17006:39  00000000000209b5  [1,18,7]   Recovered via rewrite in-place
+ 231 17006:39  00000000000209be  [1,18,7]   Recovered via rewrite in-place
+ 232 17006:39  0000000000020500  [1,18,7]   Recovered via rewrite in-place
+ 233 17006:39  0000000000020ab3  [1,18,7]   Recovered via rewrite in-place
+ 234 17006:40  0000000000020a99  [1,18,7]   Recovered via rewrite in-place
+ 235 17006:40  0000000000021964  [1,18,7]   Recovered via rewrite in-place
+ 236 17006:40  0000000000021790  [1,18,7]   Recovered via rewrite in-place
+ 237 17006:40  00000000000228fc  [1,18,7]   Recovered via rewrite in-place
+ 238 17006:40  000000000002258a  [1,18,7]   Recovered via rewrite in-place
+ 239 17006:40  000000000002258c  [1,18,7]   Recovered via rewrite in-place
+ 240 17006:40  0000000000022566  [1,18,7]   Recovered via rewrite in-place
+ 241 17006:40  000000000002272f  [1,18,7]   Recovered via rewrite in-place
+ 242 17006:40  0000000000022c9a  [1,18,7]   Recovered via rewrite in-place
+ 243 17006:40  0000000000022c9b  [1,18,7]   Recovered via rewrite in-place
+ 244 17006:40  0000000000022e2f  [1,18,7]   Recovered via rewrite in-place
+ 245 17006:40  0000000000023dcb  [1,18,7]   Recovered via rewrite in-place
+ 246 17006:40  0000000000023c88  [1,18,7]   Recovered via rewrite in-place
+ 247 17006:40  0000000000023f5a  [1,18,7]   Recovered via rewrite in-place
+ 248 17006:40  0000000000023c45  [1,18,7]   Recovered via rewrite in-place
+ 249 17006:40  0000000000023dd0  [1,18,7]   Recovered via rewrite in-place
+ 250 17006:40  0000000000023cb3  [1,18,7]   Recovered via rewrite in-place
+ 251 17006:40  0000000000023dc2  [1,18,7]   Recovered via rewrite in-place
+ 252 17006:40  000000000002417c  [1,18,7]   Recovered via rewrite in-place
+ 253 17006:40  000000000002433e  [1,18,7]   Recovered via rewrite in-place
+ 254 17006:40  0000000000024337  [1,18,7]   Recovered via rewrite in-place
+ 255 17006:40  0000000000025e22  [1,18,7]   Recovered via rewrite in-place
+ 256 17006:40  0000000000026505  [1,18,7]   Recovered via rewrite in-place
+ 257 17006:40  0000000000026500  [1,18,7]   Recovered via rewrite in-place
+ 258 17006:40  0000000000026512  [1,18,7]   Recovered via rewrite in-place
+ 259 17006:40  0000000000027328  [1,18,7]   Recovered via rewrite in-place
+ 260 17006:40  00000000000272fe  [1,18,7]   Recovered via rewrite in-place
+ 261 17006:40  0000000000027301  [1,18,7]   Recovered via rewrite in-place
+ 262 17006:40  00000000000272fc  [1,18,7]   Recovered via rewrite in-place
+ 263 17006:40  00000000000274ab  [1,18,7]   Recovered via rewrite in-place
+ 264 17006:40  00000000000274f0  [1,18,7]   Recovered via rewrite in-place
+ 265 17006:40  000000000002732b  [1,18,7]   Recovered via rewrite in-place
+ 266 17006:40  0000000000027369  [1,18,7]   Recovered via rewrite in-place
+ 267 17006:40  000000000002742d  [1,18,7]   Recovered via rewrite in-place
+ 268 17006:40  000000000002847c  [1,18,7]   Recovered via rewrite in-place
+ 269 17006:40  000000000002882f  [1,18,7]   Recovered via rewrite in-place
+ 270 17006:40  00000000000287ef  [1,18,7]   Recovered via rewrite in-place
+ 271 17006:40  00000000000289f4  [1,18,7]   Recovered via rewrite in-place
+ 272 17006:40  0000000000028853  [1,18,7]   Recovered via rewrite in-place
+ 273 17006:41  000000000002ab50  [1,18,7]   Recovered via rewrite in-place
+ 274 17006:41  000000000004d0b3  [1,18,7]   Recovered via rewrite in-place
+ 275 17006:41  000000000004d0b4  [1,18,7]   Recovered via rewrite in-place
+ 276 17006:41  000000000004d09f  [1,18,7]   Recovered via rewrite in-place
+ 277 17006:41  000000000004d0b7  [1,18,7]   Recovered via rewrite in-place
+ 278 17006:41  000000000004d0ca  [1,18,7]   Recovered via rewrite in-place
+ 279 17006:41  000000000004cff3  [1,18,7]   Recovered via rewrite in-place
+ 280 17006:41  000000000004d0a9  [1,18,7]   Recovered via rewrite in-place
+ 281 17006:41  000000000004d0bc  [1,18,7]   Recovered via rewrite in-place
+ 282 17006:41  000000000004eceb  [1,18,7]   Recovered via rewrite in-place
+ 283 17006:41  000000000004ecec  [1,18,7]   Recovered via rewrite in-place
+ 284 17006:41  000000000004ecea  [1,18,7]   Recovered via rewrite in-place
+ 285 17006:41  000000000004ece1  [1,18,7]   Recovered via rewrite in-place
+ 286 17006:41  0000000000050234  [1,18,7]   Recovered via rewrite in-place
+ 287 17006:41  000000000004fd2a  [1,18,7]   Recovered via rewrite in-place
+ 288 17006:41  0000000000051e24  [1,18,7]   Recovered via rewrite in-place
+ 289 17006:41  0000000000051e43  [1,18,7]   Recovered via rewrite in-place
+ 290 17006:41  0000000000051cff  [1,18,7]   Recovered via rewrite in-place
+ 291 17006:41  0000000000051e4e  [1,18,7]   Recovered via rewrite in-place
+ 292 17006:41  0000000000051e53  [1,18,7]   Recovered via rewrite in-place
+ 293 17006:41  0000000000052539  [1,18,7]   Recovered via rewrite in-place
+ 294 17006:41  0000000000053448  [1,18,7]   Recovered via rewrite in-place
+ 295 17006:41  00000000000534ce  [1,18,7]   Recovered via rewrite in-place
+ 296 17006:41  00000000000534ca  [1,18,7]   Recovered via rewrite in-place
+ 297 17006:41  000000000005343e  [1,18,7]   Recovered via rewrite in-place
+ 298 17006:41  00000000000534d6  [1,18,7]   Recovered via rewrite in-place
+ 299 17006:41  0000000000053d20  [1,18,7]   Recovered via rewrite in-place
+ 300 17006:41  0000000000053d24  [1,18,7]   Recovered via rewrite in-place
+ 301 17006:41  0000000000053d16  [1,18,7]   Recovered via rewrite in-place
+ 302 17006:41  000000000005879c  [1,18,7]   Recovered via rewrite in-place
+ 303 17006:41  00000000000587a7  [1,18,7]   Recovered via rewrite in-place
+ 304 17006:41  0000000000058e8b  [1,18,7]   Recovered via rewrite in-place
+ 305 17006:41  0000000000058fcb  [1,18,7]   Recovered via rewrite in-place
+ 306 17006:41  0000000000058e88  [1,18,7]   Recovered via rewrite in-place
+ 307 17006:41  0000000000058fc2  [1,18,7]   Recovered via rewrite in-place
+ 308 17006:41  0000000000059390  [1,18,7]   Recovered via rewrite in-place
+ 309 17006:41  00000000000595a3  [1,18,7]   Recovered via rewrite in-place
+ 310 17006:41  000000000005cde0  [1,18,7]   Recovered via rewrite in-place
+ 311 17006:41  000000000005d433  [1,18,7]   Recovered via rewrite in-place
+ 312 17006:41  000000000005ff9e  [1,18,7]   Recovered via rewrite in-place
+ 313 17006:41  0000000000061ade  [1,18,7]   Recovered via rewrite in-place
+ 314 17006:41  0000000000061aee  [1,18,7]   Recovered via rewrite in-place
+ 315 17006:42  0000000000061b55  [1,18,7]   Recovered via rewrite in-place
+ 316 17006:42  0000000000061b00  [1,18,7]   Recovered via rewrite in-place
+ 317 17006:42  0000000000061b5a  [1,18,7]   Recovered via rewrite in-place
+ 318 17006:42  0000000000061b56  [1,18,7]   Recovered via rewrite in-place
+ 319 17006:42  0000000000061b69  [1,18,7]   Recovered via rewrite in-place
+ 320 17006:42  0000000000061afb  [1,18,7]   Recovered via rewrite in-place
+ 321 17006:42  0000000000061b5c  [1,18,7]   Recovered via rewrite in-place
+ 322 17006:42  0000000000061ae5  [1,18,7]   Recovered via rewrite in-place
+ 323 17006:42  0000000000061b4b  [1,18,7]   Recovered via rewrite in-place
+ 324 17006:42  0000000000061cf2  [1,18,7]   Recovered via rewrite in-place
+ 325 17006:42  0000000000065356  [1,18,7]   Recovered via rewrite in-place
+ 326 17006:42  0000000000065358  [1,18,7]   Recovered via rewrite in-place
+ 327 17006:42  0000000000065360  [1,18,7]   Recovered via rewrite in-place
+ 328 17006:42  0000000000066f58  [1,18,7]   Recovered via rewrite in-place
+ 329 17006:42  000000000006ade5  [1,18,7]   Recovered via rewrite in-place
+ 330 17006:42  000000000006adf4  [1,18,7]   Recovered via rewrite in-place
+ 331 17006:42  000000000006adf5  [1,18,7]   Recovered via rewrite in-place
+ 332 17006:42  000000000006f4b2  [1,18,7]   Recovered via rewrite in-place
+ 333 17006:42  000000000006fbb5  [1,18,7]   Recovered via rewrite in-place
+ 334 17006:42  000000000006fd0b  [1,18,7]   Recovered via rewrite in-place
+ 335 17006:42  000000000006fe98  [1,18,7]   Recovered via rewrite in-place
+ 336 17006:42  000000000006fe95  [1,18,7]   Recovered via rewrite in-place
+ 337 17006:42  000000000006fe9b  [1,18,7]   Recovered via rewrite in-place
+ 338 17006:42  00000000000a9d58  [1,18,7]   Recovered via rewrite in-place
+ 339 17006:42  00000000000a9d59  [1,18,7]   Recovered via rewrite in-place
+ 340 17006:42  00000000000a9aa6  [1,18,7]   Recovered via rewrite in-place
+ 341 17006:42  00000000000a9d53  [1,18,7]   Recovered via rewrite in-place
+ 342 17006:42  00000000000a9d5d  [1,18,7]   Recovered via rewrite in-place
+ 343 17006:42  00000000000a9d5e  [1,18,7]   Recovered via rewrite in-place
+ 344 17006:43  00000000000a9d4a  [1,18,7]   Recovered via rewrite in-place
+ 345 17006:43  00000000000a9d4f  [1,18,7]   Recovered via rewrite in-place
+ 346 17006:43  00000000000a9ef2  [1,18,7]   Recovered via rewrite in-place
+ 347 17006:43  00000000000a9d5b  [1,18,7]   Recovered via rewrite in-place
+ 348 17006:43  00000000000a9d76  [1,18,7]   Recovered via rewrite in-place
+ 349 17006:43  00000000000a9b75  [1,18,7]   Recovered via rewrite in-place
+ 350 17006:43  00000000000a9d57  [1,18,7]   Recovered via rewrite in-place
+ 351 17006:44  00000000000a9ab6  [1,18,7]   Recovered via rewrite in-place
+ 352 17006:44  00000000000a9d61  [1,18,7]   Recovered via rewrite in-place
+ 353 17006:44  00000000000a9d43  [1,18,7]   Recovered via rewrite in-place
+ 354 17006:44  00000000000a9d5a  [1,18,7]   Recovered via rewrite in-place
+ 355 17006:44  00000000000a9d5c  [1,18,7]   Recovered via rewrite in-place
+ 356 17006:44  00000000000a9d50  [1,18,7]   Recovered via rewrite in-place
+ 357 17006:44  00000000000a9d62  [1,18,7]   Recovered via rewrite in-place
+ 358 17006:44  00000000000a9cc9  [1,18,7]   Recovered via rewrite in-place
+ 359 17006:44  00000000000a9d56  [1,18,7]   Recovered via rewrite in-place
+ 360 17006:44  00000000000a9d63  [1,18,7]   Recovered via rewrite in-place
+ 361 17006:44  00000000000a9d6b  [1,18,7]   Recovered via rewrite in-place
+ 362 17006:44  00000000000a9d65  [1,18,7]   Recovered via rewrite in-place
+ 363 17006:44  00000000000a9d66  [1,18,7]   Recovered via rewrite in-place
+ 364 17006:44  00000000000a9d64  [1,18,7]   Recovered via rewrite in-place
+ 365 17006:44  00000000000a9d6a  [1,18,7]   Recovered via rewrite in-place
+ 366 17006:44  00000000000a9d68  [1,18,7]   Recovered via rewrite in-place
+ 367 17006:44  00000000000aa03f  [1,18,7]   Recovered via rewrite in-place
+ 368 17006:44  00000000000a9d69  [1,18,7]   Recovered via rewrite in-place
+ 369 17006:44  00000000000a9d6c  [1,18,7]   Recovered via rewrite in-place
+ 370 17006:44  00000000000a9d7d  [1,18,7]   Recovered via rewrite in-place
+ 371 17006:44  00000000000a9d6d  [1,18,7]   Recovered via rewrite in-place
+ 372 17006:44  00000000000a9d6e  [1,18,7]   Recovered via rewrite in-place
+ 373 17006:44  00000000000aaacc  [1,18,7]   Recovered via rewrite in-place
+ 374 17006:44  00000000000aab66  [1,18,7]   Recovered via rewrite in-place
+ 375 17006:44  00000000000aab57  [1,18,7]   Recovered via rewrite in-place
+ 376 17006:44  00000000000aab63  [1,18,7]   Recovered via rewrite in-place
+ 377 17006:44  00000000000aab68  [1,18,7]   Recovered via rewrite in-place
+ 378 17006:44  00000000000aaac9  [1,18,7]   Recovered via rewrite in-place
+ 379 17006:44  00000000000aab67  [1,18,7]   Recovered via rewrite in-place
+ 380 17006:44  00000000000aab6b  [1,18,7]   Recovered via rewrite in-place
+ 381 17006:44  00000000000aab69  [1,18,7]   Recovered via rewrite in-place
+ 382 17006:44  00000000000acf3d  [1,18,7]   Recovered via rewrite in-place
+ 383 17006:44  00000000000ae60d  [1,18,7]   Recovered via rewrite in-place
+ 384 17006:44  00000000000aeaab  [1,18,7]   Recovered via rewrite in-place
+ 385 17006:44  00000000000aeaba  [1,18,7]   Recovered via rewrite in-place
+ 386 17006:44  00000000000aebf1  [1,18,7]   Recovered via rewrite in-place
+ 387 17006:44  00000000000aeabf  [1,18,7]   Recovered via rewrite in-place
+ 388 17006:44  00000000000aec8d  [1,18,7]   Recovered via rewrite in-place
+ 389 17006:44  00000000000aeaeb  [1,18,7]   Recovered via rewrite in-place
+ 390 17006:44  00000000000aeae9  [1,18,7]   Recovered via rewrite in-place
+ 391 17006:44  00000000000aea03  [1,18,7]   Recovered via rewrite in-place
+ 392 17006:44  00000000000aeb34  [1,18,7]   Recovered via rewrite in-place
+ 393 17006:44  00000000000b14d6  [1,18,7]   Recovered via rewrite in-place
+ 394 17006:44  00000000000b14d7  [1,18,7]   Recovered via rewrite in-place
+ 395 17006:44  00000000000b14c5  [1,18,7]   Recovered via rewrite in-place
+ 396 17006:44  00000000000b14cd  [1,18,7]   Recovered via rewrite in-place
+ 397 17006:44  00000000000b1502  [1,18,7]   Recovered via rewrite in-place
+ 398 17006:44  00000000000b1577  [1,18,7]   Recovered via rewrite in-place
+ 399 17006:44  00000000000b14cf  [1,18,7]   Recovered via rewrite in-place
+ 400 17006:44  00000000000b14d0  [1,18,7]   Recovered via rewrite in-place
+ 401 17006:45  00000000000b1b1d  [1,18,7]   Recovered via rewrite in-place
+ 402 17006:45  00000000000b1ba8  [1,18,7]   Recovered via rewrite in-place
+ 403 17006:45  00000000000b1bbc  [1,18,7]   Recovered via rewrite in-place
+ 404 17006:45  00000000000b1bbd  [1,18,7]   Recovered via rewrite in-place
+ 405 17006:45  00000000000b1bc4  [1,18,7]   Recovered via rewrite in-place
+ 406 17006:45  00000000000b1bd8  [1,18,7]   Recovered via rewrite in-place
+ 407 17006:45  00000000000b1bb0  [1,18,7]   Recovered via rewrite in-place
+ 408 17006:45  00000000000b1bc0  [1,18,7]   Recovered via rewrite in-place
+ 409 17006:45  00000000000b1bb7  [1,18,7]   Recovered via rewrite in-place
+ 410 17006:45  00000000000b1bc7  [1,18,7]   Recovered via rewrite in-place
+ 411 17006:45  00000000000b1bc2  [1,18,7]   Recovered via rewrite in-place
+ 412 17006:45  00000000000b1bc8  [1,18,7]   Recovered via rewrite in-place
+ 413 17006:45  00000000000b1bca  [1,18,7]   Recovered via rewrite in-place
+ 414 17006:45  00000000000b1bcb  [1,18,7]   Recovered via rewrite in-place
+ 415 17006:45  00000000000b1bc3  [1,18,7]   Recovered via rewrite in-place
+ 416 17006:45  00000000000b38af  [1,18,7]   Recovered via rewrite in-place
+ 417 17006:45  00000000000b3f31  [1,18,7]   Recovered via rewrite in-place
+ 418 17006:45  00000000000b4d2d  [1,18,7]   Recovered via rewrite in-place
+ 419 17006:45  00000000000b4736  [1,18,7]   Recovered via rewrite in-place
+ 420 17006:45  00000000000b49b8  [1,18,7]   Recovered via rewrite in-place
+ 421 17006:45  00000000000b4e4e  [1,18,7]   Recovered via rewrite in-place
+ 422 17006:45  00000000000b4ce6  [1,18,7]   Recovered via rewrite in-place
+ 423 17006:45  00000000000b4d5b  [1,18,7]   Recovered via rewrite in-place
+ 424 17006:45  00000000000b5d1e  [1,18,7]   Recovered via rewrite in-place
+ 425 17006:45  00000000000b5819  [1,18,7]   Recovered via rewrite in-place
+ 426 17006:45  00000000000b5662  [1,18,7]   Recovered via rewrite in-place
+ 427 17006:45  00000000000b59eb  [1,18,7]   Recovered via rewrite in-place
+ 428 17006:45  00000000000b5666  [1,18,7]   Recovered via rewrite in-place
+ 429 17006:45  00000000000b5663  [1,18,7]   Recovered via rewrite in-place
+ 430 17006:45  00000000000b5665  [1,18,7]   Recovered via rewrite in-place
+ 431 17006:45  00000000000b6acf  [1,18,7]   Recovered via rewrite in-place
+ 432 17006:45  00000000000b693d  [1,18,7]   Recovered via rewrite in-place
+ 433 17006:45  00000000000b692f  [1,18,7]   Recovered via rewrite in-place
+ 434 17006:45  00000000000b6935  [1,18,7]   Recovered via rewrite in-place
+ 435 17006:45  00000000000b6939  [1,18,7]   Recovered via rewrite in-place
+ 436 17006:45  00000000000b692d  [1,18,7]   Recovered via rewrite in-place
+ 437 17006:45  00000000000bada8  [1,18,7]   Recovered via rewrite in-place
+ 438 17006:45  00000000000bb032  [1,18,7]   Recovered via rewrite in-place
+ 439 17006:45  00000000000bb68e  [1,18,7]   Recovered via rewrite in-place
+ 440 17006:45  00000000000bb683  [1,18,7]   Recovered via rewrite in-place
+ 441 17006:45  00000000000bb68c  [1,18,7]   Recovered via rewrite in-place
+ 442 17006:45  00000000000bb63c  [1,18,7]   Recovered via rewrite in-place
+ 443 17006:45  00000000000bb68f  [1,18,7]   Recovered via rewrite in-place
+ 444 17006:46  00000000000bb680  [1,18,7]   Recovered via rewrite in-place
+ 445 17006:46  00000000000bb690  [1,18,7]   Recovered via rewrite in-place
+ 446 17006:46  00000000000bb691  [1,18,7]   Recovered via rewrite in-place
+ 447 17006:46  00000000000bb692  [1,18,7]   Recovered via rewrite in-place
+ 448 17006:46  00000000000bb693  [1,18,7]   Recovered via rewrite in-place
+ 449 17006:46  00000000000bb694  [1,18,7]   Recovered via rewrite in-place
+ 450 17006:46  00000000000bb695  [1,18,7]   Recovered via rewrite in-place
+ 451 17006:46  00000000000bb63b  [1,18,7]   Recovered via rewrite in-place
+ 452 17006:46  00000000000bb688  [1,18,7]   Recovered via rewrite in-place
+ 453 17006:46  00000000000bb689  [1,18,7]   Recovered via rewrite in-place
+ 454 17006:46  00000000000bb696  [1,18,7]   Recovered via rewrite in-place
+ 455 17006:46  00000000000bb698  [1,18,7]   Recovered via rewrite in-place
+ 456 17006:46  00000000000bb64a  [1,18,7]   Recovered via rewrite in-place
+ 457 17006:46  00000000000bb687  [1,18,7]   Recovered via rewrite in-place
+ 458 17006:46  00000000000bb3e4  [1,18,7]   Recovered via rewrite in-place
+ 459 17006:46  00000000000bb69f  [1,18,7]   Recovered via rewrite in-place
+ 460 17006:46  00000000000bb26d  [1,18,7]   Recovered via rewrite in-place
+ 461 17006:46  00000000000bb69b  [1,18,7]   Recovered via rewrite in-place
+ 462 17006:46  00000000000bb69e  [1,18,7]   Recovered via rewrite in-place
+ 463 17006:46  00000000000bb6a2  [1,18,7]   Recovered via rewrite in-place
+ 464 17006:46  00000000000bb901  [1,18,7]   Recovered via rewrite in-place
+ 465 17006:46  00000000000bba82  [1,18,7]   Recovered via rewrite in-place
+ 466 17006:47  00000000000bc6ff  [1,18,7]   Recovered via rewrite in-place
+ 467 17006:47  00000000000bcc7d  [1,18,7]   Recovered via rewrite in-place
+ 468 17006:47  00000000000bc700  [1,18,7]   Recovered via rewrite in-place
+ 469 17006:47  00000000000bcb71  [1,18,7]   Recovered via rewrite in-place
+ 470 17006:48  00000000000bc6f1  [1,18,7]   Recovered via rewrite in-place
+ 471 17006:48  00000000000bcb44  [1,18,7]   Recovered via rewrite in-place
+ 472 17006:48  00000000000bcb74  [1,18,7]   Recovered via rewrite in-place
+ 473 17006:48  00000000000bcc0a  [1,18,7]   Recovered via rewrite in-place
+ 474 17006:48  00000000000bc6fa  [1,18,7]   Recovered via rewrite in-place
+ 475 17006:48  00000000000bccb6  [1,18,7]   Recovered via rewrite in-place
+ 476 17006:48  00000000000bc6eb  [1,18,7]   Recovered via rewrite in-place
+ 477 17006:48  00000000000bcdbf  [1,18,7]   Recovered via rewrite in-place
+ 478 17006:48  00000000000bca7e  [1,18,7]   Recovered via rewrite in-place
+ 479 17006:48  00000000000bc701  [1,18,7]   Recovered via rewrite in-place
+ 480 17006:48  00000000000bcb89  [1,18,7]   Recovered via rewrite in-place
+ 481 17006:48  00000000000bc8ea  [1,18,7]   Recovered via rewrite in-place
+ 482 17006:48  00000000000bc6ee  [1,18,7]   Recovered via rewrite in-place
+ 483 17006:48  00000000000bc6f4  [1,18,7]   Recovered via rewrite in-place
+ 484 17006:48  00000000000bcb7a  [1,18,7]   Recovered via rewrite in-place
+ 485 17006:48  00000000000bcb88  [1,18,7]   Recovered via rewrite in-place
+ 486 17006:48  00000000000bc6e5  [1,18,7]   Recovered via rewrite in-place
+ 487 17006:48  00000000000bcd65  [1,18,7]   Recovered via rewrite in-place
+ 488 17006:48  00000000000bd0c9  [1,18,7]   Recovered via rewrite in-place
+ 489 17006:48  00000000000bd3ea  [1,18,7]   Recovered via rewrite in-place
+ 490 17006:48  00000000000bd20a  [1,18,7]   Recovered via rewrite in-place
+ 491 17006:48  00000000000bd20d  [1,18,7]   Recovered via rewrite in-place
+ 492 17006:48  00000000000bd1fc  [1,18,7]   Recovered via rewrite in-place
+ 493 17006:48  00000000000bd202  [1,18,7]   Recovered via rewrite in-place
+ 494 17006:48  00000000000bce84  [1,18,7]   Recovered via rewrite in-place
+ 495 17006:48  00000000000bd208  [1,18,7]   Recovered via rewrite in-place
+ 496 17006:48  00000000000bce80  [1,18,7]   Recovered via rewrite in-place
+ 497 17006:48  00000000000bd424  [1,18,7]   Recovered via rewrite in-place
+ 498 17006:48  00000000000bd33a  [1,18,7]   Recovered via rewrite in-place
+ 499 17006:48  00000000000bd564  [1,18,7]   Recovered via rewrite in-place
+ 500 17006:49  00000000000bd209  [1,18,7]   Recovered via rewrite in-place
+ 501 17006:49  00000000000bd20f  [1,18,7]   Recovered via rewrite in-place
+ 502 17006:49  00000000000bd906  [1,18,7]   Recovered via rewrite in-place
+ 503 17006:49  00000000000bd907  [1,18,7]   Recovered via rewrite in-place
+ 504 17006:49  00000000000bd93f  [1,18,7]   Recovered via rewrite in-place
+ 505 17006:49  00000000000bda65  [1,18,7]   Recovered via rewrite in-place
+ 506 17006:49  00000000000bdc47  [1,18,7]   Recovered via rewrite in-place
+ 507 17006:49  00000000000c2725  [1,18,7]   Recovered via rewrite in-place
+ 508 17006:51  0000000000438d4c  [1,18,7]   Recovered via rewrite in-place
+ 509 17006:51  00000000005de927  [1,18,7]   Recovered via rewrite in-place
+ 510 17006:55  0000000001281fa1  [1,18,7]   Recovered via rewrite in-place
+ 511 17006:56  000000000182c42e  [1,18,7]   Recovered via rewrite in-place
+ 512 17006:58  0000000002023607  [1,18,7]   Recovered via rewrite in-place
+ 513 17006:58  0000000002029090  [1,18,7]   Recovered via rewrite in-place
+ 514 17006:58  000000000225afda  [1,18,7]   Recovered via rewrite in-place
+ 515 17006:58  00000000022677c3  [1,18,7]   Recovered via rewrite in-place
+ 516 17006:58  0000000002267e3d  [1,18,7]   Recovered via rewrite in-place
+ 517 17006:58  0000000002388c9e  [1,18,7]   Recovered via rewrite in-place
+ 518 17006:58  0000000002391b4c  [1,18,7]   Recovered via rewrite in-place
+ 519 17006:58  000000000239c783  [1,18,7]   Recovered via rewrite in-place
+ 520 17006:59  000000000239f1fb  [1,18,7]   Recovered via rewrite in-place
+ 521 17006:59  000000000239f1ff  [1,18,7]   Recovered via rewrite in-place
+ 522 17006:59  00000000023a3d87  [1,18,7]   Recovered via rewrite in-place
+ 523 17006:59  00000000023a3d83  [1,18,7]   Recovered via rewrite in-place
+ 524 17006:59  00000000023a8026  [1,18,7]   Recovered via rewrite in-place
+ 525 17006:59  00000000023ab028  [1,18,7]   Recovered via rewrite in-place
+ 526 17006:59  00000000023ae43f  [1,18,7]   Recovered via rewrite in-place
+ 527 17006:59  00000000024a53fe  [1,18,7]   Recovered via rewrite in-place
+ 528 17006:59  00000000024b2077  [1,18,7]   Recovered via rewrite in-place
+ 529 17006:59  00000000024b2132  [1,18,7]   Recovered via rewrite in-place
+ 530 17006:59  00000000024b2134  [1,18,7]   Recovered via rewrite in-place
+ 531 17006:59  00000000024b313a  [1,18,7]   Recovered via rewrite in-place
+ 532 17006:59  00000000024b314f  [1,18,7]   Recovered via rewrite in-place
+ 533 17006:59  00000000024b6686  [1,18,7]   Recovered via rewrite in-place
+ 534 17007:00  00000000024bfed2  [1,18,7]   Recovered via rewrite in-place
+ 535 17007:00  00000000025e0ab6  [1,18,7]   Recovered via rewrite in-place
+ 536 17007:00  00000000025e202e  [1,18,7]   Recovered via rewrite in-place
+ 537 17007:00  00000000026ece8e  [1,18,7]   Recovered via rewrite in-place
+ 538 17007:01  0000000002830f5d  [1,18,7]   Recovered via rewrite in-place
+ 539 17007:01  000000000296b5df  [1,18,7]   Recovered via rewrite in-place
+ 540 17007:02  0000000002b91d5b  [1,18,7]   Recovered via rewrite in-place
+ 541 17007:03  00000000031538bc  [1,18,7]   Recovered via rewrite in-place
+ 542 17007:03  0000000003277455  [1,18,7]   Recovered via rewrite in-place
+ 543 17007:03  0000000003277456  [1,18,7]   Recovered via rewrite in-place
+ 544 17007:04  00000000033c49a4  [1,18,7]   Recovered via rewrite in-place
+ 545 17007:04  00000000034c5b58  [1,18,7]   Recovered via rewrite in-place
+ 546 17007:04  00000000034c776e  [1,18,7]   Recovered via rewrite in-place
+ 547 17007:04  00000000034c9806  [1,18,7]   Recovered via rewrite in-place
+ 548 17007:04  00000000034c9b9c  [1,18,7]   Recovered via rewrite in-place
+ 549 17007:04  00000000034c9807  [1,18,7]   Recovered via rewrite in-place
+ 550 17007:06  0000000003e23b8e  [1,18,7]   Recovered via rewrite in-place
+ 551 17007:06  0000000003e30768  [1,18,7]   Recovered via rewrite in-place
+ 552 17007:07  000000000406516f  [1,18,7]   Recovered via rewrite in-place
+ 553 17007:07  00000000040727ee  [1,18,7]   Recovered via rewrite in-place
+ 554 17007:07  000000000407338c  [1,18,7]   Recovered via rewrite in-place
+ 555 17007:08  000000000417980b  [1,18,7]   Recovered via rewrite in-place
+ 556 17007:08  00000000043d4b34  [1,18,7]   Recovered via rewrite in-place
+ 557 17007:08  00000000043e12de  [1,18,7]   Recovered via rewrite in-place
+ 558 17007:08  00000000043e35f1  [1,18,7]   Recovered via rewrite in-place
+ 559 17007:08  00000000043e3b2e  [1,18,7]   Recovered via rewrite in-place
+ 560 17007:08  00000000043ec197  [1,18,7]   Recovered via rewrite in-place
+ 561 17007:08  00000000043ec64c  [1,18,7]   Recovered via rewrite in-place
+ 562 17007:09  00000000044eabcc  [1,18,7]   Recovered via rewrite in-place
+ 563 17007:09  00000000044eb5e5  [1,18,7]   Recovered via rewrite in-place
+ 564 17007:09  00000000044eb36f  [1,18,7]   Recovered via rewrite in-place
+ 565 17007:09  00000000044eb5dc  [1,18,7]   Recovered via rewrite in-place
+ 566 17007:09  00000000044eb064  [1,18,7]   Recovered via rewrite in-place
+ 567 17007:09  00000000044eb371  [1,18,7]   Recovered via rewrite in-place
+ 568 17007:09  0000000004616ec0  [1,18,7]   Recovered via rewrite in-place
+ 569 17007:09  000000000462dfcb  [1,18,7]   Recovered via rewrite in-place
+ 570 17007:09  0000000004635099  [1,18,7]   Recovered via rewrite in-place
+ 571 17007:09  00000000046354b5  [1,18,7]   Recovered via rewrite in-place
+ 572 17007:09  00000000046352f0  [1,18,7]   Recovered via rewrite in-place
+ 573 17007:09  00000000046354b6  [1,18,7]   Recovered via rewrite in-place
+ 574 17007:09  00000000046354c2  [1,18,7]   Recovered via rewrite in-place
+ 575 17007:09  00000000046354bd  [1,18,7]   Recovered via rewrite in-place
+ 576 17007:09  00000000046354be  [1,18,7]   Recovered via rewrite in-place
+ 577 17007:09  000000000463508a  [1,18,7]   Recovered via rewrite in-place
+ 578 17007:09  0000000004635295  [1,18,7]   Recovered via rewrite in-place
+ 579 17007:09  0000000004635093  [1,18,7]   Recovered via rewrite in-place
+ 580 17007:09  0000000004635094  [1,18,7]   Recovered via rewrite in-place
+ 581 17007:09  0000000004635bb9  [1,18,7]   Recovered via rewrite in-place
+ 582 17007:09  000000000463b703  [1,18,7]   Recovered via rewrite in-place
+ 583 17007:09  0000000004647011  [1,18,7]   Recovered via rewrite in-place
+ 584 17007:09  0000000004647015  [1,18,7]   Recovered via rewrite in-place
+ 585 17007:10  000000000474994b  [1,18,7]   Recovered via rewrite in-place
+ 586 17007:10  000000000474aca1  [1,18,7]   Recovered via rewrite in-place
+ 587 17007:10  0000000004759abf  [1,18,7]   Recovered via rewrite in-place
+ 588 17007:10  0000000004764359  [1,18,7]   Recovered via rewrite in-place
+ 589 17007:10  00000000047646fb  [1,18,7]   Recovered via rewrite in-place
+ 590 17007:10  0000000004764773  [1,18,7]   Recovered via rewrite in-place
+ 591 17007:10  0000000004764ac3  [1,18,7]   Recovered via rewrite in-place
+ 592 17007:10  00000000047662cf  [1,18,7]   Recovered via rewrite in-place
+ 593 17007:10  00000000047662ce  [1,18,7]   Recovered via rewrite in-place
+ 594 17007:10  00000000047662d0  [1,18,7]   Recovered via rewrite in-place
+ 595 17007:10  00000000047662cd  [1,18,7]   Recovered via rewrite in-place
+ 596 17007:10  00000000047676e6  [1,18,7]   Recovered via rewrite in-place
+ 597 17007:10  00000000047676e7  [1,18,7]   Recovered via rewrite in-place
+ 598 17007:10  00000000047686aa  [1,18,7]   Recovered via rewrite in-place
+ 599 17007:10  000000000476f1c7  [1,18,7]   Recovered via rewrite in-place
+ 600 17007:10  000000000477172e  [1,18,7]   Recovered via rewrite in-place
+ 601 17007:10  000000000486b7fc  [1,18,7]   Recovered via rewrite in-place
+ 602 17007:10  0000000004880d35  [1,18,7]   Recovered via rewrite in-place
+ 603 17007:10  0000000004898872  [1,18,7]   Recovered via rewrite in-place
+ 604 17007:11  0000000004996ce9  [1,18,7]   Recovered via rewrite in-place
+ 605 17007:11  000000000499737e  [1,18,7]   Recovered via rewrite in-place
+ 606 17007:11  00000000049978ef  [1,18,7]   Recovered via rewrite in-place
+ 607 17007:11  00000000049978f0  [1,18,7]   Recovered via rewrite in-place
+ 608 17007:11  00000000049978f6  [1,18,7]   Recovered via rewrite in-place
+ 609 17007:11  000000000499b043  [1,18,7]   Recovered via rewrite in-place
+ 610 17007:11  000000000499b098  [1,18,7]   Recovered via rewrite in-place
+ 611 17007:11  000000000499b04c  [1,18,7]   Recovered via rewrite in-place
+ 612 17007:11  000000000499b17e  [1,18,7]   Recovered via rewrite in-place
+ 613 17007:11  000000000499ad44  [1,18,7]   Recovered via rewrite in-place
+ 614 17007:11  000000000499b097  [1,18,7]   Recovered via rewrite in-place
+ 615 17007:11  000000000499b193  [1,18,7]   Recovered via rewrite in-place
+ 616 17007:11  000000000499b194  [1,18,7]   Recovered via rewrite in-place
+ 617 17007:11  000000000499bbbf  [1,18,7]   Recovered via rewrite in-place
+ 618 17007:11  0000000004ad3fd1  [1,18,7]   Recovered via rewrite in-place
+ 619 17007:11  0000000004ad9a11  [1,18,7]   Recovered via rewrite in-place
+ 620 17007:11  0000000004ada301  [1,18,7]   Recovered via rewrite in-place
+ 621 17007:12  0000000004aea0d8  [1,18,7]   Recovered via rewrite in-place
+ 622 17007:12  0000000004c16122  [1,18,7]   Recovered via rewrite in-place
+ 623 17007:12  0000000004c1bf72  [1,18,7]   Recovered via rewrite in-place
+ 624 17007:12  0000000004c1bf74  [1,18,7]   Recovered via rewrite in-place
+ 625 17007:12  0000000004c1c12d  [1,18,7]   Recovered via rewrite in-place
+ 626 17007:12  0000000004d152b3  [1,18,7]   Recovered via rewrite in-place
+ 627 17007:12  0000000004d2dc65  [1,18,7]   Recovered via rewrite in-place
+ 628 17007:12  0000000004d2dc68  [1,18,7]   Recovered via rewrite in-place
+ 629 17007:12  0000000004d2dd85  [1,18,7]   Recovered via rewrite in-place
+ 630 17007:12  0000000004d2e42f  [1,18,7]   Recovered via rewrite in-place
+ 631 17007:12  0000000004d2f2e9  [1,18,7]   Recovered via rewrite in-place
+ 632 17007:12  0000000004d2f2e3  [1,18,7]   Recovered via rewrite in-place
+ 633 17007:12  0000000004d30925  [1,18,7]   Recovered via rewrite in-place
+ 634 17007:12  0000000004d30b8a  [1,18,7]   Recovered via rewrite in-place
+ 635 17007:13  0000000004d31380  [1,17,6]   Successfully reassigned
+ 636 17007:13  0000000004d3188b  [1,18,7]   Recovered via rewrite in-place
+ 637 17007:13  0000000004d3140c  [1,18,7]   Recovered via rewrite in-place
+ 638 17007:13  0000000004d31452  [1,18,7]   Recovered via rewrite in-place
+ 639 17007:13  0000000004d31382  [1,18,7]   Recovered via rewrite in-place
+ 640 17007:13  0000000004d36976  [1,18,7]   Recovered via rewrite in-place
+ 641 17007:13  0000000004d369ff  [1,18,7]   Recovered via rewrite in-place
+ 642 17007:13  0000000004d36b25  [1,18,7]   Recovered via rewrite in-place
+ 643 17007:13  0000000004d36b29  [1,18,7]   Recovered via rewrite in-place
+ 644 17007:13  0000000004d36f22  [1,17,6]   Successfully reassigned
+ 645 17007:13  0000000004d3880a  [1,18,7]   Recovered via rewrite in-place
+ 646 17007:13  0000000004d38dc2  [1,18,7]   Recovered via rewrite in-place
+ 647 17007:13  0000000004e4824f  [1,18,7]   Recovered via rewrite in-place
+ 648 17007:13  0000000004e48252  [1,18,7]   Recovered via rewrite in-place
+ 649 17007:14  0000000004e48102  [1,18,7]   Recovered via rewrite in-place
+ 650 17007:14  0000000004e480cc  [1,17,6]   Successfully reassigned
+ 651 17007:14  0000000004e48102  [1,18,7]   Recovered via rewrite in-place
+ 652 17007:14  0000000004e48109  [1,17,6]   Successfully reassigned
+ 653 17007:14  0000000004e481d4  [1,18,7]   Recovered via rewrite in-place
+ 654 17007:14  0000000004e489a9  [1,18,7]   Recovered via rewrite in-place
+ 655 17007:14  0000000004e48b3b  [1,18,7]   Recovered via rewrite in-place
+ 656 17007:15  0000000004e4907b  [1,18,7]   Recovered via rewrite in-place
+ 657 17007:15  0000000004e49391  [1,17,6]   Successfully reassigned
+ 658 17007:15  0000000004e4905d  [1,18,7]   Recovered via rewrite in-place
+ 659 17007:15  0000000004e4b774  [1,18,7]   Recovered via rewrite in-place
+ 660 17007:15  0000000004e4b773  [1,18,7]   Recovered via rewrite in-place
+ 661 17007:15  0000000004e4de27  [1,18,7]   Recovered via rewrite in-place
+ 662 17007:15  0000000004e4e502  [1,18,7]   Recovered via rewrite in-place
+ 663 17007:15  0000000004e52b52  [1,17,6]   Successfully reassigned
+ 664 17007:15  0000000004e52b55  [1,18,7]   Recovered via rewrite in-place
+ 665 17007:15  0000000004e53b98  [1,17,6]   Successfully reassigned
+ 666 17007:15  0000000004e53d3b  [1,17,6]   Successfully reassigned
+ 667 17007:15  0000000004e53d36  [1,17,6]   Successfully reassigned
+ 668 17007:15  0000000004e53e35  [1,18,7]   Recovered via rewrite in-place
+ 669 17007:15  0000000004e53b9b  [1,18,7]   Recovered via rewrite in-place
+ 670 17007:15  0000000004e53e2e  [1,18,7]   Recovered via rewrite in-place
+ 671 17007:15  0000000004e5436d  [1,18,7]   Recovered via rewrite in-place
+ >>>> log truncated, fetched 16124 of 49172 available bytes
+Protocol Specific port log page for SAS SSP
+relative target port id = 1
+  generation code = 1
+  number of phys = 1
+  phy identifier = 0
+    attached device type: expander device
+    attached reason: SMP phy control function
+    reason: power on
+    negotiated logical link rate: phy enabled; 6 Gbps
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=1
+    SAS address = 0x50000392f80a965a
+    attached SAS address = 0x500e0810100e97bf
+    attached phy identifier = 9
+    Invalid DWORD count = 216
+    Running disparity error count = 216
+    Loss of DWORD synchronization = 54
+    Phy reset problem = 0
+relative target port id = 2
+  generation code = 1
+  number of phys = 1
+  phy identifier = 1
+    attached device type: no device attached
+    attached reason: unknown
+    reason: unknown
+    negotiated logical link rate: phy enabled; unknown
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=0
+    SAS address = 0x50000392f80a965b
+    attached SAS address = 0x0
+    attached phy identifier = 0
+    Invalid DWORD count = 0
+    Running disparity error count = 0
+    Loss of DWORD synchronization = 0
+    Phy reset problem = 0

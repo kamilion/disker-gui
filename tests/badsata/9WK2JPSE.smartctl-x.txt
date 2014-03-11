@@ -1,0 +1,359 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+=== START OF INFORMATION SECTION ===
+Model Family:     Seagate Constellation ES (SATA)
+Device Model:     ST31000524NS
+Serial Number:    9WK2JPSE
+LU WWN Device Id: 5 000c50 02d17840f
+Firmware Version: SN11
+User Capacity:    1,000,204,886,016 bytes [1.00 TB]
+Sector Size:      512 bytes logical/physical
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   8
+ATA Standard is:  ATA-8-ACS revision 4
+Local Time is:    Tue Mar 11 01:18:05 2014 UTC
+SMART support is: Available - device has SMART capability.
+SMART support is: Enabled
+AAM feature is:   Unavailable
+APM feature is:   Unavailable
+Rd look-ahead is: Enabled
+Write cache is:   Enabled
+ATA Security is:  Disabled, NOT FROZEN [SEC1]
+
+=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: FAILED!
+Drive failure expected in less than 24 hours. SAVE ALL DATA.
+See vendor-specific Attribute list for failed Attributes.
+
+General SMART Values:
+Offline data collection status:  (0x82)	Offline data collection activity
+					was completed without error.
+					Auto Offline Data Collection: Enabled.
+Self-test execution status:      (   0)	The previous self-test routine completed
+					without error or no self-test has ever 
+					been run.
+Total time to complete Offline 
+data collection: 		(  609) seconds.
+Offline data collection
+capabilities: 			 (0x7b) SMART execute Offline immediate.
+					Auto Offline data collection on/off support.
+					Suspend Offline collection upon new
+					command.
+					Offline surface scan supported.
+					Self-test supported.
+					Conveyance Self-test supported.
+					Selective Self-test supported.
+SMART capabilities:            (0x0003)	Saves SMART data before entering
+					power-saving mode.
+					Supports SMART auto save timer.
+Error logging capability:        (0x01)	Error logging supported.
+					General Purpose Logging supported.
+Short self-test routine 
+recommended polling time: 	 (   1) minutes.
+Extended self-test routine
+recommended polling time: 	 ( 170) minutes.
+Conveyance self-test routine
+recommended polling time: 	 (   2) minutes.
+SCT capabilities: 	       (0x10bd)	SCT Status supported.
+					SCT Error Recovery Control supported.
+					SCT Feature Control supported.
+					SCT Data Table supported.
+
+SMART Attributes Data Structure revision number: 10
+Vendor Specific SMART Attributes with Thresholds:
+ID# ATTRIBUTE_NAME          FLAGS    VALUE WORST THRESH FAIL RAW_VALUE
+  1 Raw_Read_Error_Rate     POSR--   055   055   044    -    36085689
+  3 Spin_Up_Time            PO----   100   100   000    -    0
+  4 Start_Stop_Count        -O--CK   100   100   020    -    34
+  5 Reallocated_Sector_Ct   PO--CK   001   001   036    NOW  4095
+  7 Seek_Error_Rate         POSR--   081   060   030    -    122956265
+  9 Power_On_Hours          -O--CK   073   073   000    -    24182
+ 10 Spin_Retry_Count        PO--C-   100   100   097    -    0
+ 12 Power_Cycle_Count       -O--CK   100   100   020    -    34
+184 End-to-End_Error        -O--CK   100   100   099    -    0
+187 Reported_Uncorrect      -O--CK   086   086   000    -    14
+188 Command_Timeout         -O--CK   100   100   000    -    0
+189 High_Fly_Writes         -O-RCK   100   100   000    -    0
+190 Airflow_Temperature_Cel -O---K   071   057   045    -    29 (Min/Max 23/29)
+191 G-Sense_Error_Rate      -O--CK   100   100   000    -    0
+192 Power-Off_Retract_Count -O--CK   100   100   000    -    33
+193 Load_Cycle_Count        -O--CK   100   100   000    -    34
+194 Temperature_Celsius     -O---K   029   043   000    -    29 (0 20 0 0 0)
+195 Hardware_ECC_Recovered  -O-RC-   036   020   000    -    36085689
+197 Current_Pending_Sector  -O--C-   100   100   000    -    0
+198 Offline_Uncorrectable   ----C-   100   100   000    -    0
+199 UDMA_CRC_Error_Count    -OSRCK   200   200   000    -    2
+                            ||||||_ K auto-keep
+                            |||||__ C event count
+                            ||||___ R error rate
+                            |||____ S speed/performance
+                            ||_____ O updated online
+                            |______ P prefailure warning
+
+General Purpose Log Directory Version 1
+SMART           Log Directory Version 1 [multi-sector log support]
+GP/S  Log at address 0x00 has    1 sectors [Log Directory]
+GP/S  Log at address 0x01 has    1 sectors [Summary SMART error log]
+GP/S  Log at address 0x02 has    5 sectors [Comprehensive SMART error log]
+GP    Log at address 0x03 has    5 sectors [Ext. Comprehensive SMART error log]
+GP/S  Log at address 0x06 has    1 sectors [SMART self-test log]
+GP    Log at address 0x07 has    1 sectors [Extended self-test log]
+GP/S  Log at address 0x09 has    1 sectors [Selective self-test log]
+GP    Log at address 0x10 has    1 sectors [NCQ Command Error log]
+GP    Log at address 0x11 has    1 sectors [SATA Phy Event Counters]
+GP/S  Log at address 0x12 has    1 sectors [SATA NCQ Queue Management log]
+GP    Log at address 0x21 has    1 sectors [Write stream error log]
+GP    Log at address 0x22 has    1 sectors [Read stream error log]
+GP/S  Log at address 0x80 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x81 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x82 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x83 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x84 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x85 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x86 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x87 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x88 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x89 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8a has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8b has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8c has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8d has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8e has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x8f has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x90 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x91 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x92 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x93 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x94 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x95 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x96 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x97 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x98 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x99 has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9a has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9b has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9c has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9d has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9e has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0x9f has   16 sectors [Host vendor specific log]
+GP/S  Log at address 0xa1 has   20 sectors [Device vendor specific log]
+GP    Log at address 0xa2 has 2248 sectors [Device vendor specific log]
+GP/S  Log at address 0xa8 has  129 sectors [Device vendor specific log]
+GP/S  Log at address 0xa9 has    1 sectors [Device vendor specific log]
+GP    Log at address 0xb0 has 2928 sectors [Device vendor specific log]
+GP    Log at address 0xb6 has 1918 sectors [Device vendor specific log]
+GP    Log at address 0xbd has  252 sectors [Device vendor specific log]
+GP    Log at address 0xbe has 65535 sectors [Device vendor specific log]
+GP    Log at address 0xbf has 65535 sectors [Device vendor specific log]
+GP/S  Log at address 0xe0 has    1 sectors [SCT Command/Status]
+GP/S  Log at address 0xe1 has    1 sectors [SCT Data Transfer]
+
+SMART Extended Comprehensive Error Log Version: 1 (5 sectors)
+Device Error Count: 70 (device log contains only the most recent 20 errors)
+	CR     = Command Register
+	FEATR  = Features Register
+	COUNT  = Count (was: Sector Count) Register
+	LBA_48 = Upper bytes of LBA High/Mid/Low Registers ]  ATA-8
+	LH     = LBA High (was: Cylinder High) Register    ]   LBA
+	LM     = LBA Mid (was: Cylinder Low) Register      ] Register
+	LL     = LBA Low (was: Sector Number) Register     ]
+	DV     = Device (was: Device/Head) Register
+	DC     = Device Control Register
+	ER     = Error register
+	ST     = Status register
+Powered_Up_Time is measured from power on, and printed as
+DDd+hh:mm:SS.sss where DD=days, hh=hours, mm=minutes,
+SS=sec, and sss=millisec. It "wraps" after 49.710 days.
+
+Error 70 [9] occurred at disk power-on lifetime: 22905 hours (954 days + 9 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+07:27:04.941  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+06:27:04.305  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+06:27:04.304  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+05:27:03.979  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+05:27:03.979  IDENTIFY DEVICE
+
+Error 69 [8] occurred at disk power-on lifetime: 22904 hours (954 days + 8 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+06:27:04.304  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+05:27:03.979  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+05:27:03.979  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+04:27:03.612  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+04:27:03.612  IDENTIFY DEVICE
+
+Error 68 [7] occurred at disk power-on lifetime: 22903 hours (954 days + 7 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+05:27:03.979  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+04:27:03.612  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+04:27:03.612  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+03:27:03.914  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+03:27:03.914  IDENTIFY DEVICE
+
+Error 67 [6] occurred at disk power-on lifetime: 22902 hours (954 days + 6 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+04:27:03.612  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+03:27:03.914  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+03:27:03.914  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+02:27:03.257  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+02:27:03.256  IDENTIFY DEVICE
+
+Error 66 [5] occurred at disk power-on lifetime: 22901 hours (954 days + 5 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+03:27:03.914  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+02:27:03.257  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+02:27:03.256  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+01:27:03.412  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+01:27:03.412  IDENTIFY DEVICE
+
+Error 65 [4] occurred at disk power-on lifetime: 22900 hours (954 days + 4 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+02:27:03.256  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+01:27:03.412  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+01:27:03.412  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+00:27:02.353  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+00:27:02.352  IDENTIFY DEVICE
+
+Error 64 [3] occurred at disk power-on lifetime: 22899 hours (954 days + 3 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+01:27:03.412  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 37d+00:27:02.353  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+00:27:02.352  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 36d+23:27:02.713  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 36d+23:27:02.712  IDENTIFY DEVICE
+
+Error 63 [2] occurred at disk power-on lifetime: 22898 hours (954 days + 2 hours)
+  When the command that caused the error occurred, the device was active or idle.
+
+  After command completion occurred, registers were:
+  ER -- ST COUNT  LBA_48  LH LM LL DV DC
+  -- -- -- == -- == == == -- -- -- -- --
+  04 -- 71 00 04 00 00 00 00 32 9d 40 00
+
+  Commands leading to the command that caused the error were:
+  CR FEATR COUNT  LBA_48  LH LM LL DV DC  Powered_Up_Time  Command/Feature_Name
+  -- == -- == -- == == == -- -- -- -- --  ---------------  --------------------
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 37d+00:27:02.352  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 36d+23:27:02.713  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 36d+23:27:02.712  IDENTIFY DEVICE
+  00 00 00 00 00 00 00 00 00 00 00 00 04 36d+22:27:02.522  NOP [Abort queued commands]
+  ec 00 00 00 00 00 00 00 00 00 00 00 00 36d+22:27:02.521  IDENTIFY DEVICE
+
+SMART Extended Self-test Log Version: 1 (1 sectors)
+No self-tests have been logged.  [To run self-tests, use: smartctl -t]
+
+SMART Selective self-test log data structure revision number 1
+ SPAN  MIN_LBA  MAX_LBA  CURRENT_TEST_STATUS
+    1        0        0  Not_testing
+    2        0        0  Not_testing
+    3        0        0  Not_testing
+    4        0        0  Not_testing
+    5        0        0  Not_testing
+Selective self-test flags (0x0):
+  After scanning selected spans, do NOT read-scan remainder of disk.
+If Selective self-test is pending on power-up, resume after 0 minute delay.
+
+SCT Status Version:                  3
+SCT Version (vendor specific):       522 (0x020a)
+SCT Support Level:                   1
+Device State:                        Active (0)
+Current Temperature:                    29 Celsius
+Power Cycle Min/Max Temperature:     23/29 Celsius
+Lifetime    Min/Max Temperature:     20/43 Celsius
+Under/Over Temperature Limit Count:   0/721
+SCT Temperature History Version:     2
+Temperature Sampling Period:         3 minutes
+Temperature Logging Interval:        10 minutes
+Min/Max recommended Temperature:      0/ 0 Celsius
+Min/Max Temperature Limit:            0/ 0 Celsius
+Temperature History Size (Index):    128 (74)
+
+Index    Estimated Time   Temperature Celsius
+  75    2014-03-10 04:00    28  *********
+ ...    ..( 18 skipped).    ..  *********
+  94    2014-03-10 07:10    28  *********
+  95    2014-03-10 07:20    27  ********
+ ...    ..( 66 skipped).    ..  ********
+  34    2014-03-10 18:30    27  ********
+  35    2014-03-10 18:40    28  *********
+ ...    ..( 12 skipped).    ..  *********
+  48    2014-03-10 20:50    28  *********
+  49    2014-03-10 21:00    29  **********
+ ...    ..( 24 skipped).    ..  **********
+  74    2014-03-11 01:10    29  **********
+
+Error SMART WRITE LOG does not return COUNT and LBA_LOW register
+Warning: device does not support SCT (Get) Error Recovery Control command
+
+SATA Phy Event Counters (GP Log 0x11)
+ID      Size     Value  Description
+0x000a  2            1  Device-to-host register FISes sent due to a COMRESET
+0x0001  2            0  Command failed due to ICRC error
+0x0003  2            0  R_ERR response for device-to-host data FIS
+0x0004  2            0  R_ERR response for host-to-device data FIS
+0x0006  2            0  R_ERR response for device-to-host non-data FIS
+0x0007  2            0  R_ERR response for host-to-device non-data FIS
+

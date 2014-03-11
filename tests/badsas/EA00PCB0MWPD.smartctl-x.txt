@@ -1,0 +1,156 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0109
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x50000394682323bc
+Serial number:        EA00PCB0MWPD
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:03:00 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: OK
+
+Current Drive Temperature:     29 C
+Drive Trip Temperature:        65 C
+Manufactured in week 47 of year 2012
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  33
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  248
+Elements in grown defect list: 0
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0     1280   1414933         0          0     261203.961     1414933
+write:         0     5185         0         0          0      12620.196           0
+verify:        0        0         0         0          0       1012.783           0
+
+Non-medium error count:       78
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]
+
+Background scan results log
+  Status: waiting until BMS interval timer expires
+    Accumulated power on time, hours:minutes 8853:38 [531218 minutes]
+    Number of background scans performed: 368,  scan progress: 0.00%
+    Number of background medium scans performed: 0
+
+   #  when        lba(hex)    [sk,asc,ascq]    reassign_status
+   1 7264:07  000000003ea66715  [1,18,7]   Recovered via rewrite in-place
+   2 7275:53  0000000009c07716  [1,18,7]   Recovered via rewrite in-place
+   3 7284:20  000000002662714b  [1,18,7]   Recovered via rewrite in-place
+   4 7284:22  00000000267e078a  [1,18,7]   Recovered via rewrite in-place
+   5 7284:26  00000000269c88bd  [1,18,7]   Recovered via rewrite in-place
+   6 7284:28  0000000026ac6775  [1,18,7]   Recovered via rewrite in-place
+   7 7291:01  000000003653461d  [1,18,7]   Recovered via rewrite in-place
+   8 7293:57  000000003e315011  [1,18,7]   Recovered via rewrite in-place
+   9 7298:41  0000000020f4a1fa  [1,18,7]   Recovered via rewrite in-place
+  10 7298:53  0000000026712c97  [1,18,7]   Recovered via rewrite in-place
+  11 7298:54  00000000269c9ba1  [1,18,7]   Recovered via rewrite in-place
+  12 7321:55  000000000893968f  [1,18,7]   Recovered via rewrite in-place
+  13 7321:59  000000000a8419f4  [1,18,7]   Recovered via rewrite in-place
+  14 7323:50  000000003e31cab7  [1,18,7]   Recovered via rewrite in-place
+  15 7323:50  000000003e31e802  [1,18,7]   Recovered via rewrite in-place
+  16 7345:56  000000000893f170  [1,18,7]   Recovered via rewrite in-place
+  17 7345:56  000000000893ffb4  [1,18,7]   Recovered via rewrite in-place
+  18 7345:56  000000000894ec6b  [1,18,7]   Recovered via rewrite in-place
+  19 7345:56  000000000894f20a  [1,18,7]   Recovered via rewrite in-place
+  20 7345:56  000000000894fa48  [1,18,7]   Recovered via rewrite in-place
+  21 7345:57  0000000008fa7a45  [1,18,7]   Recovered via rewrite in-place
+  22 7345:58  0000000009c05969  [1,18,7]   Recovered via rewrite in-place
+  23 7345:58  0000000009c06896  [0,0,0]   Reserved [0x0]
+  24 7345:58  0000000009c06964  [1,18,7]   Recovered via rewrite in-place
+  25 7345:58  0000000009c066eb  [1,18,7]   Recovered via rewrite in-place
+  26 7345:58  0000000009c067b8  [1,18,7]   Recovered via rewrite in-place
+  27 7346:00  000000000a8419ac  [1,18,7]   Recovered via rewrite in-place
+  28 7346:03  000000000c53864d  [1,18,7]   Recovered via rewrite in-place
+  29 7346:03  000000000c53f8d0  [1,18,7]   Recovered via rewrite in-place
+  30 7346:04  000000000c54391a  [1,18,7]   Recovered via rewrite in-place
+  31 7346:04  000000000c54540d  [1,18,7]   Recovered via rewrite in-place
+  32 7346:44  000000002074ea90  [1,18,7]   Recovered via rewrite in-place
+  33 7346:46  0000000020f3184f  [1,18,7]   Recovered via rewrite in-place
+  34 7346:46  0000000020f319b7  [1,18,7]   Recovered via rewrite in-place
+  35 7346:46  0000000020f36eae  [0,0,0]   Reserved [0x0]
+  36 7346:46  0000000020f370f1  [1,18,7]   Recovered via rewrite in-place
+  37 7346:46  0000000020f36c31  [1,18,7]   Recovered via rewrite in-place
+  38 7346:46  0000000020f36c2a  [1,18,7]   Recovered via rewrite in-place
+  39 7346:46  0000000020f36e61  [1,18,7]   Recovered via rewrite in-place
+  40 7346:46  0000000020f36c2b  [1,18,7]   Recovered via rewrite in-place
+  41 7346:46  0000000020f44905  [1,18,7]   Recovered via rewrite in-place
+  42 7346:46  0000000020f48b67  [1,18,7]   Recovered via rewrite in-place
+  43 7346:46  000000002102c9ad  [1,18,7]   Recovered via rewrite in-place
+  44 7346:46  000000002102ca3d  [1,18,7]   Recovered via rewrite in-place
+  45 7346:58  00000000265f449d  [1,18,7]   Recovered via rewrite in-place
+  46 7346:58  0000000026615d2d  [1,18,7]   Recovered via rewrite in-place
+  47 7346:58  000000002662105b  [1,18,7]   Recovered via rewrite in-place
+  48 7346:59  000000002680f815  [1,18,7]   Recovered via rewrite in-place
+  49 7346:59  00000000269e36e4  [1,18,7]   Recovered via rewrite in-place
+  50 7346:59  00000000269e837b  [1,18,7]   Recovered via rewrite in-place
+  51 7346:59  00000000269e875f  [1,18,7]   Recovered via rewrite in-place
+  52 7346:59  00000000269f1919  [1,18,7]   Recovered via rewrite in-place
+  53 7346:59  00000000269f1e39  [1,18,7]   Recovered via rewrite in-place
+  54 7346:59  0000000026a17417  [1,18,7]   Recovered via rewrite in-place
+  55 7346:59  0000000026a77f3c  [1,18,7]   Recovered via rewrite in-place
+  56 7346:59  0000000026a998d9  [1,18,7]   Recovered via rewrite in-place
+  57 7347:00  0000000026a9e9ff  [1,18,7]   Recovered via rewrite in-place
+  58 7347:00  0000000026adb165  [1,18,7]   Recovered via rewrite in-place
+  59 7347:00  0000000026addc88  [1,18,7]   Recovered via rewrite in-place
+  60 7347:00  0000000026ae7cf6  [1,18,7]   Recovered via rewrite in-place
+  61 7347:00  0000000026ae7e23  [1,18,7]   Recovered via rewrite in-place
+  62 7347:21  000000002ff8e40f  [1,18,7]   Recovered via rewrite in-place
+  63 7347:24  000000003195a09f  [1,18,7]   Recovered via rewrite in-place
+  64 7347:30  0000000033bbffd5  [1,18,7]   Recovered via rewrite in-place
+  65 7347:36  000000003653461e  [1,18,7]   Recovered via rewrite in-place
+  66 7347:39  0000000037b7942e  [1,18,7]   Recovered via rewrite in-place
+  67 7347:47  000000003af2211f  [1,18,7]   Recovered via rewrite in-place
+  68 7347:55  000000003df15725  [1,18,7]   Recovered via rewrite in-place
+  69 7347:56  000000003e31c746  [1,18,7]   Recovered via rewrite in-place
+  70 7347:56  000000003e31ca65  [1,18,7]   Recovered via rewrite in-place
+  71 7347:56  000000003e31d3e5  [1,18,7]   Recovered via rewrite in-place
+  72 7347:56  000000003e31de5d  [1,18,7]   Recovered via rewrite in-place
+  73 7347:56  000000003e322ab4  [1,18,7]   Recovered via rewrite in-place
+  74 7347:56  000000003e3cf65c  [1,18,7]   Recovered via rewrite in-place
+  75 7347:56  000000003e3f5924  [1,18,7]   Recovered via rewrite in-place
+  76 7347:57  000000003e746d9e  [1,18,7]   Recovered via rewrite in-place
+Protocol Specific port log page for SAS SSP
+relative target port id = 1
+  generation code = 2
+  number of phys = 1
+  phy identifier = 0
+    attached device type: expander device
+    attached reason: SMP phy control function
+    reason: loss of dword synchronization
+    negotiated logical link rate: phy enabled; 6 Gbps
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=1
+    SAS address = 0x50000394682323be
+    attached SAS address = 0x500e0810100e977f
+    attached phy identifier = 3
+    Invalid DWORD count = 612
+    Running disparity error count = 608
+    Loss of DWORD synchronization = 153
+    Phy reset problem = 0
+relative target port id = 2
+  generation code = 2
+  number of phys = 1
+  phy identifier = 1
+    attached device type: no device attached
+    attached reason: unknown
+    reason: unknown
+    negotiated logical link rate: phy enabled; unknown
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=0
+    SAS address = 0x50000394682323bf
+    attached SAS address = 0x0
+    attached phy identifier = 0
+    Invalid DWORD count = 0
+    Running disparity error count = 0
+    Loss of DWORD synchronization = 0
+    Phy reset problem = 0

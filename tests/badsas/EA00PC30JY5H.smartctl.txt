@@ -1,0 +1,37 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0109
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x50000393e82a35a0
+Serial number:        EA00PC30JY5H
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:04:57 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: OK
+
+Current Drive Temperature:     29 C
+Drive Trip Temperature:        65 C
+Manufactured in week 12 of year 2012
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  28
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  29
+Elements in grown defect list: 223
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0     1141         0         0          0     313834.382           0
+write:         0        0         0         0          0       9461.363           0
+verify:        0        0         0         0          0       1136.037           0
+
+Non-medium error count:       27
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]

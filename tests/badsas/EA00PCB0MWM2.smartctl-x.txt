@@ -1,0 +1,684 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0109
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x5000039468231ec8
+Serial number:        EA00PCB0MWM2
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:04:40 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: OK
+
+Current Drive Temperature:     33 C
+Drive Trip Temperature:        65 C
+Manufactured in week 47 of year 2012
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  36
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  57
+Elements in grown defect list: 0
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0    23944       172         0          0     237673.989         172
+write:         0    11391         0         0          0      12740.229           0
+verify:        0        0        20         0          0       1607.473          20
+
+Non-medium error count:       54
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]
+
+Background scan results log
+  Status: scan is active
+    Accumulated power on time, hours:minutes 8071:56 [484316 minutes]
+    Number of background scans performed: 336,  scan progress: 91.98%
+    Number of background medium scans performed: 0
+
+   #  when        lba(hex)    [sk,asc,ascq]    reassign_status
+   1 7277:04  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+   2 7284:57  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+   3 7284:57  00000000265cbcb6  [3,11,1]   Reassigned by app, has valid data
+   4 7284:57  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+   5 7284:57  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+   6 7284:57  00000000265cd503  [3,11,1]   Reassigned by app, has valid data
+   7 7284:57  00000000265cd508  [3,11,1]   Reassigned by app, has valid data
+   8 7284:57  00000000265cd675  [3,11,1]   Reassigned by app, has valid data
+   9 7284:57  00000000265cd889  [3,11,1]   Reassigned by app, has valid data
+  10 7285:01  00000000267690c5  [1,18,7]   Recovered via rewrite in-place
+  11 7285:05  0000000026af5bd9  [1,18,7]   Recovered via rewrite in-place
+  12 7300:39  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+  13 7300:40  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+  14 7306:29  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+  15 7306:29  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+  16 7306:29  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+  17 7306:29  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+  18 7306:29  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+  19 7306:29  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+  20 7306:30  00000000265cbcb6  [3,11,1]   Reassigned by app, has valid data
+  21 7306:30  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+  22 7306:30  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+  23 7306:30  00000000265cd995  [3,11,1]   Reassigned by app, has valid data
+  24 7306:30  00000000265cd999  [3,11,1]   Reassigned by app, has valid data
+  25 7306:30  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+  26 7306:31  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+  27 7306:31  0000000026615c42  [3,11,1]   Require Write or Reassign Blocks command
+  28 7306:31  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+  29 7306:31  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+  30 7306:32  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+  31 7306:32  00000000266f2cbc  [1,18,7]   Recovered via rewrite in-place
+  32 7306:33  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+  33 7306:34  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+  34 7306:34  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+  35 7306:34  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+  36 7312:27  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+  37 7324:39  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+  38 7324:39  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+  39 7330:30  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+  40 7330:30  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+  41 7330:30  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+  42 7330:30  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+  43 7330:30  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+  44 7330:30  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+  45 7330:31  00000000265cbcb6  [3,11,1]   Reassigned by app, has valid data
+  46 7330:31  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+  47 7330:31  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+  48 7330:31  00000000265cd999  [3,11,1]   Reassigned by app, has valid data
+  49 7330:31  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+  50 7330:31  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+  51 7330:32  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+  52 7330:32  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+  53 7330:32  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+  54 7330:33  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+  55 7330:34  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+  56 7330:34  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+  57 7330:34  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+  58 7336:43  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+  59 7348:55  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+  60 7348:55  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+  61 7351:05  0000000014d54de1  [1,18,7]   Recovered via rewrite in-place
+  62 7351:38  0000000016d6ec19  [1,18,7]   Recovered via rewrite in-place
+  63 7352:42  000000001a3dcf81  [1,18,7]   Recovered via rewrite in-place
+  64 7352:42  000000001a3de37f  [1,18,7]   Recovered via rewrite in-place
+  65 7353:38  000000001d6b3928  [1,18,7]   Recovered via rewrite in-place
+  66 7354:27  000000001fd5d1ec  [1,18,7]   Recovered via rewrite in-place
+  67 7356:14  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+  68 7356:14  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+  69 7356:14  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+  70 7356:14  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+  71 7356:14  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+  72 7356:14  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+  73 7356:14  00000000265cbcb6  [3,11,1]   Reassigned by app, has valid data
+  74 7356:14  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+  75 7356:14  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+  76 7356:14  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+  77 7356:15  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+  78 7356:15  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+  79 7356:15  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+  80 7356:15  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+  81 7356:17  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+  82 7356:18  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+  83 7356:18  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+  84 7356:18  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+  85 7363:19  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+  86 7372:00  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+  87 7372:00  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+  88 7376:58  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+  89 7376:58  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+  90 7376:58  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+  91 7376:59  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+  92 7376:59  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+  93 7376:59  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+  94 7376:59  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+  95 7376:59  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+  96 7376:59  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+  97 7376:59  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+  98 7376:59  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+  99 7376:59  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 100 7377:00  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 101 7377:01  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 102 7377:01  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 103 7377:02  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 104 7377:02  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 105 7382:27  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 106 7395:29  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 107 7395:30  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 108 7400:25  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 109 7400:25  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 110 7400:26  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 111 7400:26  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 112 7400:26  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 113 7400:26  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 114 7400:26  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 115 7400:27  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 116 7400:27  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 117 7400:27  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 118 7400:27  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 119 7400:27  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 120 7400:27  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 121 7400:28  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 122 7400:29  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 123 7400:29  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 124 7400:29  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 125 7405:38  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 126 7419:25  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 127 7419:25  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 128 7424:21  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 129 7424:21  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 130 7424:21  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 131 7424:21  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 132 7424:21  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 133 7424:21  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 134 7424:21  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 135 7424:21  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 136 7424:21  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 137 7424:22  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 138 7424:22  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 139 7424:22  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 140 7424:22  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 141 7424:23  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 142 7424:23  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 143 7424:24  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 144 7424:24  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 145 7429:24  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 146 7443:17  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 147 7443:17  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 148 7447:56  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 149 7447:56  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 150 7447:56  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 151 7447:56  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 152 7447:56  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 153 7447:56  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 154 7447:56  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 155 7447:56  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 156 7447:57  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 157 7447:57  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 158 7447:57  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 159 7447:57  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 160 7447:57  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 161 7447:58  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 162 7447:59  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 163 7447:59  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 164 7447:59  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 165 7452:49  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 166 7467:35  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 167 7467:35  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 168 7472:21  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 169 7472:21  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 170 7472:21  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 171 7472:22  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 172 7472:22  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 173 7472:22  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 174 7472:22  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 175 7472:22  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 176 7472:22  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 177 7472:22  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 178 7472:22  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 179 7472:22  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 180 7472:22  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 181 7472:23  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 182 7472:24  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 183 7472:24  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 184 7472:24  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 185 7477:41  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 186 7491:41  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 187 7491:41  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 188 7496:35  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 189 7496:35  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 190 7496:35  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 191 7496:35  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 192 7496:36  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 193 7496:36  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 194 7496:36  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 195 7496:36  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 196 7496:36  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 197 7496:36  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 198 7496:36  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 199 7496:36  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 200 7496:36  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 201 7496:38  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 202 7496:38  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 203 7496:38  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 204 7496:38  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 205 7502:05  000000003e316140  [3,11,1]   Reassigned by app, has valid data
+ 206 7515:45  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 207 7515:46  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 208 7520:42  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 209 7520:42  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 210 7520:42  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 211 7520:42  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 212 7520:42  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 213 7520:42  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 214 7520:42  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 215 7520:43  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 216 7520:43  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 217 7520:43  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 218 7520:43  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 219 7520:43  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 220 7520:43  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 221 7520:44  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 222 7520:45  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 223 7520:45  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 224 7520:45  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 225 7539:31  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 226 7539:32  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 227 7544:20  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 228 7544:20  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 229 7544:20  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 230 7544:21  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 231 7544:21  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 232 7544:21  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 233 7544:21  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 234 7544:21  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 235 7544:21  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 236 7544:21  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 237 7544:21  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 238 7544:22  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 239 7544:22  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 240 7544:23  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 241 7544:23  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 242 7544:23  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 243 7544:24  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 244 7563:23  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 245 7563:23  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 246 7568:20  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 247 7568:20  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 248 7568:20  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 249 7568:20  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 250 7568:20  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 251 7568:20  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 252 7568:20  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 253 7568:20  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 254 7568:20  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 255 7568:21  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 256 7568:21  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 257 7568:21  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 258 7568:21  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 259 7568:22  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 260 7568:23  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 261 7568:23  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 262 7568:23  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 263 7587:36  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 264 7587:36  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 265 7592:24  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 266 7592:24  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 267 7592:24  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 268 7592:25  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 269 7592:25  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 270 7592:25  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 271 7592:25  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 272 7592:25  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 273 7592:25  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 274 7592:25  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 275 7592:25  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 276 7592:26  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 277 7592:26  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 278 7592:27  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 279 7592:27  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 280 7592:28  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 281 7592:28  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 282 7611:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 283 7611:33  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 284 7616:30  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 285 7616:30  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 286 7616:30  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 287 7616:30  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 288 7616:31  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 289 7616:31  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 290 7616:31  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 291 7616:31  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 292 7616:31  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 293 7616:31  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 294 7616:31  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 295 7616:32  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 296 7616:32  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 297 7616:33  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 298 7616:33  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 299 7616:33  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 300 7616:34  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 301 7635:34  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 302 7635:34  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 303 7640:11  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 304 7640:11  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 305 7640:11  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 306 7640:11  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 307 7640:11  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 308 7640:11  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 309 7640:11  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 310 7640:11  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 311 7640:11  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 312 7640:11  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 313 7640:12  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 314 7640:12  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 315 7640:12  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 316 7640:13  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 317 7640:13  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 318 7640:13  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 319 7640:13  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 320 7658:40  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 321 7658:40  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 322 7661:29  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 323 7661:29  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 324 7661:29  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 325 7661:29  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 326 7661:29  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 327 7661:29  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 328 7661:29  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 329 7661:29  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 330 7661:29  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 331 7661:29  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 332 7661:30  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 333 7661:30  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 334 7661:30  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 335 7661:30  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 336 7661:31  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 337 7661:31  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 338 7661:31  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 339 7682:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 340 7682:34  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 341 7685:10  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 342 7685:10  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 343 7685:10  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 344 7685:10  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 345 7685:10  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 346 7685:10  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 347 7685:10  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 348 7685:10  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 349 7685:10  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 350 7685:10  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 351 7685:11  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 352 7685:11  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 353 7685:11  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 354 7685:11  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 355 7685:11  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 356 7685:12  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 357 7685:12  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 358 7706:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 359 7706:33  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 360 7709:21  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 361 7709:21  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 362 7709:21  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 363 7709:21  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 364 7709:21  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 365 7709:21  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 366 7709:21  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 367 7709:21  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 368 7709:21  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 369 7709:22  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 370 7709:22  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 371 7709:22  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 372 7709:22  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 373 7709:22  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 374 7709:23  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 375 7709:23  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 376 7709:23  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 377 7730:43  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 378 7730:43  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 379 7733:21  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 380 7733:21  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 381 7733:21  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 382 7733:21  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 383 7733:21  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 384 7733:21  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 385 7733:21  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 386 7733:21  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 387 7733:21  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 388 7733:22  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 389 7733:22  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 390 7733:22  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 391 7733:22  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 392 7733:22  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 393 7733:23  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 394 7733:23  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 395 7733:23  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 396 7754:34  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 397 7754:34  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 398 7757:19  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 399 7757:19  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 400 7757:19  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 401 7757:19  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 402 7757:19  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 403 7757:19  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 404 7757:19  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 405 7757:19  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 406 7757:19  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 407 7757:20  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 408 7757:20  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 409 7757:20  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 410 7757:20  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 411 7757:20  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 412 7757:21  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 413 7757:21  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 414 7757:21  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 415 7778:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 416 7778:33  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 417 7781:10  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 418 7781:10  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 419 7781:10  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 420 7781:10  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 421 7781:10  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 422 7781:10  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 423 7781:10  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 424 7781:10  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 425 7781:11  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 426 7781:11  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 427 7781:11  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 428 7781:11  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 429 7781:11  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 430 7781:11  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 431 7781:12  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 432 7781:12  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 433 7781:12  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 434 7802:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 435 7802:33  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 436 7805:13  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 437 7805:13  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 438 7805:13  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 439 7805:13  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 440 7805:13  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 441 7805:13  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 442 7805:13  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 443 7805:13  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 444 7805:13  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 445 7805:14  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 446 7805:14  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 447 7805:14  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 448 7805:14  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 449 7805:14  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 450 7805:15  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 451 7805:15  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 452 7805:15  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 453 7826:33  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 454 7826:33  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 455 7829:07  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 456 7829:07  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 457 7829:07  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 458 7829:07  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 459 7829:07  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 460 7829:08  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 461 7829:08  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 462 7829:08  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 463 7829:08  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 464 7829:08  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 465 7829:08  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 466 7829:08  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 467 7829:08  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 468 7829:09  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 469 7829:09  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 470 7829:09  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 471 7829:09  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 472 7850:34  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 473 7850:35  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 474 7852:59  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 475 7852:59  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 476 7852:59  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 477 7852:59  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 478 7852:59  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 479 7852:59  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 480 7852:59  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 481 7852:59  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 482 7852:59  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 483 7852:59  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 484 7853:00  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 485 7853:00  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 486 7853:00  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 487 7853:00  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 488 7853:00  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 489 7853:00  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 490 7853:01  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 491 7874:31  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 492 7874:31  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 493 7877:19  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 494 7877:19  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 495 7877:19  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 496 7877:19  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 497 7877:20  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 498 7877:20  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 499 7877:20  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 500 7877:20  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 501 7877:20  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 502 7877:20  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 503 7877:20  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 504 7877:20  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 505 7877:20  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 506 7877:21  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 507 7877:21  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 508 7877:21  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 509 7877:21  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 510 7898:30  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 511 7898:30  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 512 7901:00  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 513 7901:01  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 514 7901:01  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 515 7901:01  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 516 7901:01  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 517 7901:01  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 518 7901:01  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 519 7901:01  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 520 7901:01  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 521 7901:01  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 522 7901:01  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 523 7901:01  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 524 7901:01  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 525 7901:02  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 526 7901:02  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 527 7901:02  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 528 7901:02  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 529 7922:31  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 530 7922:31  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 531 7925:26  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 532 7925:26  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 533 7925:26  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 534 7925:26  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 535 7925:26  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 536 7925:26  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 537 7925:26  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 538 7925:26  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 539 7925:26  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 540 7925:26  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 541 7925:26  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 542 7925:26  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 543 7925:26  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 544 7925:27  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 545 7925:28  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 546 7925:28  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 547 7925:28  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 548 7946:28  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 549 7946:28  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 550 7948:50  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 551 7948:50  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 552 7948:50  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 553 7948:50  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 554 7948:50  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 555 7948:50  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 556 7948:50  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 557 7948:50  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 558 7948:50  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 559 7948:50  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 560 7948:51  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 561 7948:51  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 562 7948:51  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 563 7948:51  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 564 7948:52  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 565 7948:52  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 566 7948:52  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 567 7970:30  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 568 7970:30  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 569 7972:45  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 570 7972:45  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 571 7972:45  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 572 7972:45  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 573 7972:45  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 574 7972:45  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 575 7972:45  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 576 7972:45  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 577 7972:45  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 578 7972:45  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 579 7972:45  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 580 7972:45  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 581 7972:45  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 582 7972:46  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 583 7972:46  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 584 7972:46  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 585 7972:46  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+ 586 7994:35  000000000c577f65  [3,11,1]   Reassigned by app, has valid data
+ 587 7994:35  000000000c577f79  [3,11,1]   Reassigned by app, has valid data
+ 588 7996:53  00000000265bc649  [3,11,1]   Reassigned by app, has valid data
+ 589 7996:53  00000000265bc881  [3,11,1]   Reassigned by app, has valid data
+ 590 7996:53  00000000265bc99e  [3,11,1]   Reassigned by app, has valid data
+ 591 7996:53  00000000265bca64  [3,11,1]   Reassigned by app, has valid data
+ 592 7996:53  00000000265bcb1d  [3,11,1]   Require Write or Reassign Blocks command
+ 593 7996:53  00000000265bcbd6  [3,11,1]   Require Write or Reassign Blocks command
+ 594 7996:53  00000000265cbcef  [3,11,1]   Reassigned by app, has valid data
+ 595 7996:53  00000000265cbcf4  [3,11,1]   Reassigned by app, has valid data
+ 596 7996:53  00000000265cd9ab  [3,11,1]   Require Write or Reassign Blocks command
+ 597 7996:53  0000000026613abb  [3,11,1]   Reassigned by app, has valid data
+ 598 7996:54  0000000026635ef6  [3,11,1]   Reassigned by app, has valid data
+ 599 7996:54  000000002663649b  [3,11,1]   Reassigned by app, has valid data
+ 600 7996:54  000000002663649f  [3,11,1]   Reassigned by app, has valid data
+ 601 7996:54  000000002676712b  [3,11,1]   Reassigned by app, has valid data
+ 602 7996:55  000000002682b1d0  [3,11,1]   Reassigned by app, has valid data
+ 603 7996:55  000000002682b319  [3,11,1]   Reassigned by app, has valid data
+ 604 7996:55  000000002682b895  [3,11,1]   Reassigned by app, has valid data
+Protocol Specific port log page for SAS SSP
+relative target port id = 1
+  generation code = 2
+  number of phys = 1
+  phy identifier = 0
+    attached device type: expander device
+    attached reason: SMP phy control function
+    reason: loss of dword synchronization
+    negotiated logical link rate: phy enabled; 6 Gbps
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=1
+    SAS address = 0x5000039468231eca
+    attached SAS address = 0x500e0810100e97bf
+    attached phy identifier = 10
+    Invalid DWORD count = 280
+    Running disparity error count = 279
+    Loss of DWORD synchronization = 70
+    Phy reset problem = 0
+relative target port id = 2
+  generation code = 2
+  number of phys = 1
+  phy identifier = 1
+    attached device type: no device attached
+    attached reason: unknown
+    reason: unknown
+    negotiated logical link rate: phy enabled; unknown
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=0
+    SAS address = 0x5000039468231ecb
+    attached SAS address = 0x0
+    attached phy identifier = 0
+    Invalid DWORD count = 0
+    Running disparity error count = 0
+    Loss of DWORD synchronization = 0
+    Phy reset problem = 0

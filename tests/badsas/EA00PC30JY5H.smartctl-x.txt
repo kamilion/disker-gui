@@ -1,0 +1,665 @@
+smartctl 5.43 2012-06-30 r3573 [x86_64-linux-3.8.0-33-generic] (local build)
+Copyright (C) 2002-12 by Bruce Allen, http://smartmontools.sourceforge.net
+
+Vendor:               TOSHIBA 
+Product:              MBF2600RC       
+Revision:             0109
+User Capacity:        600,127,266,816 bytes [600 GB]
+Logical block size:   512 bytes
+Logical Unit id:      0x50000393e82a35a0
+Serial number:        EA00PC30JY5H
+Device type:          disk
+Transport protocol:   SAS
+Local Time is:        Thu Mar  6 22:05:07 2014 UTC
+Device supports SMART and is Disabled
+Temperature Warning Disabled or Not Supported
+SMART Health Status: OK
+
+Current Drive Temperature:     29 C
+Drive Trip Temperature:        65 C
+Manufactured in week 12 of year 2012
+Specified cycle count over device lifetime:  50000
+Accumulated start-stop cycles:  28
+Specified load-unload count over device lifetime:  200000
+Accumulated load-unload cycles:  29
+Elements in grown defect list: 223
+
+Error counter log:
+           Errors Corrected by           Total   Correction     Gigabytes    Total
+               ECC          rereads/    errors   algorithm      processed    uncorrected
+           fast | delayed   rewrites  corrected  invocations   [10^9 bytes]  errors
+read:          0     1141         0         0          0     313834.382           0
+write:         0        0         0         0          0       9461.368           0
+verify:        0        0         0         0          0       1136.037           0
+
+Non-medium error count:       27
+No self-tests have been logged
+Long (extended) Self Test duration: 5358 seconds [89.3 minutes]
+
+Background scan results log
+  Status: waiting until BMS interval timer expires
+    Accumulated power on time, hours:minutes 10520:06 [631206 minutes]
+    Number of background scans performed: 438,  scan progress: 0.00%
+    Number of background medium scans performed: 0
+
+   #  when        lba(hex)    [sk,asc,ascq]    reassign_status
+   1 10512:01  000000000004a90e  [1,17,6]   Successfully reassigned
+   2 10512:01  000000000004b055  [1,18,7]   Recovered via rewrite in-place
+   3 10512:01  000000000004b79c  [1,17,6]   Successfully reassigned
+   4 10512:01  000000000004bee3  [1,17,6]   Successfully reassigned
+   5 10512:01  000000000004c62a  [1,17,6]   Successfully reassigned
+   6 10512:01  000000000004cd71  [1,17,6]   Successfully reassigned
+   7 10512:01  000000000004d4b8  [1,17,6]   Successfully reassigned
+   8 10512:01  000000000004dbff  [1,17,6]   Successfully reassigned
+   9 10512:01  000000000004e346  [1,17,6]   Successfully reassigned
+  10 10512:01  000000000004ea8d  [1,17,6]   Successfully reassigned
+  11 10512:01  000000000004f1d4  [1,17,6]   Successfully reassigned
+  12 10512:01  0000000000079892  [3,11,1]   Require Write or Reassign Blocks command
+  13 10512:01  0000000000079fd9  [1,17,6]   Successfully reassigned
+  14 10512:01  00000000000a0daa  [1,17,6]   Successfully reassigned
+  15 10512:01  0000000000171a7b  [3,13,0]   Require Write or Reassign Blocks command
+  16 10512:01  000000000017c06d  [3,11,1]   Require Write or Reassign Blocks command
+  17 10512:01  00000000002ebbfb  [3,11,1]   Require Write or Reassign Blocks command
+  18 10512:01  00000000002ec342  [1,17,6]   Successfully reassigned
+  19 10512:01  00000000002eca89  [3,11,1]   Require Write or Reassign Blocks command
+  20 10512:01  00000000002ed1d0  [1,17,6]   Successfully reassigned
+  21 10512:01  00000000002ed917  [1,17,6]   Successfully reassigned
+  22 10512:01  00000000002ee05e  [3,11,1]   Require Write or Reassign Blocks command
+  23 10512:01  00000000002ee7a5  [3,11,1]   Require Write or Reassign Blocks command
+  24 10512:01  00000000002eeeec  [3,11,1]   Require Write or Reassign Blocks command
+  25 10512:01  00000000002f04c1  [3,11,1]   Require Write or Reassign Blocks command
+  26 10512:01  00000000002f0c08  [3,11,1]   Require Write or Reassign Blocks command
+  27 10512:01  00000000002f134f  [1,17,6]   Successfully reassigned
+  28 10512:01  00000000002f2276  [3,11,1]   Require Write or Reassign Blocks command
+  29 10512:01  00000000002f29bd  [3,11,1]   Require Write or Reassign Blocks command
+  30 10512:01  00000000002f52d8  [3,13,0]   Require Write or Reassign Blocks command
+  31 10512:01  00000000002f5a1f  [3,11,1]   Require Write or Reassign Blocks command
+  32 10512:01  00000000002f73c9  [1,17,6]   Successfully reassigned
+  33 10512:01  00000000002fbbe3  [3,13,0]   Require Write or Reassign Blocks command
+  34 10512:01  00000000002fc09a  [1,17,6]   Successfully reassigned
+  35 10512:01  00000000002fcfc1  [1,17,6]   Successfully reassigned
+  36 10512:01  00000000002fd1b7  [1,17,6]   Successfully reassigned
+  37 10512:01  00000000002fd708  [1,17,6]   Successfully reassigned
+  38 10512:01  00000000002fd8fe  [1,17,6]   Successfully reassigned
+  39 10512:01  00000000002fde4f  [1,17,6]   Successfully reassigned
+  40 10512:02  000000000039a6f8  [1,17,6]   Successfully reassigned
+  41 10512:02  000000000039b587  [1,18,7]   Recovered via rewrite in-place
+  42 10512:02  000000000039bcce  [3,13,0]   Require Write or Reassign Blocks command
+  43 10512:02  000000000039c415  [1,18,7]   Recovered via rewrite in-place
+  44 10512:02  000000000039c415  [1,17,6]   Successfully reassigned
+  45 10512:02  000000000039d2a3  [1,17,6]   Successfully reassigned
+  46 10512:02  000000000039d9ea  [1,17,6]   Successfully reassigned
+  47 10512:02  000000000039e131  [1,18,7]   Recovered via rewrite in-place
+  48 10512:02  000000000042f6f6  [1,17,6]   Successfully reassigned
+  49 10512:02  000000000043061d  [1,17,6]   Successfully reassigned
+  50 10512:02  0000000000430d64  [1,17,6]   Successfully reassigned
+  51 10512:02  00000000004314ab  [1,17,6]   Successfully reassigned
+  52 10512:02  0000000000431bf2  [1,17,6]   Successfully reassigned
+  53 10512:02  00000000004ce20c  [1,17,6]   Successfully reassigned
+  54 10512:02  00000000004ce953  [1,17,6]   Successfully reassigned
+  55 10512:02  00000000004d6460  [1,17,6]   Successfully reassigned
+  56 10512:02  00000000004d6ba7  [1,17,6]   Successfully reassigned
+  57 10512:02  00000000004d72ee  [1,17,6]   Successfully reassigned
+  58 10512:02  00000000004d7a35  [1,17,6]   Successfully reassigned
+  59 10512:02  00000000004d817c  [1,17,6]   Successfully reassigned
+  60 10512:02  00000000004d88c3  [1,17,6]   Successfully reassigned
+  61 10512:02  00000000004d900a  [1,18,7]   Recovered via rewrite in-place
+  62 10512:02  000000000051af66  [1,17,6]   Successfully reassigned
+  63 10512:02  0000000000522256  [1,18,7]   Recovered via rewrite in-place
+  64 10512:02  0000000000522256  [1,18,7]   Recovered via rewrite in-place
+  65 10512:02  0000000000523140  [1,17,6]   Successfully reassigned
+  66 10512:02  000000000052386a  [3,11,1]   Require Write or Reassign Blocks command
+  67 10512:02  0000000000523f94  [3,11,1]   Require Write or Reassign Blocks command
+  68 10512:02  00000000005246be  [3,11,1]   Require Write or Reassign Blocks command
+  69 10512:02  0000000000524de8  [3,11,1]   Require Write or Reassign Blocks command
+  70 10512:02  0000000000525512  [3,11,1]   Require Write or Reassign Blocks command
+  71 10512:02  0000000000525c3c  [3,13,0]   Require Write or Reassign Blocks command
+  72 10512:02  0000000000526366  [3,11,1]   Require Write or Reassign Blocks command
+  73 10512:02  0000000000526a90  [3,13,0]   Require Write or Reassign Blocks command
+  74 10512:02  00000000005271ba  [3,13,0]   Require Write or Reassign Blocks command
+  75 10512:02  00000000005278e4  [3,13,0]   Require Write or Reassign Blocks command
+  76 10512:02  000000000052800e  [3,11,1]   Require Write or Reassign Blocks command
+  77 10512:02  0000000000528738  [3,11,1]   Require Write or Reassign Blocks command
+  78 10512:02  0000000000529622  [3,11,1]   Require Write or Reassign Blocks command
+  79 10512:02  0000000000529d4c  [3,11,1]   Require Write or Reassign Blocks command
+  80 10512:02  000000000052a476  [3,11,1]   Require Write or Reassign Blocks command
+  81 10512:02  000000000052aba0  [3,11,1]   Require Write or Reassign Blocks command
+  82 10512:02  000000000052b2ca  [3,11,1]   Require Write or Reassign Blocks command
+  83 10512:02  000000000052b9f4  [3,11,1]   Require Write or Reassign Blocks command
+  84 10512:02  000000000052c11e  [3,11,1]   Require Write or Reassign Blocks command
+  85 10512:02  000000000052c848  [3,11,1]   Require Write or Reassign Blocks command
+  86 10512:02  000000000052cf72  [1,17,6]   Successfully reassigned
+  87 10512:02  000000000052d69c  [1,18,7]   Recovered via rewrite in-place
+  88 10512:03  000000000074e3e6  [3,11,1]   Require Write or Reassign Blocks command
+  89 10512:03  000000000074eb2d  [3,11,1]   Require Write or Reassign Blocks command
+  90 10512:03  00000000007b478c  [3,11,1]   Require Write or Reassign Blocks command
+  91 10512:03  00000000007b56b3  [3,11,1]   Require Write or Reassign Blocks command
+  92 10512:03  00000000007b5dfa  [3,11,1]   Require Write or Reassign Blocks command
+  93 10512:03  00000000007b6541  [3,11,1]   Require Write or Reassign Blocks command
+  94 10512:03  00000000007b6c88  [3,11,1]   Require Write or Reassign Blocks command
+  95 10512:03  00000000007b73cf  [3,11,1]   Require Write or Reassign Blocks command
+  96 10512:03  00000000007b7b16  [3,11,1]   Require Write or Reassign Blocks command
+  97 10512:03  00000000007ba6c0  [3,11,1]   Require Write or Reassign Blocks command
+  98 10512:03  00000000007bae07  [3,11,1]   Require Write or Reassign Blocks command
+  99 10512:03  00000000007bbd2e  [3,11,1]   Require Write or Reassign Blocks command
+ 100 10512:03  00000000007bcbbc  [1,17,6]   Successfully reassigned
+ 101 10512:03  00000000007bd303  [3,11,1]   Require Write or Reassign Blocks command
+ 102 10512:03  00000000007bf01f  [3,11,1]   Require Write or Reassign Blocks command
+ 103 10512:03  00000000007bf766  [3,11,1]   Require Write or Reassign Blocks command
+ 104 10512:03  00000000007bfead  [3,11,1]   Require Write or Reassign Blocks command
+ 105 10512:03  00000000007c05f4  [3,11,1]   Require Write or Reassign Blocks command
+ 106 10512:03  00000000007c0d3b  [3,11,1]   Require Write or Reassign Blocks command
+ 107 10512:03  00000000007c1482  [3,11,1]   Require Write or Reassign Blocks command
+ 108 10512:03  00000000007c1bc9  [3,11,1]   Require Write or Reassign Blocks command
+ 109 10512:03  00000000007c2af0  [3,11,1]   Require Write or Reassign Blocks command
+ 110 10512:03  00000000007c3237  [3,11,1]   Require Write or Reassign Blocks command
+ 111 10512:03  00000000007c397e  [3,11,1]   Require Write or Reassign Blocks command
+ 112 10512:03  00000000007c40c5  [3,11,1]   Require Write or Reassign Blocks command
+ 113 10512:03  00000000007c480c  [3,11,1]   Require Write or Reassign Blocks command
+ 114 10512:03  00000000007c4f53  [3,11,1]   Require Write or Reassign Blocks command
+ 115 10512:03  00000000007c569a  [3,11,1]   Require Write or Reassign Blocks command
+ 116 10512:03  00000000007c5de1  [3,11,1]   Require Write or Reassign Blocks command
+ 117 10512:03  00000000007c6528  [3,11,1]   Require Write or Reassign Blocks command
+ 118 10512:03  00000000007c6c6f  [3,11,1]   Require Write or Reassign Blocks command
+ 119 10512:03  00000000007c6f00  [1,17,6]   Successfully reassigned
+ 120 10512:03  00000000007c73b6  [3,11,1]   Require Write or Reassign Blocks command
+ 121 10512:03  00000000007c7afd  [3,11,1]   Require Write or Reassign Blocks command
+ 122 10512:03  00000000007c8244  [3,11,1]   Require Write or Reassign Blocks command
+ 123 10512:03  00000000007c916b  [3,11,1]   Require Write or Reassign Blocks command
+ 124 10512:03  00000000007c98b2  [3,11,1]   Require Write or Reassign Blocks command
+ 125 10512:03  00000000007c9ff9  [3,11,1]   Require Write or Reassign Blocks command
+ 126 10512:03  00000000007ca740  [3,11,1]   Require Write or Reassign Blocks command
+ 127 10512:03  00000000007cae87  [3,11,1]   Require Write or Reassign Blocks command
+ 128 10512:03  00000000007cb5ce  [3,11,1]   Require Write or Reassign Blocks command
+ 129 10512:03  00000000007cbd15  [3,11,1]   Require Write or Reassign Blocks command
+ 130 10512:03  00000000007cc45c  [3,11,1]   Require Write or Reassign Blocks command
+ 131 10512:03  00000000007ccba3  [3,11,1]   Require Write or Reassign Blocks command
+ 132 10512:04  00000000007cd2ea  [3,11,1]   Require Write or Reassign Blocks command
+ 133 10512:04  000000000086a0e2  [3,11,1]   Require Write or Reassign Blocks command
+ 134 10512:04  000000000086a829  [3,11,1]   Require Write or Reassign Blocks command
+ 135 10512:04  000000000086af70  [1,17,6]   Successfully reassigned
+ 136 10512:04  000000000086d061  [1,17,6]   Successfully reassigned
+ 137 10512:04  000000000086df19  [1,17,6]   Successfully reassigned
+ 138 10512:04  000000000086ddab  [1,17,6]   Successfully reassigned
+ 139 10512:04  000000000086e4f2  [3,13,0]   Require Write or Reassign Blocks command
+ 140 10512:04  000000000087270a  [3,13,0]   Require Write or Reassign Blocks command
+ 141 10512:04  0000000000873598  [3,11,1]   Require Write or Reassign Blocks command
+ 142 10512:04  0000000000873cdf  [1,17,6]   Successfully reassigned
+ 143 10512:04  0000000000874426  [1,17,6]   Successfully reassigned
+ 144 10512:04  0000000000874b6d  [1,17,6]   Successfully reassigned
+ 145 10512:04  00000000008752b4  [1,17,6]   Successfully reassigned
+ 146 10512:04  00000000008759fb  [1,17,6]   Successfully reassigned
+ 147 10512:04  0000000000876142  [3,11,1]   Require Write or Reassign Blocks command
+ 148 10512:04  000000000087e2e3  [3,11,1]   Require Write or Reassign Blocks command
+ 149 10512:04  000000000087ea2a  [1,18,7]   Recovered via rewrite in-place
+ 150 10512:04  0000000000880746  [1,18,7]   Recovered via rewrite in-place
+ 151 10512:04  0000000000880e8d  [1,17,6]   Successfully reassigned
+ 152 10512:04  00000000008815d4  [3,11,1]   Require Write or Reassign Blocks command
+ 153 10512:04  00000000008815d5  [1,18,7]   Recovered via rewrite in-place
+ 154 10512:04  00000000008815d5  [1,18,7]   Recovered via rewrite in-place
+ 155 10512:04  0000000000881d1b  [1,17,6]   Successfully reassigned
+ 156 10512:04  0000000000882c42  [3,11,1]   Require Write or Reassign Blocks command
+ 157 10512:04  00000000008e88a1  [3,11,1]   Require Write or Reassign Blocks command
+ 158 10512:04  00000000008e8fe8  [3,11,1]   Require Write or Reassign Blocks command
+ 159 10512:04  00000000008e972f  [3,11,1]   Require Write or Reassign Blocks command
+ 160 10512:04  00000000008e9e76  [3,11,1]   Require Write or Reassign Blocks command
+ 161 10512:04  00000000008ea5bd  [3,11,1]   Require Write or Reassign Blocks command
+ 162 10512:04  00000000008ead04  [3,11,1]   Require Write or Reassign Blocks command
+ 163 10512:04  00000000008ebc2b  [3,11,1]   Require Write or Reassign Blocks command
+ 164 10512:04  00000000008ec372  [3,11,1]   Require Write or Reassign Blocks command
+ 165 10512:04  00000000008ecab9  [3,11,1]   Require Write or Reassign Blocks command
+ 166 10512:04  00000000008ed200  [3,11,1]   Require Write or Reassign Blocks command
+ 167 10512:04  00000000008ed947  [3,11,1]   Require Write or Reassign Blocks command
+ 168 10512:04  00000000008ee08e  [3,11,1]   Require Write or Reassign Blocks command
+ 169 10512:04  00000000008ee7d5  [3,11,1]   Require Write or Reassign Blocks command
+ 170 10512:04  00000000008eef1c  [3,11,1]   Require Write or Reassign Blocks command
+ 171 10512:04  00000000008ef663  [3,11,1]   Require Write or Reassign Blocks command
+ 172 10512:04  00000000008efad0  [1,17,6]   Successfully reassigned
+ 173 10512:04  00000000008efdaa  [3,11,1]   Require Write or Reassign Blocks command
+ 174 10512:04  00000000008efdab  [1,17,6]   Successfully reassigned
+ 175 10512:04  00000000008f04f1  [3,11,1]   Require Write or Reassign Blocks command
+ 176 10512:04  00000000008f0c38  [1,17,6]   Successfully reassigned
+ 177 10512:04  00000000008f0c39  [1,17,6]   Successfully reassigned
+ 178 10512:04  00000000008f29ee  [3,13,0]   Require Write or Reassign Blocks command
+ 179 10512:04  00000000008f3508  [3,11,1]   Require Write or Reassign Blocks command
+ 180 10512:04  00000000008f3c4f  [1,17,6]   Successfully reassigned
+ 181 10512:04  00000000008f4396  [1,17,6]   Successfully reassigned
+ 182 10512:04  00000000008f4add  [1,17,6]   Successfully reassigned
+ 183 10512:04  00000000008f4e50  [1,18,7]   Recovered via rewrite in-place
+ 184 10512:04  00000000008f5224  [1,17,6]   Successfully reassigned
+ 185 10512:04  00000000008f614b  [1,17,6]   Successfully reassigned
+ 186 10512:04  00000000008f6426  [1,17,6]   Successfully reassigned
+ 187 10512:04  00000000008f6892  [1,17,6]   Successfully reassigned
+ 188 10512:05  00000000008f6fd9  [1,17,6]   Successfully reassigned
+ 189 10512:05  00000000008f7720  [1,17,6]   Successfully reassigned
+ 190 10512:05  00000000008f7e67  [1,17,6]   Successfully reassigned
+ 191 10512:05  0000000000ae1f85  [1,17,6]   Successfully reassigned
+ 192 10512:05  0000000000ae684e  [1,17,6]   Successfully reassigned
+ 193 10512:05  0000000000b5e345  [1,17,6]   Successfully reassigned
+ 194 10512:05  0000000000b764ff  [1,17,6]   Successfully reassigned
+ 195 10512:05  0000000000b773e9  [3,11,1]   Require Write or Reassign Blocks command
+ 196 10512:05  0000000000b77b13  [3,11,1]   Require Write or Reassign Blocks command
+ 197 10512:05  0000000000b7823d  [3,11,1]   Require Write or Reassign Blocks command
+ 198 10512:05  0000000000b78967  [3,11,1]   Require Write or Reassign Blocks command
+ 199 10512:05  0000000000b79091  [3,11,1]   Require Write or Reassign Blocks command
+ 200 10512:05  0000000000b797bb  [3,11,1]   Require Write or Reassign Blocks command
+ 201 10512:05  0000000000b79ee5  [3,11,1]   Require Write or Reassign Blocks command
+ 202 10512:05  0000000000b7a60f  [3,11,1]   Require Write or Reassign Blocks command
+ 203 10512:05  0000000000b7ad39  [3,11,1]   Require Write or Reassign Blocks command
+ 204 10512:05  0000000000b7b463  [3,11,1]   Require Write or Reassign Blocks command
+ 205 10512:05  0000000000b7bb8d  [3,11,1]   Require Write or Reassign Blocks command
+ 206 10512:05  0000000000b7c2b7  [3,11,1]   Require Write or Reassign Blocks command
+ 207 10512:05  0000000000b7c9e1  [3,11,1]   Require Write or Reassign Blocks command
+ 208 10512:05  0000000000b7d8cb  [3,11,1]   Require Write or Reassign Blocks command
+ 209 10512:05  0000000000b7dff5  [3,11,1]   Require Write or Reassign Blocks command
+ 210 10512:05  0000000000b7e71f  [3,11,1]   Require Write or Reassign Blocks command
+ 211 10512:05  0000000000b7ee49  [3,11,1]   Require Write or Reassign Blocks command
+ 212 10512:05  0000000000b7f573  [3,11,1]   Require Write or Reassign Blocks command
+ 213 10512:05  0000000000b7fc9d  [3,11,1]   Require Write or Reassign Blocks command
+ 214 10512:05  0000000000b803c7  [3,11,1]   Require Write or Reassign Blocks command
+ 215 10512:05  0000000000b80af1  [3,11,1]   Require Write or Reassign Blocks command
+ 216 10512:05  0000000000b8121b  [3,11,1]   Require Write or Reassign Blocks command
+ 217 10512:05  0000000000b81945  [1,17,6]   Successfully reassigned
+ 218 10512:05  0000000000b8206f  [1,17,6]   Successfully reassigned
+ 219 10512:05  0000000000bec9e9  [3,11,1]   Require Write or Reassign Blocks command
+ 220 10512:05  0000000000bed113  [3,11,1]   Require Write or Reassign Blocks command
+ 221 10512:05  0000000000bed83d  [3,11,1]   Require Write or Reassign Blocks command
+ 222 10512:05  0000000000bedf67  [1,17,6]   Successfully reassigned
+ 223 10512:05  0000000000bee691  [1,17,6]   Successfully reassigned
+ 224 10512:05  0000000000beedbb  [1,17,6]   Successfully reassigned
+ 225 10512:05  0000000000bef4e5  [1,17,6]   Successfully reassigned
+ 226 10512:05  0000000000befc0f  [1,17,6]   Successfully reassigned
+ 227 10512:05  0000000000bf84c3  [1,17,6]   Successfully reassigned
+ 228 10512:05  0000000000bf85fd  [3,11,1]   Require Write or Reassign Blocks command
+ 229 10512:06  0000000000c0492c  [1,17,6]   Successfully reassigned
+ 230 10512:06  0000000000c0c629  [1,17,6]   Successfully reassigned
+ 231 10512:06  0000000000caed72  [1,17,6]   Successfully reassigned
+ 232 10512:06  0000000000de5169  [1,17,6]   Successfully reassigned
+ 233 10512:06  0000000000de5fbd  [3,11,1]   Require Write or Reassign Blocks command
+ 234 10512:06  0000000000de66e7  [1,18,7]   Recovered via rewrite in-place
+ 235 10512:06  0000000000de99a3  [1,17,6]   Successfully reassigned
+ 236 10512:06  0000000000dea0cd  [3,11,1]   Require Write or Reassign Blocks command
+ 237 10512:06  0000000000e4ee20  [1,18,7]   Recovered via rewrite in-place
+ 238 10512:06  0000000000e4ee20  [1,18,7]   Recovered via rewrite in-place
+ 239 10512:06  0000000000e4f567  [3,11,1]   Require Write or Reassign Blocks command
+ 240 10512:06  0000000000e50b3c  [3,11,1]   Require Write or Reassign Blocks command
+ 241 10512:06  0000000000e52858  [1,18,7]   Recovered via rewrite in-place
+ 242 10512:06  0000000000e5377f  [3,11,1]   Require Write or Reassign Blocks command
+ 243 10512:06  0000000000e53ec6  [3,11,1]   Require Write or Reassign Blocks command
+ 244 10512:06  0000000000e549ac  [1,17,6]   Successfully reassigned
+ 245 10512:06  0000000000e550d6  [3,11,1]   Require Write or Reassign Blocks command
+ 246 10512:06  0000000000e55800  [3,11,1]   Require Write or Reassign Blocks command
+ 247 10512:06  0000000000e55f2a  [3,11,1]   Require Write or Reassign Blocks command
+ 248 10512:06  0000000000e56654  [3,11,1]   Require Write or Reassign Blocks command
+ 249 10512:06  0000000000e5753e  [3,11,1]   Require Write or Reassign Blocks command
+ 250 10512:06  0000000000e57c68  [3,11,1]   Require Write or Reassign Blocks command
+ 251 10512:06  0000000000e58392  [3,11,1]   Require Write or Reassign Blocks command
+ 252 10512:06  0000000000e58abc  [3,11,1]   Require Write or Reassign Blocks command
+ 253 10512:06  0000000000e591e6  [3,11,1]   Require Write or Reassign Blocks command
+ 254 10512:06  0000000000e59910  [3,11,1]   Require Write or Reassign Blocks command
+ 255 10512:06  0000000000e5a03a  [3,11,1]   Require Write or Reassign Blocks command
+ 256 10512:06  0000000000e5a764  [3,11,1]   Require Write or Reassign Blocks command
+ 257 10512:06  0000000000e5ae8e  [3,11,1]   Require Write or Reassign Blocks command
+ 258 10512:06  0000000000e5b5b8  [3,11,1]   Require Write or Reassign Blocks command
+ 259 10512:06  0000000000e5bce2  [3,11,1]   Require Write or Reassign Blocks command
+ 260 10512:06  0000000000e5c40c  [3,11,1]   Require Write or Reassign Blocks command
+ 261 10512:06  0000000000e5cb36  [3,11,1]   Require Write or Reassign Blocks command
+ 262 10512:06  0000000000e5da20  [3,11,1]   Require Write or Reassign Blocks command
+ 263 10512:06  0000000000e5e14a  [3,11,1]   Require Write or Reassign Blocks command
+ 264 10512:06  0000000000e5e874  [3,11,1]   Require Write or Reassign Blocks command
+ 265 10512:06  0000000000e5ef9e  [3,11,1]   Require Write or Reassign Blocks command
+ 266 10512:06  0000000000e5f6c8  [3,11,1]   Require Write or Reassign Blocks command
+ 267 10512:06  0000000000e5fdf2  [3,11,1]   Require Write or Reassign Blocks command
+ 268 10512:06  0000000000e6051c  [3,11,1]   Require Write or Reassign Blocks command
+ 269 10512:06  0000000000e60c46  [1,17,6]   Successfully reassigned
+ 270 10512:06  0000000000e61370  [1,17,6]   Successfully reassigned
+ 271 10512:06  0000000000e61a9a  [1,18,7]   Recovered via rewrite in-place
+ 272 10512:07  0000000000ef8bbb  [1,17,6]   Successfully reassigned
+ 273 10512:07  0000000000f1e1ec  [3,11,1]   Require Write or Reassign Blocks command
+ 274 10512:07  0000000000f1f113  [3,11,1]   Require Write or Reassign Blocks command
+ 275 10512:07  0000000000f77a85  [1,18,7]   Recovered via rewrite in-place
+ 276 10512:07  0000000000f7983a  [1,17,6]   Successfully reassigned
+ 277 10512:07  0000000000f79f81  [3,11,1]   Require Write or Reassign Blocks command
+ 278 10512:07  0000000000f7a6c8  [1,17,6]   Successfully reassigned
+ 279 10512:07  0000000000f7ae0f  [3,11,1]   Require Write or Reassign Blocks command
+ 280 10512:07  0000000000f7b556  [3,11,1]   Require Write or Reassign Blocks command
+ 281 10512:07  0000000000f7bc9d  [3,11,1]   Require Write or Reassign Blocks command
+ 282 10512:07  0000000000f7c3e4  [3,11,1]   Require Write or Reassign Blocks command
+ 283 10512:07  0000000000f7cb2b  [3,11,1]   Require Write or Reassign Blocks command
+ 284 10512:07  0000000000f7d272  [3,11,1]   Require Write or Reassign Blocks command
+ 285 10512:07  0000000000f7d9b9  [3,11,1]   Require Write or Reassign Blocks command
+ 286 10512:07  0000000000f7e100  [3,11,1]   Require Write or Reassign Blocks command
+ 287 10512:07  0000000000f7e847  [3,11,1]   Require Write or Reassign Blocks command
+ 288 10512:07  0000000000f7f76e  [3,11,1]   Require Write or Reassign Blocks command
+ 289 10512:07  0000000000f7feb5  [3,11,1]   Require Write or Reassign Blocks command
+ 290 10512:07  0000000000f805fc  [3,11,1]   Require Write or Reassign Blocks command
+ 291 10512:07  0000000000f80d43  [3,11,1]   Require Write or Reassign Blocks command
+ 292 10512:07  0000000000f8148a  [3,11,1]   Require Write or Reassign Blocks command
+ 293 10512:07  0000000000f81bd1  [3,11,1]   Require Write or Reassign Blocks command
+ 294 10512:07  0000000000f82318  [3,11,1]   Require Write or Reassign Blocks command
+ 295 10512:07  0000000000f82a5f  [3,11,1]   Require Write or Reassign Blocks command
+ 296 10512:07  0000000000f831a6  [3,11,1]   Require Write or Reassign Blocks command
+ 297 10512:07  0000000000f838ed  [3,11,1]   Require Write or Reassign Blocks command
+ 298 10512:07  0000000000f84034  [3,11,1]   Require Write or Reassign Blocks command
+ 299 10512:07  0000000000f8477b  [3,11,1]   Require Write or Reassign Blocks command
+ 300 10512:07  0000000000f84ec2  [3,11,1]   Require Write or Reassign Blocks command
+ 301 10512:07  0000000000f85de9  [3,11,1]   Require Write or Reassign Blocks command
+ 302 10512:07  0000000000f86530  [3,11,1]   Require Write or Reassign Blocks command
+ 303 10512:07  0000000000f86c77  [3,11,1]   Require Write or Reassign Blocks command
+ 304 10512:07  0000000000f873be  [3,11,1]   Require Write or Reassign Blocks command
+ 305 10512:07  0000000000f87b05  [3,11,1]   Require Write or Reassign Blocks command
+ 306 10512:07  0000000000faa258  [3,11,1]   Require Write or Reassign Blocks command
+ 307 10512:07  0000000000faa99f  [3,11,1]   Require Write or Reassign Blocks command
+ 308 10512:07  0000000000faa9ad  [1,17,6]   Successfully reassigned
+ 309 10512:07  0000000000fab0f4  [1,17,6]   Successfully reassigned
+ 310 10512:07  0000000000fab83b  [1,18,7]   Recovered via rewrite in-place
+ 311 10512:07  0000000000face2f  [3,11,1]   Require Write or Reassign Blocks command
+ 312 10512:07  0000000000fad8cd  [3,11,1]   Require Write or Reassign Blocks command
+ 313 10512:07  0000000000fae470  [3,11,1]   Require Write or Reassign Blocks command
+ 314 10512:07  0000000000faf2fe  [3,11,1]   Require Write or Reassign Blocks command
+ 315 10512:07  0000000000fb176f  [1,17,6]   Successfully reassigned
+ 316 10512:07  0000000000fb1eb6  [1,17,6]   Successfully reassigned
+ 317 10512:08  0000000000fb25fd  [3,11,1]   Require Write or Reassign Blocks command
+ 318 10512:08  0000000000fb2d44  [3,11,1]   Require Write or Reassign Blocks command
+ 319 10512:08  0000000000fb348b  [1,18,7]   Recovered via rewrite in-place
+ 320 10512:08  0000000000fb43b2  [1,17,6]   Successfully reassigned
+ 321 10512:08  0000000000fb5240  [3,11,1]   Require Write or Reassign Blocks command
+ 322 10512:08  0000000000fb60ce  [1,17,6]   Successfully reassigned
+ 323 10512:08  0000000000fb6815  [3,11,1]   Require Write or Reassign Blocks command
+ 324 10512:08  0000000000fb6f5c  [3,11,1]   Require Write or Reassign Blocks command
+ 325 10512:08  0000000000fb76a3  [3,11,1]   Require Write or Reassign Blocks command
+ 326 10512:08  0000000000fb7dea  [3,11,1]   Require Write or Reassign Blocks command
+ 327 10512:08  0000000000fb807a  [3,11,1]   Require Write or Reassign Blocks command
+ 328 10512:08  0000000000fb8531  [3,11,1]   Require Write or Reassign Blocks command
+ 329 10512:08  0000000000fb8c78  [3,11,1]   Require Write or Reassign Blocks command
+ 330 10512:08  0000000000fb93bf  [3,11,1]   Require Write or Reassign Blocks command
+ 331 10512:08  0000000000fb9b06  [3,11,1]   Require Write or Reassign Blocks command
+ 332 10512:08  000000000101ff45  [1,17,6]   Successfully reassigned
+ 333 10512:08  00000000010201d6  [1,17,6]   Successfully reassigned
+ 334 10512:08  000000000102068c  [1,17,6]   Successfully reassigned
+ 335 10512:08  0000000001020dd3  [3,11,1]   Require Write or Reassign Blocks command
+ 336 10512:08  0000000001021063  [3,11,1]   Require Write or Reassign Blocks command
+ 337 10512:08  000000000102151a  [3,11,1]   Require Write or Reassign Blocks command
+ 338 10512:08  00000000010217aa  [3,11,1]   Require Write or Reassign Blocks command
+ 339 10512:08  0000000001021c61  [3,11,1]   Require Write or Reassign Blocks command
+ 340 10512:08  0000000001021ef1  [3,11,1]   Require Write or Reassign Blocks command
+ 341 10512:08  00000000010223a8  [3,11,1]   Require Write or Reassign Blocks command
+ 342 10512:08  0000000001022638  [3,11,1]   Require Write or Reassign Blocks command
+ 343 10512:08  0000000001022aef  [3,11,1]   Require Write or Reassign Blocks command
+ 344 10512:08  0000000001022d7f  [3,11,1]   Require Write or Reassign Blocks command
+ 345 10512:08  0000000001023236  [3,11,1]   Require Write or Reassign Blocks command
+ 346 10512:08  0000000001023654  [1,17,6]   Successfully reassigned
+ 347 10512:08  000000000102415d  [3,11,1]   Require Write or Reassign Blocks command
+ 348 10512:08  00000000010248a4  [1,17,6]   Successfully reassigned
+ 349 10512:08  00000000010248a5  [1,17,6]   Successfully reassigned
+ 350 10512:08  0000000001024fec  [1,17,6]   Successfully reassigned
+ 351 10512:08  0000000001025733  [3,13,0]   Require Write or Reassign Blocks command
+ 352 10512:08  0000000001025e7a  [1,17,6]   Successfully reassigned
+ 353 10512:08  0000000001026128  [1,17,6]   Successfully reassigned
+ 354 10512:08  000000000102686b  [1,17,6]   Successfully reassigned
+ 355 10512:08  000000000102856d  [3,13,0]   Require Write or Reassign Blocks command
+ 356 10512:08  0000000001028cb4  [3,13,0]   Require Write or Reassign Blocks command
+ 357 10512:08  00000000010293fb  [1,17,6]   Successfully reassigned
+ 358 10512:08  0000000001029b42  [1,17,6]   Successfully reassigned
+ 359 10512:08  000000000102a289  [3,13,0]   Require Write or Reassign Blocks command
+ 360 10512:08  000000000102a9d0  [3,13,0]   Require Write or Reassign Blocks command
+ 361 10512:08  0000000001030922  [3,11,1]   Require Write or Reassign Blocks command
+ 362 10512:08  00000000010332d5  [3,11,1]   Require Write or Reassign Blocks command
+ 363 10512:08  0000000001033a1c  [1,17,6]   Successfully reassigned
+ 364 10512:08  0000000001034163  [3,11,1]   Require Write or Reassign Blocks command
+ 365 10512:08  00000000010348aa  [3,11,1]   Require Write or Reassign Blocks command
+ 366 10512:08  0000000001034b3a  [1,18,7]   Recovered via rewrite in-place
+ 367 10512:08  0000000001034ff1  [3,11,1]   Require Write or Reassign Blocks command
+ 368 10512:08  0000000001035281  [1,17,6]   Successfully reassigned
+ 369 10512:08  0000000001035738  [3,11,1]   Require Write or Reassign Blocks command
+ 370 10512:08  00000000010359c8  [3,13,0]   Require Write or Reassign Blocks command
+ 371 10512:09  0000000001035e7f  [3,11,1]   Require Write or Reassign Blocks command
+ 372 10512:09  000000000103610f  [3,11,1]   Require Write or Reassign Blocks command
+ 373 10512:09  00000000010365c6  [3,11,1]   Require Write or Reassign Blocks command
+ 374 10512:09  0000000001036856  [3,11,1]   Require Write or Reassign Blocks command
+ 375 10512:09  0000000001036f9d  [3,11,1]   Require Write or Reassign Blocks command
+ 376 10512:09  00000000010374ed  [3,11,1]   Require Write or Reassign Blocks command
+ 377 10512:09  00000000010376e4  [3,11,1]   Require Write or Reassign Blocks command
+ 378 10512:09  0000000001037c34  [3,11,1]   Require Write or Reassign Blocks command
+ 379 10512:09  0000000001037e2b  [3,11,1]   Require Write or Reassign Blocks command
+ 380 10512:09  000000000103837b  [3,11,1]   Require Write or Reassign Blocks command
+ 381 10512:09  0000000001038572  [3,11,1]   Require Write or Reassign Blocks command
+ 382 10512:09  0000000001038ac2  [3,11,1]   Require Write or Reassign Blocks command
+ 383 10512:09  000000000105260b  [3,11,1]   Require Write or Reassign Blocks command
+ 384 10512:09  0000000001052d52  [3,11,1]   Require Write or Reassign Blocks command
+ 385 10512:09  0000000001053499  [1,17,6]   Successfully reassigned
+ 386 10512:09  00000000010d50dd  [3,11,1]   Require Write or Reassign Blocks command
+ 387 10512:09  00000000010d536d  [3,11,1]   Require Write or Reassign Blocks command
+ 388 10512:09  00000000010d5824  [3,11,1]   Require Write or Reassign Blocks command
+ 389 10512:09  00000000010d5ab4  [3,11,1]   Require Write or Reassign Blocks command
+ 390 10512:09  00000000010d5f6b  [3,11,1]   Require Write or Reassign Blocks command
+ 391 10512:09  00000000010d61fb  [1,17,6]   Successfully reassigned
+ 392 10512:09  00000000010d66b2  [3,11,1]   Require Write or Reassign Blocks command
+ 393 10512:09  00000000010d6942  [3,11,1]   Require Write or Reassign Blocks command
+ 394 10512:09  00000000010d75d9  [3,11,1]   Require Write or Reassign Blocks command
+ 395 10512:09  00000000010d7d20  [3,11,1]   Require Write or Reassign Blocks command
+ 396 10512:09  00000000010d8467  [3,11,1]   Require Write or Reassign Blocks command
+ 397 10512:09  00000000010d8bae  [3,11,1]   Require Write or Reassign Blocks command
+ 398 10512:09  00000000010d92f5  [3,11,1]   Require Write or Reassign Blocks command
+ 399 10512:09  00000000010d9a3c  [3,11,1]   Require Write or Reassign Blocks command
+ 400 10512:09  00000000010da183  [3,11,1]   Require Write or Reassign Blocks command
+ 401 10512:09  00000000010da8ca  [3,11,1]   Require Write or Reassign Blocks command
+ 402 10512:09  00000000010db011  [3,11,1]   Require Write or Reassign Blocks command
+ 403 10512:09  00000000010db758  [3,11,1]   Require Write or Reassign Blocks command
+ 404 10512:09  00000000010dbe9f  [1,17,6]   Successfully reassigned
+ 405 10512:09  000000000115d29f  [1,17,6]   Successfully reassigned
+ 406 10512:09  000000000116c8ca  [3,11,1]   Require Write or Reassign Blocks command
+ 407 10512:09  000000000120c9b4  [1,17,6]   Successfully reassigned
+ 408 10512:10  00000000016d459b  [1,18,7]   Recovered via rewrite in-place
+ 409 10512:10  00000000016d459b  [1,17,6]   Successfully reassigned
+ 410 10512:10  00000000016ea8fb  [1,18,7]   Recovered via rewrite in-place
+ 411 10512:10  0000000001918cc9  [1,17,6]   Successfully reassigned
+ 412 10512:10  000000000191cee1  [1,17,6]   Successfully reassigned
+ 413 10512:10  0000000001a503e0  [3,11,1]   Require Write or Reassign Blocks command
+ 414 10512:10  0000000001a50b27  [1,17,6]   Successfully reassigned
+ 415 10512:10  0000000001a5126e  [3,11,1]   Require Write or Reassign Blocks command
+ 416 10512:10  0000000001a519b5  [1,17,6]   Successfully reassigned
+ 417 10512:10  0000000001a520fc  [3,11,1]   Require Write or Reassign Blocks command
+ 418 10512:10  0000000001a52843  [3,11,1]   Require Write or Reassign Blocks command
+ 419 10512:10  0000000001a536d1  [1,18,7]   Recovered via rewrite in-place
+ 420 10512:10  0000000001a54d3f  [1,17,6]   Successfully reassigned
+ 421 10512:10  0000000001a55178  [1,17,6]   Successfully reassigned
+ 422 10512:10  0000000001a55486  [3,11,1]   Require Write or Reassign Blocks command
+ 423 10512:10  0000000001a55bcd  [3,11,1]   Require Write or Reassign Blocks command
+ 424 10512:10  0000000001a56314  [3,11,1]   Require Write or Reassign Blocks command
+ 425 10512:10  0000000001a56a5b  [3,11,1]   Require Write or Reassign Blocks command
+ 426 10512:10  0000000001a571a2  [1,17,6]   Successfully reassigned
+ 427 10512:10  0000000001a578e9  [1,17,6]   Successfully reassigned
+ 428 10512:10  0000000001a58030  [1,17,6]   Successfully reassigned
+ 429 10512:10  0000000001a58777  [3,11,1]   Require Write or Reassign Blocks command
+ 430 10512:11  0000000001a58ebe  [3,11,1]   Require Write or Reassign Blocks command
+ 431 10512:11  0000000001a59605  [3,11,1]   Require Write or Reassign Blocks command
+ 432 10512:11  0000000001a59d4c  [1,17,6]   Successfully reassigned
+ 433 10512:11  0000000001d304a5  [1,18,7]   Recovered via rewrite in-place
+ 434 10512:11  0000000001dcc2df  [1,17,6]   Successfully reassigned
+ 435 10512:11  0000000001dcf669  [3,11,1]   Require Write or Reassign Blocks command
+ 436 10512:11  0000000001dcfdb0  [3,11,1]   Require Write or Reassign Blocks command
+ 437 10512:11  0000000001dd04f7  [3,11,1]   Require Write or Reassign Blocks command
+ 438 10512:11  0000000001dd0c3e  [3,11,1]   Require Write or Reassign Blocks command
+ 439 10512:11  0000000001dd1385  [3,11,1]   Require Write or Reassign Blocks command
+ 440 10512:11  0000000001dd1acc  [1,17,6]   Successfully reassigned
+ 441 10512:11  0000000001dd2213  [1,17,6]   Successfully reassigned
+ 442 10512:11  0000000001dd295a  [3,11,1]   Require Write or Reassign Blocks command
+ 443 10512:11  0000000001dd470f  [1,17,6]   Successfully reassigned
+ 444 10512:11  0000000001e52bbe  [1,18,7]   Recovered via rewrite in-place
+ 445 10512:11  00000000021e71e5  [1,17,6]   Successfully reassigned
+ 446 10512:11  00000000021e792c  [1,18,7]   Recovered via rewrite in-place
+ 447 10512:12  000000000228815d  [1,17,6]   Successfully reassigned
+ 448 10512:12  0000000002634680  [1,18,7]   Recovered via rewrite in-place
+ 449 10512:22  00000000085df676  [1,18,7]   Recovered via rewrite in-place
+ 450 10512:22  00000000085df676  [1,18,7]   Recovered via rewrite in-place
+ 451 10513:25  00000000296f3849  [1,18,7]   Recovered via rewrite in-place
+ 452 10513:25  00000000296f3849  [1,17,6]   Successfully reassigned
+ 453 10513:25  0000000029bb5dfb  [1,17,6]   Successfully reassigned
+ 454 10513:26  0000000029cade9e  [1,17,6]   Successfully reassigned
+ 455 10513:26  0000000029daa2a9  [1,17,6]   Successfully reassigned
+ 456 10513:26  0000000029e984bf  [1,17,6]   Successfully reassigned
+ 457 10513:26  0000000029f722d9  [1,17,6]   Successfully reassigned
+ 458 10513:42  000000003135474f  [1,18,7]   Recovered via rewrite in-place
+ 459 10513:42  000000003135474f  [1,18,7]   Recovered via rewrite in-place
+ 460 10513:42  000000003135474f  [1,17,6]   Successfully reassigned
+ 461 10513:42  00000000314237f6  [1,18,7]   Recovered via rewrite in-place
+ 462 10513:42  000000003143705f  [1,17,6]   Successfully reassigned
+ 463 10513:43  000000003150cac3  [1,17,6]   Successfully reassigned
+ 464 10513:43  000000003152032c  [1,17,6]   Successfully reassigned
+ 465 10513:43  00000000317baa69  [1,17,6]   Successfully reassigned
+ 466 10513:43  0000000031889b10  [1,17,6]   Successfully reassigned
+ 467 10513:43  00000000318934a2  [1,17,6]   Successfully reassigned
+ 468 10513:44  0000000031b3d51a  [1,17,6]   Successfully reassigned
+ 469 10513:44  0000000031fb1c5c  [1,18,7]   Recovered via rewrite in-place
+ 470 10513:44  0000000031fb1c5c  [1,17,6]   Successfully reassigned
+ 471 10513:44  000000003207984d  [1,17,6]   Successfully reassigned
+ 472 10513:45  00000000325c7992  [1,18,7]   Recovered via rewrite in-place
+ 473 10513:46  0000000032955d8b  [1,18,7]   Recovered via rewrite in-place
+ 474 10513:46  0000000032af3ed7  [1,17,6]   Successfully reassigned
+ 475 10513:47  0000000032f5b770  [1,17,6]   Successfully reassigned
+ 476 10513:47  0000000032f5f710  [1,17,6]   Successfully reassigned
+ 477 10513:47  000000003304201f  [1,18,7]   Recovered via rewrite in-place
+ 478 10513:47  00000000332214d5  [1,17,6]   Successfully reassigned
+ 479 10513:52  00000000352229cd  [1,18,7]   Recovered via rewrite in-place
+ 480 10513:52  00000000354af4b7  [1,18,7]   Recovered via rewrite in-place
+ 481 10513:53  0000000035c89b2e  [1,18,7]   Recovered via rewrite in-place
+ 482 10513:54  0000000035e24380  [1,18,7]   Recovered via rewrite in-place
+ 483 10513:54  0000000035f0f924  [1,17,6]   Successfully reassigned
+ 484 10513:54  00000000360c784a  [1,18,7]   Recovered via rewrite in-place
+ 485 10513:54  00000000360c784a  [1,18,7]   Recovered via rewrite in-place
+ 486 10513:55  00000000365e0623  [1,18,7]   Recovered via rewrite in-place
+ 487 10513:55  00000000365e0623  [1,17,6]   Successfully reassigned
+ 488 10513:55  00000000366a4809  [1,18,7]   Recovered via rewrite in-place
+ 489 10513:55  00000000366c23ba  [1,17,6]   Successfully reassigned
+ 490 10513:56  0000000036d87085  [1,17,6]   Successfully reassigned
+ 491 10513:57  0000000037287f66  [1,17,6]   Successfully reassigned
+ 492 10513:57  00000000375ef0e4  [1,18,7]   Recovered via rewrite in-place
+ 493 10513:57  00000000375ef0e4  [1,18,7]   Recovered via rewrite in-place
+ 494 10513:58  0000000037bf3e5b  [1,18,7]   Recovered via rewrite in-place
+ 495 10513:58  0000000037cbb9df  [1,17,6]   Successfully reassigned
+ 496 10513:59  0000000037f40825  [1,17,6]   Successfully reassigned
+ 497 10513:59  0000000037f59038  [1,17,6]   Successfully reassigned
+ 498 10513:59  00000000380f44bf  [1,17,6]   Successfully reassigned
+ 499 10513:59  000000003829b7ab  [1,17,6]   Successfully reassigned
+ 500 10514:00  0000000038517be1  [1,18,7]   Recovered via rewrite in-place
+ 501 10514:00  000000003887f7d4  [1,17,6]   Successfully reassigned
+ 502 10514:00  0000000038a05ae6  [1,17,6]   Successfully reassigned
+ 503 10514:02  00000000394da2bb  [1,17,6]   Successfully reassigned
+ 504 10514:02  00000000395b0966  [1,18,7]   Recovered via rewrite in-place
+ 505 10514:02  00000000395b0966  [1,17,6]   Successfully reassigned
+ 506 10514:04  0000000039e0a6dc  [1,17,6]   Successfully reassigned
+ 507 10514:04  000000003a2e2fb5  [1,17,6]   Successfully reassigned
+ 508 10514:05  000000003a49ba54  [1,17,6]   Successfully reassigned
+ 509 10514:16  000000003eb5f15b  [1,17,6]   Successfully reassigned
+ 510 10514:17  000000003ef46000  [1,18,7]   Recovered via rewrite in-place
+ 511 10514:17  000000003f3ecb54  [1,18,7]   Recovered via rewrite in-place
+ 512 10514:17  000000003f3ecb54  [1,17,6]   Successfully reassigned
+ 513 10514:18  000000003f6fa468  [1,17,6]   Successfully reassigned
+ 514 10514:18  000000003f7cb2f7  [1,17,6]   Successfully reassigned
+ 515 10514:19  000000003fbc0549  [1,17,6]   Successfully reassigned
+ 516 10514:19  000000003fc7f288  [1,17,6]   Successfully reassigned
+ 517 10514:19  000000003fd4b550  [1,17,6]   Successfully reassigned
+ 518 10514:19  000000003fe01e44  [1,17,6]   Successfully reassigned
+ 519 10514:19  000000003fe0a7a9  [1,17,6]   Successfully reassigned
+ 520 10514:19  000000003fe1d6b6  [1,17,6]   Successfully reassigned
+ 521 10514:20  000000003ffa6f36  [1,17,6]   Successfully reassigned
+ 522 10514:20  00000000401fdd57  [1,17,6]   Successfully reassigned
+ 523 10514:20  0000000040375e55  [1,17,6]   Successfully reassigned
+ 524 10514:20  000000004038927b  [1,17,6]   Successfully reassigned
+ 525 10514:21  00000000405dd5d3  [1,18,7]   Recovered via rewrite in-place
+ 526 10514:21  000000004082865b  [1,17,6]   Successfully reassigned
+ 527 10514:22  0000000040c0cf61  [1,17,6]   Successfully reassigned
+ 528 10514:22  0000000040f10f1f  [1,17,6]   Successfully reassigned
+ 529 10514:23  00000000410a6da1  [1,17,6]   Successfully reassigned
+ 530 10514:23  00000000415fb423  [1,17,6]   Successfully reassigned
+ 531 10514:25  0000000041cde0a2  [1,17,6]   Successfully reassigned
+ 532 10514:25  0000000041f2691b  [1,17,6]   Successfully reassigned
+ 533 10514:25  00000000420974b3  [1,17,6]   Successfully reassigned
+ 534 10514:26  000000004222b719  [1,18,7]   Recovered via rewrite in-place
+ 535 10514:26  000000004222b719  [1,18,7]   Recovered via rewrite in-place
+ 536 10514:26  000000004222b719  [1,17,6]   Successfully reassigned
+ 537 10514:26  0000000042468ff8  [1,17,6]   Successfully reassigned
+ 538 10514:26  00000000425309b3  [1,18,7]   Recovered via rewrite in-place
+ 539 10514:26  00000000425e9f7a  [1,17,6]   Successfully reassigned
+ 540 10514:26  00000000426c4c18  [3,11,1]   Require Write or Reassign Blocks command
+ 541 10514:27  00000000427727e4  [1,17,6]   Successfully reassigned
+ 542 10514:27  00000000428344d2  [1,17,6]   Successfully reassigned
+ 543 10514:27  00000000428477b6  [1,18,7]   Recovered via rewrite in-place
+ 544 10514:27  00000000428fb0b0  [1,17,6]   Successfully reassigned
+ 545 10514:27  0000000042a7bd50  [3,11,1]   Require Write or Reassign Blocks command
+ 546 10514:27  0000000042a85bb2  [1,17,6]   Successfully reassigned
+ 547 10514:27  0000000042b2e6bb  [3,11,1]   Require Write or Reassign Blocks command
+ 548 10514:27  0000000042b4117a  [1,17,6]   Successfully reassigned
+ 549 10514:28  0000000042ca7d80  [1,17,6]   Successfully reassigned
+ 550 10514:28  0000000042e1fddd  [1,17,6]   Successfully reassigned
+ 551 10514:28  0000000042e32d7c  [3,11,1]   Require Write or Reassign Blocks command
+ 552 10514:28  0000000042ee33e4  [1,17,6]   Successfully reassigned
+ 553 10514:28  0000000043053888  [1,18,7]   Recovered via rewrite in-place
+ 554 10514:28  00000000430628b9  [1,17,6]   Successfully reassigned
+ 555 10514:28  000000004310a2c5  [1,17,6]   Successfully reassigned
+ 556 10514:28  000000004311d264  [3,11,1]   Require Write or Reassign Blocks command
+ 557 10514:29  00000000431cd8cc  [3,11,1]   Require Write or Reassign Blocks command
+ 558 10514:29  00000000431e0ceb  [3,11,1]   Require Write or Reassign Blocks command
+ 559 10514:29  000000004335ec9c  [1,17,6]   Successfully reassigned
+ 560 10514:29  000000004340f305  [1,17,6]   Successfully reassigned
+ 561 10514:29  00000000434d248c  [1,18,7]   Recovered via rewrite in-place
+ 562 10514:29  00000000434d290d  [1,17,6]   Successfully reassigned
+ 563 10514:29  000000004357a799  [3,11,1]   Require Write or Reassign Blocks command
+ 564 10514:29  0000000043588ec9  [3,11,1]   Require Write or Reassign Blocks command
+ 565 10514:30  0000000043639531  [3,11,1]   Require Write or Reassign Blocks command
+ 566 10514:30  00000000436f8bca  [1,17,6]   Successfully reassigned
+ 567 10514:30  0000000043715a2a  [1,17,6]   Successfully reassigned
+ 568 10514:30  00000000437c6093  [3,11,1]   Require Write or Reassign Blocks command
+ 569 10514:30  0000000043876b7c  [3,11,1]   Require Write or Reassign Blocks command
+ 570 10514:30  000000004387cad0  [1,17,6]   Successfully reassigned
+ 571 10514:30  000000004393fc57  [1,17,6]   Successfully reassigned
+ 572 10514:30  00000000439400d8  [1,18,7]   Recovered via rewrite in-place
+ 573 10514:30  00000000439f4b2f  [1,17,6]   Successfully reassigned
+ 574 10514:30  0000000043a07ace  [3,11,1]   Require Write or Reassign Blocks command
+ 575 10514:30  0000000043ab8136  [1,18,7]   Recovered via rewrite in-place
+ 576 10514:30  0000000043ab8136  [1,17,6]   Successfully reassigned
+ 577 10514:30  0000000043acac54  [1,17,6]   Successfully reassigned
+ 578 10514:31  0000000043b72f60  [3,11,1]   Require Write or Reassign Blocks command
+ 579 10514:31  0000000043b81690  [1,17,6]   Successfully reassigned
+ 580 10514:31  0000000043c44817  [1,17,6]   Successfully reassigned
+ 581 10514:31  0000000043cf0f12  [1,17,6]   Successfully reassigned
+ 582 10514:32  0000000044094c5c  [1,18,7]   Recovered via rewrite in-place
+ 583 10514:32  0000000044094c5c  [1,17,6]   Successfully reassigned
+ 584 10514:32  000000004445e4a7  [1,17,6]   Successfully reassigned
+ 585 10514:37  0000000045c5b2e3  [1,17,6]   Successfully reassigned
+Protocol Specific port log page for SAS SSP
+relative target port id = 1
+  generation code = 1
+  number of phys = 1
+  phy identifier = 0
+    attached device type: expander device
+    attached reason: SMP phy control function
+    reason: power on
+    negotiated logical link rate: phy enabled; 6 Gbps
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=1
+    SAS address = 0x50000393e82a35a2
+    attached SAS address = 0x500e0810100e977f
+    attached phy identifier = 1
+    Invalid DWORD count = 156
+    Running disparity error count = 155
+    Loss of DWORD synchronization = 39
+    Phy reset problem = 0
+relative target port id = 2
+  generation code = 1
+  number of phys = 1
+  phy identifier = 1
+    attached device type: no device attached
+    attached reason: unknown
+    reason: unknown
+    negotiated logical link rate: phy enabled; unknown
+    attached initiator port: ssp=0 stp=0 smp=0
+    attached target port: ssp=0 stp=0 smp=0
+    SAS address = 0x50000393e82a35a3
+    attached SAS address = 0x0
+    attached phy identifier = 0
+    Invalid DWORD count = 0
+    Running disparity error count = 0
+    Loss of DWORD synchronization = 0
+    Phy reset problem = 0
