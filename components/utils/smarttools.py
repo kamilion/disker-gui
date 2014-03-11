@@ -103,17 +103,32 @@ def read_values(device):
     print('smarttools: Done Reading S.M.A.R.T values for ' + device)
     return smart_output
 
+def line_slicer(line, removal=None):
+    """
+    Give me what's behind door number two, Jim.
+    """
+    # Carve a list out of the string.
+    interim_list = string.split(string.split(line, ':')[1])
+    if removal:  # If there's something we want removed, now's the time for it.
+        try:  # to remove an element from the list
+            interim_list.remove(removal)
+        except:  # If we can't remove it, just don't do anything.
+            None
+    return string.join(interim_list)
 
 def parse_values(device, smart_output):
     disk_record = {}
     smart_values = {}
-    read_values = 0
+    block_mode = 0  # Zero is the 'search for new block' behavior
+    block_counter = 0
     print('smarttools: parse_values: parsing structure:')
     for l in smart_output:
         print('smarttools: parsing line: ' + l.rstrip('\n'))
         if l[:-1] == '':  # Found a blank line, treat as end of a block.
-            read_values = 0  # Stop attribute parsing on the next blank line after the block.
+            block_mode = 0  # Stop attribute parsing on the next blank line after the block.
+            block_counter += 1
             print('smarttools: SEARCHING FOR NEW BLOCK: BLANK LINE')
+
         elif l[:13] == 'Device Model:' or l[:7] == 'Device:' or l[:8] == 'Product:':
             model_list = string.split(string.split(l, ':')[1])
             try:
@@ -134,7 +149,7 @@ def parse_values(device, smart_output):
             capacity_list = string.split(string.split(l, ':')[1])
             capacity = string.join(capacity_list)
             print('smarttools: captured a capacity: {}'.format(capacity))
-        elif l[:20] == 'SMART Health Status:':
+        elif l[:20] == 'SMART Health Status:' or l[:48] == 'SMART overall-health self-assessment test result':
             health_status_list = string.split(string.split(l, ':')[1])
             health_status = string.join(health_status_list)
             print('smarttools: captured a health status: {}'.format(health_status))
@@ -149,7 +164,7 @@ def parse_values(device, smart_output):
 
         try:
             # Begin parsing smart attributes
-            if read_values == 1:
+            if block_mode == 1:
                 smart_attribute = string.split(l)
                 print(smart_attribute)
                 smart_values[string.replace(smart_attribute[1], '-', '_')] = {
@@ -165,11 +180,12 @@ def parse_values(device, smart_output):
                 print('smarttools: captured a smart attribute: {}', format(smart_attribute))
             elif l[:18] == "ID# ATTRIBUTE_NAME":  # Trigger block reading behavior
                 # Start reading the Attributes block
-                read_values = 1
+                block_mode = 1
                 print('smarttools: found the Attributes block')
         except:
             print('smarttools: Failed to parse attribute.')
 
+    print("smarttools: Number of blocks in record was: {}".format(block_counter))
     # Begin packing up the disk_record
 
     if smart_values == {}:
