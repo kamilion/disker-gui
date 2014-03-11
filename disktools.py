@@ -2,6 +2,8 @@
 # These are called by rqworker, and so there is no held state.
 # Beware; new workhorses are immediately forked and never reused!
 
+from __future__ import print_function
+from __future__ import unicode_literals
 
 # System imports
 import string

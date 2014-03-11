@@ -1,12 +1,14 @@
 # This is not an executable script.
 
+from __future__ import print_function
+from __future__ import unicode_literals
+
 print("consoletools: on_import")
 import os
 import sys
 import sh
 import string
-from time import time
-
+from datetime import datetime as dt
 
 # ------------------------------------------------------------------------
 # Tools & utilities
@@ -56,6 +58,24 @@ def calc_finish(read_bytes, total_bytes, elapsed):
     if read_bytes < 1:  # We haven't done anything yet!
         return 0  # Don't return something weird like None, just plain old zero.
     return long(((total_bytes - read_bytes) * elapsed) / read_bytes)
+
+
+def get_dbus_machine_id():
+    with open("/var/lib/dbus/machine-id") as myfile:
+        data = "".join(line.rstrip() for line in myfile)
+    return data
+
+
+def get_boot_id():
+    with open("/proc/sys/kernel/random/boot_id") as myfile:
+        data = "".join(line.rstrip() for line in myfile)
+    return data
+
+
+def get_global_ip():
+    run = sh.Command("/home/git/disker-gui/getglobalip")
+    result = run()
+    return str(result).strip()
 
 
 print("consoletools: done_import")

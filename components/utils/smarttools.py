@@ -1,8 +1,15 @@
+#!/usr/bin/env python2.7
+
+from __future__ import print_function
+from __future__ import unicode_literals
+
 # System imports
 import string
 import sh
 import re
 import sys
+
+from consoletools import get_global_ip, get_dbus_machine_id, get_boot_id
 
 ### TODO: Remove all database references
 
@@ -109,7 +116,7 @@ def line_slicer(line, removal=None):
     """
     # Carve a list out of the string.
     interim_list = string.split(string.split(line, ':')[1])
-    if removal:  # If there's something we want removed, now's the time for it.
+    if removal:  # If there's something we want removed, now is the time for it.
         try:  # to remove an element from the list
             interim_list.remove(removal)
         except:  # If we can't remove it, just don't do anything.
@@ -117,11 +124,15 @@ def line_slicer(line, removal=None):
     return string.join(interim_list)
 
 def parse_values(device, smart_output):
-    disk_record = {}
-    smart_values = {}
+    disk_record = {}  # Wraps all data
+    disk_information = {}  # Goes inside disk_record
+    smart_status = {}  # Goes inside disk_record
+    smart_values = {}  # Goes inside disk_record
     block_mode = 0  # Zero is the 'search for new block' behavior
     block_counter = 0
+    block_switch_counter = 0
     print('smarttools: parse_values: parsing structure:')
+    ##### Begin parsing the smart_output #####
     for l in smart_output:
         print('smarttools: parsing line: ' + l.rstrip('\n'))
         if l[:-1] == '':  # Found a blank line, treat as end of a block.
@@ -129,42 +140,58 @@ def parse_values(device, smart_output):
             block_counter += 1
             print('smarttools: SEARCHING FOR NEW BLOCK: BLANK LINE')
 
-        elif l[:13] == 'Device Model:' or l[:7] == 'Device:' or l[:8] == 'Product:':
-            model_list = string.split(string.split(l, ':')[1])
-            try:
-                model_list.remove('Version')
-            except:
-                None
-            model = string.join(model_list)
-            print('smarttools: captured a model description: {}'.format(model))
-        elif l[:14] == 'Serial Number:' or l[:6] == 'Serial':
-            serial_list = string.split(string.split(l, ':')[1])
-            serial_no = string.join(serial_list)
-            print('smarttools: captured a serial number: {}'.format(serial_no))
+        if l[:36] == '=== START OF INFORMATION SECTION ===':
+            block_mode = 1  # SATA: Switch to Information Section mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
         elif l[:7] == 'Vendor:':
-            vendor_list = string.split(string.split(l, ':')[1])
-            vendor = string.join(vendor_list)
+            block_mode = 1  # SAS: Switch to Information Section mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+            vendor = line_slicer(l)
             print('smarttools: captured a vendor name: {}'.format(vendor))
-        elif l[:14] == 'User Capacity:':
-            capacity_list = string.split(string.split(l, ':')[1])
-            capacity = string.join(capacity_list)
-            print('smarttools: captured a capacity: {}'.format(capacity))
-        elif l[:20] == 'SMART Health Status:' or l[:48] == 'SMART overall-health self-assessment test result':
-            health_status_list = string.split(string.split(l, ':')[1])
-            health_status = string.join(health_status_list)
-            print('smarttools: captured a health status: {}'.format(health_status))
-        elif l[:30] == 'Elements in grown defect list:':
-            grown_defect_list = string.split(string.split(l, ':')[1])
-            grown_defects = string.join(grown_defect_list)
-            print('smarttools: captured a grown defect count: {}'.format(grown_defects))
-        elif l[:23] == 'Non-medium error count:':
-            non_medium_list = string.split(string.split(l, ':')[1])
-            non_medium = string.join(non_medium_list)
-            print('smarttools: captured a non-medium error count: {}'.format(non_medium))
+
+        if block_mode == 1:  # Information Section mode
+            if l[:13] == 'Device Model:' or l[:7] == 'Device:' or l[:8] == 'Product:':
+                model = line_slicer(l, 'Version')
+                print('smarttools: captured a model description: {}'.format(model))
+            elif l[:14] == 'Serial Number:' or l[:14] == 'Serial number:' or l[:6] == 'Serial':
+                serial_no = line_slicer(l)
+                print('smarttools: captured a serial number: {}'.format(serial_no))
+            elif l[:13] == 'Model Family:':
+                model_family = line_slicer(l)
+                print('smarttools: captured a model family: {}'.format(model_family))
+            elif l[:14] == 'User Capacity:':
+                capacity = line_slicer(l)
+                print('smarttools: captured a capacity: {}'.format(capacity))
+            elif l[:19] == 'Transport protocol:':
+                phy_protocol = line_slicer(l)
+                print('smarttools: captured a protocol: {}'.format(phy_protocol))
+
+        if l[:40] == '=== START OF READ SMART DATA SECTION ===':
+            block_mode = 2  # SATA: Switch to Read Smart Data Section mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:20] == 'SMART Health Status:':
+            block_mode = 2  # SAS: Switch to Read Smart Data Section mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+            health_status = line_slicer(l)
+            print('smarttools: captured a SAS health status: {}'.format(health_status))
+        elif block_mode == 2 and l[:30] == 'Elements in grown defect list:':
+            grown_defects = line_slicer(l)
+            print('smarttools: captured a SAS grown defect count: {}'.format(grown_defects))
+        elif block_mode == 2 and l[:23] == 'Non-medium error count:':
+            non_medium = line_slicer(l)
+            print('smarttools: captured a SAS non-medium error count: {}'.format(non_medium))
+        elif block_mode == 2 and l[:48] == 'SMART overall-health self-assessment test result:':
+            health_status = line_slicer(l)
+            print('smarttools: captured a SATA health status: {}'.format(health_status))
 
         try:
             # Begin parsing smart attributes
-            if block_mode == 1:
+            if block_mode == 9:
                 smart_attribute = string.split(l)
                 print(smart_attribute)
                 smart_values[string.replace(smart_attribute[1], '-', '_')] = {
@@ -179,15 +206,72 @@ def parse_values(device, smart_output):
                 }
                 print('smarttools: captured a smart attribute: {}', format(smart_attribute))
             elif l[:18] == "ID# ATTRIBUTE_NAME":  # Trigger block reading behavior
+                block_mode = 9  # SATA: Switch to Read Smart Attribute mode
+                block_switch_counter += 1
+                print('smarttools: Switched Block to mode: {}'.format(block_mode))
                 # Start reading the Attributes block
-                block_mode = 1
-                print('smarttools: found the Attributes block')
+                print('smarttools: Found the SMART Attributes Block')
         except:
             print('smarttools: Failed to parse attribute.')
 
-    print("smarttools: Number of blocks in record was: {}".format(block_counter))
-    # Begin packing up the disk_record
+        # Do more stuff here
+        # And here
 
+        if l[:18] == 'Error counter log:':
+            block_mode = 13  # SAS: Switch to Background Scan Results mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:27] == 'Background scan results log':
+            block_mode = 14  # SAS: Switch to Background Scan Results mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:43] == 'Protocol Specific port log page for SAS SSP':
+            block_mode = 15  # SAS: Switch to SAS SSP mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:37] == 'General Purpose Log Directory Version':
+            block_mode = 23  # SATA: Switch to SATA General Purpose Log Dir Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:47] == 'SMART Extended Comprehensive Error Log Version:':
+            block_mode = 24  # SATA: Switch to SATA Ext Comprehensive Error Log Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:37] == 'SMART Extended Self-test Log Version:':
+            block_mode = 25  # SATA: Switch to SATA Ext Self Test Log Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:44] == 'SMART Selective self-test log data structure':
+            block_mode = 26  # SATA: Switch to SATA Self Test Log Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:19] == 'SCT Status Version:':
+            block_mode = 27  # SATA: Switch to SATA Temperature Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:45] == 'Index    Estimated Time   Temperature Celsius':
+            block_mode = 28  # SATA: Switch to SATA Temperature History Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+        if l[:37] == 'SATA Phy Event Counters (GP Log 0x11)':
+            block_mode = 29  # SATA: Switch to SATA Physical Event Counter Mode
+            block_switch_counter += 1
+            print('smarttools: Switched Block to mode: {}'.format(block_mode))
+
+    print("smarttools: Number of parsed blocks in record was: {}".format(block_switch_counter))
+    print("smarttools: Number of total blocks in record was: {}".format(block_counter))
+    ##### Begin packing up the disk_record #####
+
+    # Finalize the smart_values key
     if smart_values == {}:
         print("smarttools: Can't find any SMART attributes to capture!")
         disk_record["smart_values"] = {
@@ -198,49 +282,68 @@ def parse_values(device, smart_output):
         #print(smart_values)
         disk_record["smart_values"] = smart_values
 
-    # For some reason we may have no value for "model"
-    try:
-        disk_record["model"] = model
-    except:
-        disk_record["model"] = "Unknown Model"
-
-    # For some reason we may have no value for "serial"
-    try:
-        disk_record["serial_no"] = serial_no
-    except:
-        disk_record["serial_no"] = "Unknown Serial Number"
-
-    # For some reason we may have no value for "vendor"
-    try:
-        disk_record["vendor"] = vendor
-    except:
-        disk_record["vendor"] = "Unknown Vendor"
-
-    # For some reason we may have no value for "capacity"
-    try:
-        disk_record["capacity"] = capacity
-    except:
-        disk_record["capacity"] = "Unknown Capacity"
-
     # For some reason we may have no value for "health_status"
     try:
-        disk_record["health_status"] = health_status
+        smart_status["health_status"] = health_status
     except:
-        disk_record["health_status"] = "Unknown Status"
+        smart_status["health_status"] = "Unknown Status"
 
     # For some reason we may have no value for "grown_defects"
     try:
-        disk_record["grown_defects"] = grown_defects
+        smart_status["grown_defects"] = grown_defects
     except:
-        disk_record["grown_defects"] = 0
+        smart_status["grown_defects"] = 0
 
     # For some reason we may have no value for "non_medium_errors"
     try:
-        disk_record["non_medium_errors"] = non_medium
+        smart_status["non_medium_errors"] = non_medium
     except:
-        disk_record["non_medium_errors"] = 0
+        smart_status["non_medium_errors"] = 0
 
-    disk_record["last_known_as"] = device
+    # Finalize the smart_status key
+    disk_record["smart_status"] = smart_status
+
+    # For some reason we may have no value for "model"
+    try:
+        disk_information["model"] = model
+    except:
+        disk_information["model"] = "Unknown Model"
+
+    # For some reason we may have no value for "model_family"
+    try:
+        disk_information["model_family"] = model_family
+    except:
+        disk_information["model_family"] = "Unknown Model Family"
+
+    # For some reason we may have no value for "serial"
+    try:
+        disk_information["serial_no"] = serial_no
+    except:
+        disk_information["serial_no"] = "Unknown Serial Number"
+
+    # For some reason we may have no value for "vendor"
+    try:
+        disk_information["vendor"] = vendor
+    except:
+        disk_information["vendor"] = "Unknown Vendor"
+
+    # For some reason we may have no value for "capacity"
+    try:
+        disk_information["capacity"] = capacity
+    except:
+        disk_information["capacity"] = "Unknown Capacity"
+
+    # For some reason we may have no value for "phy_protocol"
+    try:
+        disk_information["phy_protocol"] = phy_protocol
+    except:
+        disk_information["phy_protocol"] = "SATA"
+
+
+    disk_information["last_known_as"] = device
+
+    # Finalize the disk_information key
+    disk_record["disk_information"] = disk_information
 
     return disk_record
 
