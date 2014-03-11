@@ -52,10 +52,12 @@ def wipe(out_path, progress_cb=None, uuid=None):
     # We have to figure out the total size on our own.
     total_bytes = get_size(out_path)  # Get the size of the device.
 
+    # Pull out the device from it's directory
+    my_device_list = string.split(str(target_device.device_node), "/")
+    my_device_list.remove('dev')
+    my_device = ''.join(my_device_list)
+
     try:
-        my_device_list = string.split(str(target_device.device_node), "/")
-        my_device_list.remove('dev')
-        my_device = ''.join(my_device_list)
         with open('/dev/zero', 'rb') as in_fp:  # Specify /dev/urandom if you don't want zeros.
             with open(out_path, 'wb') as out_fp:
                 buf = bytearray(buf_size)  # Build an array of zeros with the size of megs_per_block.
@@ -130,10 +132,12 @@ def image(in_path, out_path, progress_cb=None, uuid=None):
     # We have to figure out the total size on our own.
     total_bytes = os.stat(in_path).st_size  # Figure out the size of the source.
 
+    # Pull out the device from it's directory
+    my_device_list = string.split(str(target_device.device_node), "/")
+    my_device_list.remove('dev')
+    my_device = ''.join(my_device_list)
+
     try:
-        my_device_list = string.split(str(target_device.device_node), "/")
-        my_device_list.remove('dev')
-        my_device = ''.join(my_device_list)
         with open(in_path, 'rb') as in_fp:
             with open(out_path, 'wb') as out_fp:
                 while True:
