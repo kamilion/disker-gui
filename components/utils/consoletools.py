@@ -3,7 +3,7 @@
 from __future__ import print_function
 from __future__ import unicode_literals
 
-print("consoletools: on_import")
+#print("consoletools: on_import")
 import os
 import sys
 import sh
@@ -78,7 +78,7 @@ def get_global_ip():
     return str(result).strip()
 
 
-print("consoletools: done_import")
+#print("consoletools: done_import")
 
 # ------------------------------------------------------------------------
 # Main program
