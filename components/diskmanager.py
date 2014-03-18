@@ -11,12 +11,12 @@ import string
 # ------------------------------------------------------------------------
 
 
-def get_size(in_path):
+def get_size(obj_path):
     """Get the size by seeking to the end and returning the number of bytes we passed along the way.
-    Can be used against device nodes, file objects, symbolic links, and other VFS objects.
-    :param in_path: Path to the object to obtain sizing for.
+    Can be used against device nodes, file objects, symbolic links, and many other VFS objects.
+    :param obj_path: Path to the object to obtain sizing for.
     """
-    fd = os.open(in_path, os.O_RDONLY)
+    fd = os.open(obj_path, os.O_RDONLY)
     try:
         return os.lseek(fd, 0, os.SEEK_END)
     finally:
