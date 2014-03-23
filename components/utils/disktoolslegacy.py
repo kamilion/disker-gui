@@ -1,8 +1,8 @@
+# This is not an executable script.
+
 # RQ Worker functions
 # These are called by rqworker, and so there is no held state.
 # Beware; new workhorses are immediately forked and never reused!
-
-# LEGACY SCRIPT, not properly using components.
 
 from __future__ import print_function
 from __future__ import unicode_literals
@@ -12,19 +12,20 @@ import string
 import sh
 import re
 
+from disktools import get_disk_sdinfo, get_disk_throughput
+
 # RethinkDB imports
 from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from components.utils.basedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
-from components.utils.disktools import get_disk_sdinfo, get_disk_throughput
+from basedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
 
 conn = None
 conn = connect_db(conn)
 
 machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
-print("LocalDB: DiskUtils found a machine state: {}".format(machine_state_uuid))
+print("LocalDB: DiskToolsLegacy found a machine state: {}".format(machine_state_uuid))
 
 ### Local functions
 def verify_db_tables(conn):
@@ -37,31 +38,6 @@ def verify_db_tables(conn):
 
 
 ### Remote commands
-
-#  This will end up in the failed queue
-def broken_mirror(device):
-    raise NotImplementedError("A Million Shades of Light")
-
-
-def start_shutdown(hostname):
-    run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-shutdown.sh")
-    result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
-    return str(result)
-
-
-def start_reboot(hostname):
-    run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-reboot.sh")
-    result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
-    return str(result)
-
-
-def start_wipe(device):
-    verify_db_tables(conn)  # Verify DB and tables exist
-    run = sh.Command("./start_wipe.sh")
-    result = run("-d", str(device), _bg=True)
-    return str(result)
-    #return str(device)
-
 
 def get_disk_info(device):
     verify_db_tables(conn)  # Verify DB and tables exist
@@ -81,7 +57,7 @@ def read_values(device):
     print('Reading S.M.A.R.T values for '+device)
     # Just accept any return code as a success from smartctl.
     ok_codes = range(255)  #  [0,1,2,3,4,5,6,7,8,9,10,11,12,64,192]
-    smart_output = sh.smartctl('-a','-A', '-i', device, _err_to_out=True, _ok_code=ok_codes)
+    smart_output = sh.smartctl('-a', '-A', '-i', device, _err_to_out=True, _ok_code=ok_codes)
     read_values = 0
     print(smart_output)
     for l in smart_output:
@@ -189,3 +165,13 @@ def read_values(device):
     return record_id
 
     #return "Done"  # for debugging
+
+#print("disktools: done_import")
+
+# ------------------------------------------------------------------------
+# Main program
+# ------------------------------------------------------------------------
+
+# If we're invoked as a program; instead of imported as a class...
+if __name__ == '__main__':
+    print("This class is supposed to be imported, not executed.")

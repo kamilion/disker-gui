@@ -8,24 +8,7 @@ from __future__ import unicode_literals
 # System imports
 import sh
 
-# RethinkDB imports
-from rethinkdb.errors import RqlRuntimeError
-
-from basedb import connect_db, find_machine_state, verify_db_machine_state
-
-conn = None
-conn = connect_db(conn)
-
-machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
-print("LocalDB: HostTools found a machine state: {}".format(machine_state_uuid))
-
-
-### Local functions
-def verify_db_tables(conn):
-    try:
-        verify_db_machine_state(conn)
-    except RqlRuntimeError:
-        print("LocalDB: wanwipe database verified.")
+### Removed all database references.
 
 
 def get_dbus_machine_id():
@@ -49,14 +32,12 @@ def get_global_ip():
 ### Remote commands
 
 def start_shutdown(hostname):
-    verify_db_tables(conn)  # Verify DB and tables exist
     run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-shutdown.sh")
     result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
     return str(result)
 
 
 def start_reboot(hostname):
-    verify_db_tables(conn)  # Verify DB and tables exist
     run = sh.Command("/home/git/zurfa-deploy/tools/zurfa-reboot.sh")
     result = run("all", str(hostname), _bg=True)  # Short circuit, using 'all' as the first param instead of hostname.
     return str(result)

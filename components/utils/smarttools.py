@@ -15,73 +15,6 @@ from hosttools import get_global_ip, get_dbus_machine_id, get_boot_id
 ### Removed all database references.
 
 
-def get_disk_info(device):
-    """
-    Return a dict of data full of data
-    """
-    # Collect Data in a new dict
-    sdinfo = get_disk_sdinfo(device)
-    throughput = get_disk_throughput(device)
-    smart = get_disk_smart(device)
-    data = {'sdinfo': sdinfo, 'throughput': throughput, 'smart': smart}
-    return data
-
-
-# noinspection PyUnresolvedReferences
-def get_disk_throughput(device):
-    throughput = 0
-    unit = ""
-    for line in sh.dd("if={}".format(device), "of=/dev/zero", "bs=1M", "count=1000", _err_to_out=True):
-        s = re.search(' copied,.*, (\S+) (\S+)$', line)
-        if s:
-            throughput = s.group(1)
-            unit = s.group(2)
-            break
-    return "{} {}".format(throughput, unit)
-
-
-# noinspection PyUnresolvedReferences
-def get_disk_sdinfo(device):
-    vendor = ""
-    model = ""
-    for line in sh.sdparm("-i", device, _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
-        needle = '    {}: (\S+)\s+(\S+.*)$'.format(device)
-        s = re.search(needle, line)
-        if s:
-            vendor = s.group(1)
-            model = s.group(2)
-            break
-    return "{} {}".format(vendor, model)
-
-
-# This sucker needs some work to properly parse sdparm -all output
-# noinspection PyUnresolvedReferences
-def get_disk_sdall(device):
-    vendor = ""
-    model = ""
-    for line in sh.sdparm("-all", device, _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
-        needle = '    {}: (\S+)\s+(\S+.*)$'.format(device)
-        s = re.search(needle, line)
-        if s:
-            vendor = s.group(1)
-            model = s.group(2)
-            break
-    return "{} {}".format(vendor, model)
-
-
-# noinspection PyUnresolvedReferences
-def get_disk_serial(device):
-    serial = ""
-    for line in sh.udisksctl("status", _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
-        # Some re notes: use (.*) or (\S+) for a group. use \s+ for whitespacing. use $ for end of string.
-        needle = '^(?P<model>.+?)\s+(?P<revision>\S+)\s+(?P<serial>\S+)\s+{}\s+$'.format(device)
-        s = re.search(needle, line)
-        if s:
-            serial = s.group('serial')
-            break
-    return "{}".format(serial)
-
-
 # noinspection PyUnresolvedReferences
 def get_disk_smart(device):
     values = read_values(device, True)
@@ -451,6 +384,7 @@ class SmartObject:
 
         # Finalize the disk_information key
         self.disk_information["host_ip"] = get_global_ip()
+        self.disk_information["last_host_ip"] = get_global_ip()
         self.disk_information["machine_id"] = get_dbus_machine_id()
         self.disk_information["boot_id"] = get_boot_id()
         self.disk_information["device_node"] = self.device_node

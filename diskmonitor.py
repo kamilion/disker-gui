@@ -64,7 +64,8 @@ machine_state_uuid = find_machine_state(db_conn)  # Verifies DB Automatically.
 verify_db_table(db_conn, "disks")
 print("LocalDB: DiskMonitor found a machine state: {}".format(machine_state_uuid))
 
-from components.utils.smarttools import get_disk_sdinfo, get_disk_smart
+from components.utils.disktools import get_disk_sdinfo
+from components.utils.smarttools import get_disk_smart
 
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException

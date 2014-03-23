@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-from diskutils import start_wipe
+from diskutils import check_dco
 
-start_wipe('/dev/sdb')
+check_dco('/dev/sdb')

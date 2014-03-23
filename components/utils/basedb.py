@@ -103,10 +103,8 @@ def find_machine_state(conn):
 # Main program
 # ------------------------------------------------------------------------
 
-
 # If we're invoked as a program; instead of imported as a class...
 if __name__ == '__main__':
-    conn = connect_db(conn)
-    #uuid = find_machine_state_loud()
+    conn = connect_db(None)
     uuid = find_machine_state(conn)
     print("{}: BaseDB: TESTING: Found a machine_state: {}".format(dt.isoformat(dt.now()), uuid))
