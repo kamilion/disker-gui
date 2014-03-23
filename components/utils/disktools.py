@@ -18,6 +18,12 @@ def broken_mirror(device):
     raise NotImplementedError("A Million Shades of Light")
 
 
+def start_wipe(device):
+    run = sh.Command("/home/git/disker-gui/start_wipe.sh")
+    result = run("-d", str(device), _bg=True)
+    return str(result)
+
+
 def check_dco(device):
     run = sh.Command("hdparm")
     result = run("--dco-identify", str(device), _bg=True)

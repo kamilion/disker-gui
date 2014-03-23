@@ -169,7 +169,7 @@ class M3Window(Gtk.Window):
         return uimanager
 
     def on_menu_make_it_go(self, widget):
-        job = q.enqueue_call('diskutils.broken_mirror', ["/dev/sdd"])
+        job = q.enqueue_call('components.utils.disktools.broken_mirror', ["/dev/sdd"])
         print job
         while job.result is None:
             sleep(0.1)
@@ -192,13 +192,13 @@ class M3Window(Gtk.Window):
 
     def on_disk_button_clicked(self, widget, device):
         which_button = "{}".format(device)
-        job = q.enqueue_call('diskutils.start_wipe', [which_button])
+        job = q.enqueue_call('components.utils.disktools.start_wipe', [which_button])
         print job
         widget.set_label("Wiping")
 
     def on_button_clicked(self, widget):
         which_button = "{}".format(widget.get_label().decode('utf-8'))
-        job = q.enqueue_call('diskutils.read_values', [which_button])
+        job = q.enqueue_call('components.utils.disktoolslegacy.read_values', [which_button])
         print job
         t_beginning = time()
         seconds_passed = 0
