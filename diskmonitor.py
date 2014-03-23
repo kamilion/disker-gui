@@ -50,22 +50,25 @@ import sys
 import string
 import re
 
+from itertools import chain
+
 from datetime import datetime as dt
 
 # RethinkDB imports
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from components.utils.basedb import connect_db, find_machine_state, verify_db_table
+from components.utils.basedb import connect_db, find_machine_state, verify_db_table, verify_db_index
 
 db_conn = connect_db(None)
 
 machine_state_uuid = find_machine_state(db_conn)  # Verifies DB Automatically.
 verify_db_table(db_conn, "disks")
+verify_db_index(db_conn, "disks", "serial_no")
 print("LocalDB: DiskMonitor found a machine state: {}".format(machine_state_uuid))
 
-from components.utils.disktools import get_disk_sdinfo
-from components.utils.smarttools import get_disk_smart
+from components.utils.disktools import get_disk_sdinfo, get_disk_serial
+from components.utils.smarttools import get_disk_smart, get_disk_realtime_status
 
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException
@@ -464,8 +467,26 @@ def contains_digits(d):
 
 ### Fun with DBs
 
+def db_lookup_disk(conn, device):
+    """Looks up a disk from the disks database.
+    :param device: The device to search
+    """
+    try:
+        result = r.db('wanwipe').table('disks').get_all(get_disk_serial(device), index='serial_no').run(conn)
+        for document in result:  # Look over the returned documents. There should only be one, serial_no is unique.
+            print("{}: LookupDisk: disks query found a matching document: {}".format(dt.isoformat(dt.now()), document), file=sys.stderr)
+            if document.get('target') == device:  # Found a current state for this machine.
+                return document.get('id')  # Return the current state, skipping the below.
+        print("{}: LookupDisk: couldn't find that disk. Creating new disk.".format(dt.isoformat(dt.now())), file=sys.stderr)  # We didn't return above, so...
+        # Just create a disk here if none exists.
+        return db_register_disk(conn, device)  # Haha, this won't work!
+        # Done making the disk
+    except RqlRuntimeError as kaboom:
+        print("{}: LookupDisk: disks lookup failed somehow: {}".format(dt.isoformat(dt.now()), kaboom), file=sys.stderr)
 
-# This one permanantly registers the disk in the disks table.
+
+
+# This one permanently registers the disk in the disks table.
 # We need to search for it by serial number.
 # if it doesn't already exist, it must be created.
 # if it exists, it must be updated to reflect who has it now.
@@ -475,24 +496,30 @@ def db_register_disk(conn, device):
     :param device: The device to add
     """
     # First we must populate basic information for the disk.
-    disk_id = get_disk_sdinfo("/dev/{}".format(device))
-    disk_smart = get_disk_smart("/dev/{}".format(device))
+    disk_status = get_disk_realtime_status("/dev/{}".format(device))
+    #disk_smart = get_disk_smart("/dev/{}".format(device))
+
+    try:
+        inserted = r.db('wanwipe').table('disks').insert(
+            #chain(disk_status.iteritems(), disk_smart.iteritems())
+            disk_status
+        ).run(conn)
+        print("{}: RegisterDisk: disk created: {}".format(dt.isoformat(dt.now()), inserted['generated_keys'][0]), file=sys.stderr)
+        return inserted['generated_keys'][0]
+    except RqlRuntimeError as kaboom:
+        print("{}: RegisterDisk: disk creation failed somehow: {}".format(dt.isoformat(dt.now()), kaboom), file=sys.stderr)
+
+
+def db_update_disk(conn, device):
+    """Updates a permanently stored disk in the disks database.
+    :param device: The device to update
+    """
+    # First we must populate basic information for the disk.
+    disk_status = get_disk_realtime_status("/dev/{}".format(device))
 
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('disks').get(machine_state_uuid).update(
-        {
-            'disks': {  # this one's fucked
-                device: {
-                    'target': device,
-                    'available': True,
-                    'busy': False,
-                    'disk_id': disk_id,
-                    'updated_at': r.now(),
-                    'discovered_at': r.now()
-                }
-            },
-            'updated_at': r.now()
-        }
+    updated = r.db('wanwipe').table('disks').get(db_lookup_disk(conn, device)).update(
+        disk_status
     ).run(conn)  # Update the record timestamp.
 
 # This one updates the disk in the machine_state table.

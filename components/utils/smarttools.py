@@ -16,16 +16,54 @@ from hosttools import get_global_ip, get_dbus_machine_id, get_boot_id
 
 
 # noinspection PyUnresolvedReferences
+def get_disk_realtime_status(device):
+    # First get the drive ID from udisks2.
+    drive = ""
+    for line in sh.udisksctl("info", "-b", device, _err_to_out=True):
+        # Some re notes: use (.*) or (\S+) for a group. use \s+ for whitespacing. use $ for end of string.
+        needle = "^\s+Drive:\s+'/org/freedesktop/UDisks2/drives/(?P<drive>\S+)'$"
+        s = re.search(needle, line)
+        if s:
+            drive = s.group('drive')
+            break
+
+    status = {'lifetime': 0, 'disk_failing': False, 'attr_failed_past': 0, 'attr_failing': 0, 'bad_sectors': 0,
+              'self_test_percent_left': 0, 'self_test_status': 'unavailable'}  # Fill in sane defaults.
+
+    # Then get the rest of what interests us. They normally start with four spaces.
+    for l in sh.udisksctl("info", "-d", drive, _err_to_out=True):
+        if l[:17] == '    SmartFailing:':
+            if line_slicer(l) == "true":
+                status['disk_failing'] = True
+            else:
+                status['disk_failing'] = False
+        if l[:38] == '    SmartNumAttributesFailedInThePast:':
+            status['attr_failed_past'] = int(line_slicer(l))
+        if l[:30] == '    SmartNumAttributesFailing:':
+            status['attr_failing'] = int(line_slicer(l))
+        if l[:23] == '    SmartNumBadSectors:':
+            status['bad_sectors'] = int(line_slicer(l))
+        if l[:24] == '    SmartPowerOnSeconds:':
+            status['lifetime'] = int(line_slicer(l))
+        if l[:34] == '    SmartSelftestPercentRemaining:':
+            status['self_test_percent_left'] = int(line_slicer(l))
+        if l[:24] == '    SmartSelftestStatus:':
+            status['self_test_status'] = line_slicer(l)
+
+    return status
+
+
 def get_disk_smart(device):
-    values = read_values(device, True)
-    the_disk = SmartObject(device, values)
-    the_disk.quiet = True
-    the_disk.verbose = False
-    the_disk.debug = False
-    the_disk.parse_lines()
-    return the_disk.return_data()
+    smart_values = read_values(device, True)
+    smart = SmartObject(device, smart_values)
+    smart.quiet = True
+    smart.verbose = False
+    smart.debug = False
+    smart.parse_lines()
+    return smart.return_data()
 
 
+# noinspection PyUnresolvedReferences
 def read_values_from_file(device, quiet=False):
     if not quiet:
         print('smarttools: Reading S.M.A.R.T values for ' + device)
@@ -56,6 +94,7 @@ def read_values_from_file(device, quiet=False):
     return smart_output
 
 
+# noinspection PyUnresolvedReferences
 def read_values(device, quiet=False):
     if not quiet:
         print('smarttools: Reading S.M.A.R.T values for ' + device)
@@ -117,6 +156,7 @@ class SmartObject:
                                  'capacity': "Unknown Capacity",
                                  'phy_protocol': "SATA"
                                  }  # Goes inside disk_record
+        self.host_information = {}  # Goes inside disk_record
         self.smart_status = {}  # Goes inside disk_record
         self.smart_attributes = {}  # Goes inside disk_record
         self.smart_blocks = {}  # Goes inside disk_record
@@ -168,10 +208,12 @@ class SmartObject:
         if self.debug:
             print('smarttools: parseiv line: ' + l.rstrip('\n'))
         if l[:13] == 'Device Model:' or l[:7] == 'Device:' or l[:8] == 'Product:':
+            self.disk_record["model"] = line_slicer(l, 'Version')
             self.disk_information["model"] = line_slicer(l, 'Version')
             if not self.quiet:
                 print('smarttools: iv:captured a model description: {}'.format(self.disk_information["model"]))
         elif l[:14] == 'Serial Number:' or l[:14] == 'Serial number:' or l[:6] == 'Serial':
+            self.disk_record["serial_no"] = line_slicer(l)
             self.disk_information["serial_no"] = line_slicer(l)
             if not self.quiet:
                 print('smarttools: iv:captured a serial number: {}'.format(self.disk_information["serial_no"]))
@@ -210,6 +252,7 @@ class SmartObject:
             self.smart_status["grown_defects"] = grown_defects
             self.smart_status["bad_sectors"] = grown_defects
             self.disk_information["bad_sectors"] = grown_defects
+            self.disk_record["bad_sectors"] = grown_defects
             if not self.quiet:
                 print('smarttools: hv:captured a SAS grown defect count: {}'.format(self.smart_status["grown_defects"]))
         elif self.block_mode == 77 and l[:23] == 'Non-medium error count:':
@@ -277,7 +320,7 @@ class SmartObject:
             ### BLOCKS 10 - 29 (DISK INFO)
             if l[:9] == 'smartctl ':
                 self.set_mode(0)  # SATA: Switch to General Information mode
-                self.disk_information["smartctl_version"] = l.rstrip('\n')
+                self.smart_status["smartctl_version"] = l.rstrip('\n')
                 if not self.quiet:
                     print('smarttools: pv:captured a smartctl_version: {}'.format(self.disk_information["smartctl_version"]))
             if l[:36] == '=== START OF INFORMATION SECTION ===':
@@ -382,15 +425,24 @@ class SmartObject:
         # Finalize the smart_status key
         self.disk_record["smart_status"] = self.smart_status
 
-        # Finalize the disk_information key
-        self.disk_information["host_ip"] = get_global_ip()
-        self.disk_information["last_host_ip"] = get_global_ip()
-        self.disk_information["machine_id"] = get_dbus_machine_id()
-        self.disk_information["boot_id"] = get_boot_id()
-        self.disk_information["device_node"] = self.device_node
-        self.disk_information["last_known_as"] = self.device_node
+        # Finalize the host_information key
+        self.host_information["host_ip"] = get_global_ip()
+        self.host_information["machine_id"] = get_dbus_machine_id()
+        self.host_information["boot_id"] = get_boot_id()
+        self.host_information["device_node"] = self.device_node
+        self.host_information["device_name"] = self.device_node[5:]
+        self.host_information["last_host_ip"] = get_global_ip()
+        self.host_information["last_machine_id"] = get_dbus_machine_id()
+        self.host_information["last_boot_id"] = get_boot_id()
+        self.host_information["last_known_as"] = self.device_node
 
-        # Finalize the disk_record itself
+        # Finalize the disk_record itself, these top level values can be database indexes.
+        self.disk_record["host_ip"] = get_global_ip()
+        self.disk_record["machine_id"] = get_dbus_machine_id()
+        self.disk_record["boot_id"] = get_boot_id()
+        self.disk_record["device_node"] = self.device_node
+        self.disk_record["device_name"] = self.device_node[5:]
+        self.disk_record["host_information"] = self.host_information
         self.disk_record["disk_information"] = self.disk_information
 
         return self.disk_record

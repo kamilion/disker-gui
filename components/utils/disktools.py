@@ -111,6 +111,8 @@ def get_disk_sdall(device):
 
 # noinspection PyUnresolvedReferences
 def get_disk_serial(device):
+    if device.startswith("/dev/"):
+        device = device[5:]  # Trim off /dev/ if it exists
     serial = ""
     for line in sh.udisksctl("status", _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
         # Some re notes: use (.*) or (\S+) for a group. use \s+ for whitespacing. use $ for end of string.

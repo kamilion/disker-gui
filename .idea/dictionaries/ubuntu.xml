@@ -2,11 +2,13 @@
   <dictionary name="ubuntu">
     <words>
       <w>bitmask</w>
+      <w>realtime</w>
       <w>sata</w>
       <w>sdinfo</w>
       <w>sdparm</w>
       <w>smartctl</w>
       <w>smarttools</w>
+      <w>udisks</w>
     </words>
   </dictionary>
 </component>
