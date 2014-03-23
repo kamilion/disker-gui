@@ -10,8 +10,8 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-# noinspection PyUnresolvedReferences
-from diskerbasedb import connect_db, verify_db_machine_state, verify_db_index, verify_db_table, get_boot_id, get_dbus_machine_id, find_machine_state, create_machine_state
+
+from components.utils.basedb import connect_db
 
 # GTK imports
 # noinspection PyUnresolvedReferences
@@ -21,7 +21,7 @@ from gi.repository import Gtk, Gdk
 import redis
 from rq import Queue, Worker, job
 # Local imports
-#from disktools import get_disk_info, get_disk_throughput, read_values, broken_mirror
+#from diskutils import get_disk_info, get_disk_throughput, read_values, broken_mirror
 
 
 UI_INFO = """
@@ -169,7 +169,7 @@ class M3Window(Gtk.Window):
         return uimanager
 
     def on_menu_make_it_go(self, widget):
-        job = q.enqueue_call('disktools.broken_mirror', ["/dev/sdd"])
+        job = q.enqueue_call('diskutils.broken_mirror', ["/dev/sdd"])
         print job
         while job.result is None:
             sleep(0.1)
@@ -192,13 +192,13 @@ class M3Window(Gtk.Window):
 
     def on_disk_button_clicked(self, widget, device):
         which_button = "{}".format(device)
-        job = q.enqueue_call('disktools.start_wipe', [which_button])
+        job = q.enqueue_call('diskutils.start_wipe', [which_button])
         print job
         widget.set_label("Wiping")
 
     def on_button_clicked(self, widget):
         which_button = "{}".format(widget.get_label().decode('utf-8'))
-        job = q.enqueue_call('disktools.read_values', [which_button])
+        job = q.enqueue_call('diskutils.read_values', [which_button])
         print job
         t_beginning = time()
         seconds_passed = 0

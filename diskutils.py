@@ -15,13 +15,13 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
+from components.utils.basedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
 
 conn = None
 conn = connect_db(conn)
 
 machine_state_uuid = find_machine_state(conn)  # Verifies DB Automatically.
-print("LocalDB: DiskTools found a machine state: {}".format(machine_state_uuid))
+print("LocalDB: DiskUtils found a machine state: {}".format(machine_state_uuid))
 
 ### Local functions
 def verify_db_tables(conn):

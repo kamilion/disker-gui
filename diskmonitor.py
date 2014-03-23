@@ -56,7 +56,7 @@ from datetime import datetime as dt
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_table
+from components.utils.basedb import connect_db, find_machine_state, verify_db_table
 
 db_conn = connect_db(None)
 
@@ -64,7 +64,7 @@ machine_state_uuid = find_machine_state(db_conn)  # Verifies DB Automatically.
 verify_db_table(db_conn, "disks")
 print("LocalDB: DiskMonitor found a machine state: {}".format(machine_state_uuid))
 
-from disktools import get_disk_sdinfo
+from components.utils.smarttools import get_disk_sdinfo, get_disk_smart
 
 from dbus import Array, SystemBus, Interface
 from dbus.exceptions import DBusException
@@ -464,20 +464,41 @@ def contains_digits(d):
 ### Fun with DBs
 
 
+# This one permanantly registers the disk in the disks table.
+# We need to search for it by serial number.
+# if it doesn't already exist, it must be created.
+# if it exists, it must be updated to reflect who has it now.
+
 def db_register_disk(conn, device):
-    """Permanently stores a disk to the database.
+    """Permanently stores a disk to the disks database.
     :param device: The device to add
     """
+    # First we must populate basic information for the disk.
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
-    # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('disks').get(machine_state_uuid).update({'disks': {  # this one's fucked
-        device: {'target': device, 'available': True, 'busy': False, 'disk_id': disk_id,
-                 'updated_at': r.now(), 'discovered_at': r.now()}},
-        'updated_at': r.now()}).run(conn)  # Update the record timestamp.
+    disk_smart = get_disk_smart("/dev/{}".format(device))
 
+    # noinspection PyUnusedLocal
+    updated = r.db('wanwipe').table('disks').get(machine_state_uuid).update(
+        {
+            'disks': {  # this one's fucked
+                device: {
+                    'target': device,
+                    'available': True,
+                    'busy': False,
+                    'disk_id': disk_id,
+                    'updated_at': r.now(),
+                    'discovered_at': r.now()
+                }
+            },
+            'updated_at': r.now()
+        }
+    ).run(conn)  # Update the record timestamp.
+
+# This one updates the disk in the machine_state table.
+# It's only used to track which device nodes are currently being used.
 
 def db_found_disk(conn, device):
-    """Adds a newly discovered disk to the database.
+    """Adds a newly discovered disk to the presence database.
     :param device: The device to add
     """
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
@@ -489,7 +510,7 @@ def db_found_disk(conn, device):
 
 
 def db_remove_disk(conn, device):
-    """Removes a disk to the database.
+    """Removes a disk from the the presence database.
     :param device: The device to remove
     """
     # Insert Data r.table("posts").get("1").replace(r.row.without('author')).run()

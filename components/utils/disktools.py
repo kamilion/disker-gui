@@ -15,7 +15,7 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
+from basedb import connect_db, find_machine_state, verify_db_machine_state, verify_db_table
 
 conn = None
 conn = connect_db(conn)

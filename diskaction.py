@@ -12,7 +12,8 @@ from datetime import datetime
 import rethinkdb as r
 from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id, get_global_ip
+from components.utils.hosttools import get_global_ip, get_dbus_machine_id, get_boot_id
+from components.utils.basedb import connect_db, find_machine_state, verify_db_table
 
 conn = connect_db(None)
 
@@ -28,7 +29,7 @@ def verify_db_tables():
 
 
 # Pull in the diskmanager.
-from components.diskmanager import get_size, DiskManager, Disk, UdevDiskManager, UdevDisk, UdevDeviceManager, UdevDevice
+from components.diskmanager import get_size, DiskManager
 
 # Pull in the consoletools.
 from components.utils.consoletools import prompt, select_yes_no, calc_bar, calc_finish

@@ -20,7 +20,7 @@ from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
 print("smart2json: DB imports OK")
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id, get_global_ip
+from components.utils.basedb import connect_db, find_machine_state, verify_db_table
 
 print("smart2json: basedb imports OK")
 

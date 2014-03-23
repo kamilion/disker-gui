@@ -20,7 +20,7 @@ from rethinkdb.errors import RqlRuntimeError, RqlDriverError
 
 #print("rdbutil: DB imports OK")
 
-from diskerbasedb import connect_db, find_machine_state, verify_db_table, get_boot_id, get_dbus_machine_id, get_global_ip
+from components.utils.basedb import connect_db, find_machine_state, verify_db_table
 
 #print("rdbutil: basedb imports OK")
 

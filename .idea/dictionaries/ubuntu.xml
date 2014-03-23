@@ -4,6 +4,7 @@
       <w>bitmask</w>
       <w>sata</w>
       <w>sdinfo</w>
+      <w>sdparm</w>
       <w>smartctl</w>
       <w>smarttools</w>
     </words>

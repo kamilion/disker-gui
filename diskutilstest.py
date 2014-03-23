@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-from disktools import start_wipe
+from diskutils import start_wipe
 
 start_wipe('/dev/sdb')
