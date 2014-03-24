@@ -50,7 +50,7 @@ import sys
 import string
 import re
 
-from itertools import chain
+from simplejson import dumps
 
 from datetime import datetime as dt
 
@@ -496,13 +496,13 @@ def db_register_disk(conn, device):
     :param device: The device to add
     """
     # First we must populate basic information for the disk.
-    disk_status = get_disk_realtime_status("/dev/{}".format(device))
-    #disk_smart = get_disk_smart("/dev/{}".format(device))
+    #disk_status = get_disk_realtime_status("/dev/{}".format(device))
+    disk_smart = get_disk_smart("/dev/{}".format(device))
+    json_disk_smart = dumps(disk_smart)
 
     try:
         inserted = r.db('wanwipe').table('disks').insert(
-            #chain(disk_status.iteritems(), disk_smart.iteritems())
-            disk_status
+            json_disk_smart
         ).run(conn)
         print("{}: RegisterDisk: disk created: {}".format(dt.isoformat(dt.now()), inserted['generated_keys'][0]), file=sys.stderr)
         return inserted['generated_keys'][0]
