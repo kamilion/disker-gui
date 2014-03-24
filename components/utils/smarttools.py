@@ -12,6 +12,8 @@ from simplejson import dumps
 
 from hosttools import get_global_ip, get_dbus_machine_id, get_boot_id
 
+from enum import Enum
+
 ### Removed all database references.
 
 
@@ -141,6 +143,32 @@ def line_slicer(line, removal=None):
     return string.join(interim_list)
 
 
+class BlockType(Enum):
+    ### BLOCKS 0 - 9 (APPLICATION VERSIONS)
+    block_seek = 0
+    ### BLOCKS 10 - 29 (DISK INFO)
+    general_info = 11
+    smart_data = 16
+    smart_attributes = 18
+    smart_attr_key = 19
+    ### BLOCKS 30 - 60 (SATA)
+    sata_gp_logdir = 31
+    sata_smart_ecel = 32
+    sata_smart_estl = 35
+    sata_smart_sstld = 37
+    sata_smart_sstld_data = 38
+    sata_pec = 41
+    sata_sct = 48
+    sata_sct_history = 49
+    ### BLOCKS 70 - 90 (SAS)
+    sas_ssp = 71
+    sas_ecm = 76
+    sas_ecm_data = 77
+    sas_bsr = 78
+    sas_bsr_data = 79
+    ### BLOCKS 100 - 200 (RESERVED)
+
+
 class SmartObject:
     def __init__(self, device, smart_input):
         """Populates member variables with default empty values"""
@@ -161,8 +189,8 @@ class SmartObject:
         self.smart_attributes = {}  # Goes inside disk_record
         self.smart_blocks = {}  # Goes inside disk_record
         self.smart_block = []  # Goes inside smart_blocks, emptied whenever we flush a complete block into smart_blocks
-        self.next_block_mode = 0  # Zero is the 'search for new block' behavior
-        self.block_mode = 0  # Zero is the 'search for new block' behavior
+        self.next_block_mode = BlockType.block_seek.value  # Zero is the 'search for new block' behavior
+        self.block_mode = BlockType.block_seek.value  # Zero is the 'search for new block' behavior
         self.block_counter = 0  # How many blank lines (block changes) we've seen
         self.block_switch_counter = 0  # How many block changes we've parsed
         self.warnings_issued = 0  # Keep track of a few warning signs for diagnosis
@@ -175,21 +203,23 @@ class SmartObject:
                 print('smarttools: issue_warning: Score Penalty {} issued ( {} > {} )'.format(penalty, value, threshold))
 
     def switch_block(self, old_mode, new_mode):
+        old_blocktype = BlockType(old_mode)
+        new_blocktype = BlockType(new_mode)
         if self.verbose:
-            print('smarttools: switch_block: Switching Current Block from {} to: {}'.format(old_mode, new_mode))
+            print('smarttools: switch_block: Switching Current Block from {} to: {}'.format(old_blocktype.name, new_blocktype.name))
         try:  # to get the block's previous contents so we can append to it.
-            original_block = self.smart_blocks[old_mode]
+            original_block = self.smart_blocks[old_blocktype.name]
             if self.debug:
-                print('smarttools: switch_block Retrieved Original Block: {}'.format(old_mode))
+                print('smarttools: switch_block Retrieved Original Block: {}'.format(old_blocktype.name))
         except:  # if we can't, then just return an empty string.
             original_block = ""
             if self.debug:
-                print('smarttools: switch_block DID NOT Retrieve Original Block: {}'.format(old_mode))
+                print('smarttools: switch_block DID NOT Retrieve Original Block: {}'.format(old_blocktype.name))
         this_block = "".join(self.smart_block)
         new_block = original_block + this_block
-        self.smart_blocks[old_mode] = new_block
+        self.smart_blocks[old_blocktype.name] = new_block
         if self.debug:
-            print('smarttools: switch_block saved smart_block: {}'.format(old_mode))
+            print('smarttools: switch_block saved smart_block: {}'.format(old_blocktype.name))
         self.smart_block = []  # Empty the list for the next block
         if self.debug:
             print('smarttools: switch_block emptied smart_block.')
@@ -246,7 +276,7 @@ class SmartObject:
                 self.smart_status["health_status"] = disk_status
             if not self.quiet:
                 print('smarttools: hv:captured a SAS health status: {}'.format(self.smart_status["health_status"]))
-        elif self.block_mode == 16 and l[:30] == 'Elements in grown defect list:':
+        elif self.block_mode == BlockType.smart_data.value and l[:30] == 'Elements in grown defect list:':
             grown_defects = line_slicer(l)
             self.issue_warning(grown_defects, 1, grown_defects)  # Issue a warning if this value exceeds the threshold.
             self.smart_status["grown_defects"] = grown_defects
@@ -255,13 +285,13 @@ class SmartObject:
             self.disk_record["bad_sectors"] = grown_defects
             if not self.quiet:
                 print('smarttools: hv:captured a SAS grown defect count: {}'.format(self.smart_status["grown_defects"]))
-        elif self.block_mode == 77 and l[:23] == 'Non-medium error count:':
+        elif self.block_mode == BlockType.sas_ecm_data.value and l[:23] == 'Non-medium error count:':
             nme_count = line_slicer(l)
             self.issue_warning(nme_count, 25, nme_count)  # Issue a warning if this value exceeds the threshold.
             self.smart_status["non_medium_errors"] = line_slicer(l)
             if not self.quiet:
                 print('smarttools: hv:captured a SAS non-medium error count: {}'.format(self.smart_status["non_medium_errors"]))
-        elif self.block_mode == 16 and l[:49] == 'SMART overall-health self-assessment test result:':
+        elif self.block_mode == BlockType.smart_data.value and l[:49] == 'SMART overall-health self-assessment test result:':
             health_status = line_slicer(l)
             if health_status != "PASSED":
                 self.issue_warning(10, 5, 500)  # Issue a score of 500 to a not "PASSED" disk.
@@ -272,7 +302,7 @@ class SmartObject:
     def parse_smart_attributes(self, l):
         smart_attribute = string.split(l)
         if smart_attribute[0] == "||||||_":  # The Map Key for Flags
-            self.set_mode(19)  # Stuff the legend key into block 19
+            self.set_mode(BlockType.smart_attr_key.value)  # Stuff the legend key into block 19
             return  # We don't need to parse this any further.
         if self.debug:
             print('smarttools: Smart Attribute: {}'.format(smart_attribute))
@@ -300,15 +330,15 @@ class SmartObject:
             ##### Block Detection
             if l[:-1] == '':  # Found a blank line, treat as end of a block.
                 if not self.many_lines:  # We know which block types are typically many_lines in advance
-                    self.set_mode(0)  # Otherwise stop attribute parsing on the next blank line after the block.
+                    self.set_mode(BlockType.block_seek.value)  # Otherwise stop attribute parsing on the next blank line after the block.
                     if self.debug:
                         print('smarttools: Mode: {:02d}, SEARCHING FOR NEW BLOCK: BLANK LINE'.format(self.block_mode))
                 else:
                     if self.debug:
                         print('smarttools: Mode: {:02d}, SEARCHING IN MANY BLOCK: BLANK LINE'.format(self.block_mode))
-                if self.next_block_mode != 0:  # we're expecting a specific block next
+                if self.next_block_mode != BlockType.block_seek.value:  # we're expecting a specific block next
                     self.set_mode(self.next_block_mode)  # Switch to the next block mode.
-                    self.next_block_mode = 0  # And reset the next_block_mode back to 0
+                    self.next_block_mode = BlockType.block_seek.value  # And reset the next_block_mode back to 0
 
                 self.block_counter += 1  # And increment the block counter by one.
 
@@ -319,39 +349,39 @@ class SmartObject:
 
             ### BLOCKS 10 - 29 (DISK INFO)
             if l[:9] == 'smartctl ':
-                self.set_mode(0)  # SATA: Switch to General Information mode
+                self.set_mode(BlockType.block_seek.value)  # SATA: Switch to General Information mode
                 self.smart_status["smartctl_version"] = l.rstrip('\n')
                 if not self.quiet:
-                    print('smarttools: pv:captured a smartctl_version: {}'.format(self.disk_information["smartctl_version"]))
+                    print('smarttools: pv:captured a smartctl_version: {}'.format(self.smart_status["smartctl_version"]))
             if l[:36] == '=== START OF INFORMATION SECTION ===':
-                self.set_mode(11)  # SATA: Switch to Information Section mode
+                self.set_mode(BlockType.general_info.value)  # SATA: Switch to Information Section mode
             elif l[:7] == 'Vendor:':
-                self.set_mode(11)  # SAS: Switch to Information Section mode
+                self.set_mode(BlockType.general_info.value)  # SAS: Switch to Information Section mode
                 self.disk_information["vendor"] = line_slicer(l)
                 if not self.quiet:
                     print('smarttools: pv:captured a vendor name: {}'.format(self.disk_information["vendor"]))
 
-            if self.block_mode == 11:  # Information Section mode
+            if self.block_mode == BlockType.general_info.value:  # Information Section mode
                 self.parse_info_values(l)
 
             if l[:40] == '=== START OF READ SMART DATA SECTION ==='\
                     or l[:48] == 'SMART Attributes Data Structure revision number:'\
                     or l[:21] == 'General SMART Values:':
-                self.set_mode(16)  # SATA: Switch to Read Smart Data Section mode
+                self.set_mode(BlockType.smart_data.value)  # SATA: Switch to Read Smart Data Section mode
 
-            if self.block_mode == 16:  # Read Smart Data Section mode
+            if self.block_mode == BlockType.smart_data.value:  # Read Smart Data Section mode
                 self.parse_health_values(l)
 
             if l[:20] == 'SMART Health Status:'\
                     or l[:26] == 'Current Drive Temperature:':
-                self.set_mode(16)  # SAS: Switch to Read Smart Data Section mode
+                self.set_mode(BlockType.smart_data.value)  # SAS: Switch to Read Smart Data Section mode
                 self.parse_health_values(l)  # Pass this value through.
 
             try:  # SATA: SMART attribute parsing
-                if self.block_mode == 18:  # Begin parsing smart attributes
+                if self.block_mode == BlockType.smart_attributes.value:  # Begin parsing smart attributes
                     self.parse_smart_attributes(l)
                 elif l[:18] == "ID# ATTRIBUTE_NAME":  # Trigger block reading behavior
-                    self.set_mode(18)  # SATA: Switch to Read Smart Attribute mode
+                    self.set_mode(BlockType.smart_attributes.value)  # SATA: Switch to Read Smart Attribute mode
                     if self.debug:
                         print('smarttools: Found the SMART Attributes Block')
             except:
@@ -360,33 +390,33 @@ class SmartObject:
             ### BLOCKS 30 - 60 (SATA)
             # Other blocks we don't currently handle but recognise and store
             if l[:37] == 'General Purpose Log Directory Version':
-                self.set_mode(31)  # SATA: Switch to SATA General Purpose Log Dir Mode
+                self.set_mode(BlockType.sata_gp_logdir.value)  # SATA: Switch to SATA General Purpose Log Dir Mode
             if l[:47] == 'SMART Extended Comprehensive Error Log Version:':   # This has (MANY) additional newlines.
-                self.set_mode(32, True)  # SATA: MANY_LINES: Switch to SATA Ext Comprehensive Error Log Mode
+                self.set_mode(BlockType.sata_smart_ecel.value, True)  # SATA: MANY_LINES: Switch to SATA Ext Comprehensive Error Log Mode
             if l[:37] == 'SMART Extended Self-test Log Version:':
-                self.set_mode(35)  # SATA: Switch to SATA Ext Self Test Log Mode
+                self.set_mode(BlockType.sata_smart_estl.value)  # SATA: Switch to SATA Ext Self Test Log Mode
             if l[:44] == 'SMART Selective self-test log data structure':
-                self.set_mode(37)  # SATA: Switch to SATA Self Test Log Mode
-                self.next_block_mode = 38  # Go back to block mode 38 afterwards.
+                self.set_mode(BlockType.sata_smart_sstld.value)  # SATA: Switch to SATA Self Test Log Mode
+                self.next_block_mode = BlockType.sata_smart_sstld_data.value  # Go back to block mode 38 afterwards.
             if l[:37] == 'SATA Phy Event Counters (GP Log 0x11)':
-                self.set_mode(41)  # SATA: Switch to SATA Physical Event Counter Mode
+                self.set_mode(BlockType.sata_pec.value)  # SATA: Switch to SATA Physical Event Counter Mode
             if l[:19] == 'SCT Status Version:':
-                self.set_mode(48)  # SATA: Switch to SATA Temperature Mode, expect 29 to follow and return
+                self.set_mode(BlockType.sata_sct.value)  # SATA: Switch to SATA Temperature Mode, expect 29 to follow and return
             if l[:45] == 'Index    Estimated Time   Temperature Celsius':
-                self.set_mode(49)  # SATA: Switch to SATA Temperature History Mode
-                self.next_block_mode = 48  # Go back to block mode 48 afterwards.
+                self.set_mode(BlockType.sata_sct_history.value)  # SATA: Switch to SATA Temperature History Mode
+                self.next_block_mode = BlockType.sata_sct.value  # Go back to block mode 48 afterwards.
 
             ### BLOCKS 70 - 90 (SAS)
             if l[:43] == 'Protocol Specific port log page for SAS SSP':
-                self.set_mode(71)  # SAS: Switch to SAS SSP mode
+                self.set_mode(BlockType.sas_ssp.value)  # SAS: Switch to SAS SSP mode
             if l[:18] == 'Error counter log:':
-                self.set_mode(76)  # SAS: Switch to Error counter log mode
-                self.next_block_mode = 77
+                self.set_mode(BlockType.sas_ecm.value)  # SAS: Switch to Error counter log mode
+                self.next_block_mode = BlockType.sas_ecm_data.value
             if l[:27] == 'Background scan results log':
-                self.set_mode(78)  # SAS: Switch to Background Scan Results mode
-                self.next_block_mode = 79
+                self.set_mode(BlockType.sas_bsr.value)  # SAS: Switch to Background Scan Results mode
+                self.next_block_mode = BlockType.sas_bsr_data.value
 
-            if self.block_mode == 77:  # Read Smart Data Section mode
+            if self.block_mode == BlockType.sas_ecm_data.value:  # Read Smart Data Section mode
                 self.parse_health_values(l)  # Pass this value through.
             ### BLOCKS 100 - 200 (RESERVED)
 
@@ -414,10 +444,11 @@ class SmartObject:
             #print(smart_attributes)
             self.smart_attributes["error"] = False
             self.smart_attributes["error_text"] = "Success"
-            #self.disk_record["smart_attributes"] = self.smart_attributes
+            self.smart_status["smart_attributes"] = self.smart_attributes
 
         # This little bastard is why return_data is it's own function.
-        #self.disk_record["smart_blocks"] = self.smart_blocks
+        self.disk_record["smart_blocks"] = self.smart_blocks
+        ## AHHA! Rethink doesn't like numerical keys. ENUM?
 
         # Score the drive based on what we've uncovered.
         self.smart_status["score"] = self.warnings_issued
