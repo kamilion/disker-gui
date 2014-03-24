@@ -530,6 +530,9 @@ def db_found_disk(conn, device):
     :param device: The device to add
     """
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
+    db_lookup_disk(conn, device)
+    db_update_disk(conn, device)
+
     # noinspection PyUnusedLocal
     updated = r.db('wanwipe').table('machine_state').get(machine_state_uuid).update({'disks': {
         device: {'target': device, 'available': True, 'busy': False, 'disk_id': disk_id,
