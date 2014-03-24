@@ -519,14 +519,15 @@ def db_update_disk(conn, device):
     # First we must populate basic information for the disk.
     disk_smart = get_disk_smart("/dev/{}".format(device))
     disk_status = get_disk_realtime_status("/dev/{}".format(device))
+    disk_record_uuid = db_lookup_disk(conn, device)
 
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('disks').get(db_lookup_disk(conn, device)).update(
+    updated = r.db('wanwipe').table('disks').get(disk_record_uuid).update(
         disk_smart
     ).run(conn)
 
     # noinspection PyUnusedLocal
-    updated = r.db('wanwipe').table('disks').get(db_lookup_disk(conn, device)).update(
+    updated = r.db('wanwipe').table('disks').get(disk_record_uuid).update(
         disk_status
     ).run(conn)
 
@@ -538,7 +539,8 @@ def db_found_disk(conn, device):
     :param device: The device to add
     """
     disk_id = get_disk_sdinfo("/dev/{}".format(device))
-    db_lookup_disk(conn, device)
+
+    # Update the disks record
     db_update_disk(conn, device)
 
     # noinspection PyUnusedLocal
