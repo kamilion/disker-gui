@@ -503,7 +503,7 @@ def db_register_disk(conn, device):
 
     try:
         inserted = r.db('wanwipe').table('disks').insert(
-            json_disk_smart
+            disk_smart
         ).run(conn)
         print("{}: RegisterDisk: disk created: {}".format(dt.isoformat(dt.now()), inserted['generated_keys'][0]), file=sys.stderr)
         return inserted['generated_keys'][0]
