@@ -476,7 +476,7 @@ def db_lookup_disk(conn, device):
         result = r.db('wanwipe').table('disks').get_all(get_disk_serial(device), index='serial_no').run(conn)
         for document in result:  # Look over the returned documents. There should only be one, serial_no is unique.
             print("{}: LookupDisk: disks query found a matching document: {}".format(dt.isoformat(dt.now()), document), file=sys.stderr)
-            if document.get('device_node') == device:  # Found a current state for this machine.
+            if document.get('device_name') == device:  # Found a current state for this machine.
                 return document.get('id')  # Return the current state, skipping the below.
         print("{}: LookupDisk: couldn't find that disk. Creating new disk.".format(dt.isoformat(dt.now())), file=sys.stderr)  # We didn't return above, so...
         # Just create a disk here if none exists.
