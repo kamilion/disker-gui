@@ -414,10 +414,10 @@ class SmartObject:
             #print(smart_attributes)
             self.smart_attributes["error"] = False
             self.smart_attributes["error_text"] = "Success"
-            self.smart_status["smart_attributes"] = self.smart_attributes
+            #self.smart_status["smart_attributes"] = self.smart_attributes
 
         # This little bastard is why return_data is it's own function.
-        self.smart_status["smart_blocks"] = self.smart_blocks
+        #self.smart_status["smart_blocks"] = self.smart_blocks
 
         # Score the drive based on what we've uncovered.
         self.smart_status["score"] = self.warnings_issued
