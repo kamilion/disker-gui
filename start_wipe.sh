@@ -34,6 +34,6 @@ exec 2>&1
 echo "Starting " "${MY_TASK}" "${@}"
 
 # NOHangUP a task with arguments, redirect it's stdout and stderr
-nohup ${MY_DIR}${MY_TASK} "${@}" > ${LOG_DIR}${dt}.out.log 2>&1 < /dev/null &
+nohup python -u ${MY_DIR}${MY_TASK} "${@}" > ${LOG_DIR}${dt}.out.log 2>&1 < /dev/null &
 
 echo "Forked " "${MY_TASK}" "${@}"
