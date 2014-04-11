@@ -480,7 +480,7 @@ def db_lookup_disk(conn, device):
             print("{}: LookupDisk: disks query found a matching document: {}".format(dt.isoformat(dt.now()), document), file=sys.stderr)
             return document.get('id')  # Always return the current disk, skipping the below.
         print("{}: LookupDisk: couldn't find that disk. Creating new disk.".format(dt.isoformat(dt.now())), file=sys.stderr)  # We didn't return above, so...
-        return db_register_disk(conn, device)  # Haha, this won't work!
+        return db_register_disk(conn, device)  # Register the disk with the disks database.
     except RqlRuntimeError as kaboom:
         print("{}: LookupDisk: disks lookup failed somehow: {}".format(dt.isoformat(dt.now()), kaboom), file=sys.stderr)
 

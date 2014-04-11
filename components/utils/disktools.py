@@ -69,6 +69,9 @@ def get_disk_info(device):
 
 # noinspection PyUnresolvedReferences
 def get_disk_throughput(device):
+    """Tests a disk for read throughput. Returns formatted result.
+    :param device: The device to test (Expects full path)
+    """
     throughput = 0
     unit = ""
     for line in sh.dd("if={}".format(device), "of=/dev/zero", "bs=1M", "count=1000", _err_to_out=True):
@@ -82,6 +85,9 @@ def get_disk_throughput(device):
 
 # noinspection PyUnresolvedReferences
 def get_disk_sdinfo(device):
+    """Looks up a disk vendor and model from sdparm. Collects minimal data.
+    :param device: The full path to the device to lookup
+    """
     vendor = ""
     model = ""
     for line in sh.sdparm("-i", device, _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
@@ -97,6 +103,9 @@ def get_disk_sdinfo(device):
 # This sucker needs some work to properly parse sdparm -all output
 # noinspection PyUnresolvedReferences
 def get_disk_sdall(device):
+    """Looks up a disk vendor and model from sdparm. Collects all data.
+    :param device: The full path to the device to lookup
+    """
     vendor = ""
     model = ""
     for line in sh.sdparm("-all", device, _err_to_out=True, _ok_code=[0, 2, 3, 5, 9, 11, 33, 97, 98, 99]):
@@ -111,6 +120,9 @@ def get_disk_sdall(device):
 
 # noinspection PyUnresolvedReferences
 def get_disk_serial(device):
+    """Looks up a disk serial number from the udisks database.
+    :param device: The full path to the device to lookup
+    """
     if device.startswith("/dev/"):
         device = device[5:]  # Trim off /dev/ if it exists
     serial = ""
